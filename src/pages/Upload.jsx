@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Camera, Upload, MapPin, Loader2, CheckCircle, AlertCircle, Search, Users, Shield, Ban } from "lucide-react";
+import { Camera, Upload, MapPin, Loader2, CheckCircle, AlertCircle, Search, Users, Shield, Ban, Navigation } from "lucide-react";
 import { motion } from "framer-motion";
 import PhotoUpload from "../components/upload/PhotoUpload";
 import AnalysisProgress from "../components/upload/AnalysisProgress";
@@ -22,11 +22,14 @@ export default function UploadPage() {
   const [photo, setPhoto] = useState(null);
   const [photoUrl, setPhotoUrl] = useState("");
   const [location, setLocation] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [analysisResults, setAnalysisResults] = useState(null);
   const [error, setError] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isCheckingAI, setIsCheckingAI] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [discoverySettings, setDiscoverySettings] = useState(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
 
@@ -64,95 +67,54 @@ export default function UploadPage() {
     }
   };
 
+  const getCurrentLocation = () => {
+    setIsGettingLocation(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+          setLocation(`${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`);
+          setIsGettingLocation(false);
+        },
+        (error) => {
+          console.error("Location error:", error);
+          setIsGettingLocation(false);
+        }
+      );
+    } else {
+      setIsGettingLocation(false);
+    }
+  };
+
   const handlePhotoCapture = async (file) => {
-    // Clear previous state first
     setError("");
     
     if (!file) {
       setPhoto(null);
       setPhotoUrl("");
-      setIsCheckingAI(false);
       return;
     }
 
     setPhoto(file);
-    setIsCheckingAI(true);
+    setIsUploadingPhoto(true);
 
     try {
-      // Step 1: Upload the file
       const { file_url } = await UploadFile({ file });
       
       if (!file_url) {
         throw new Error("Failed to get file URL");
       }
 
-      // Step 2: AI Detection Check
-      const aiDetectionResult = await InvokeLLM({
-        prompt: `Analyze this image carefully and determine if it appears to be AI-generated or a real photograph.
-
-Look for indicators such as:
-- Unnatural textures or patterns
-- Inconsistent lighting or shadows
-- Anatomical impossibilities or distortions
-- Overly smooth or artificial surfaces
-- Telltale signs of AI generation (weird artifacts, impossible physics, etc.)
-- Whether it appears to be a photograph of a real, physical object
-
-Provide your assessment with a confidence score (0-100) where:
-- 0-30 = Definitely a real photograph
-- 31-70 = Uncertain/ambiguous
-- 71-100 = Likely AI-generated
-
-Be thorough and err on the side of caution to protect the integrity of archaeological research.`,
-        file_urls: [file_url],
-        response_json_schema: {
-          type: "object",
-          properties: {
-            is_ai_generated: { type: "boolean" },
-            confidence_score: { type: "number", minimum: 0, maximum: 100 },
-            explanation: { type: "string" }
-          }
-        }
-      });
-
-      // Step 3: Handle AI detection result
-      if (aiDetectionResult.is_ai_generated) {
-        // Show AI reason first, then ban
-        setError(`🚫 AI-Generated Image Detected\n\nReason: ${aiDetectionResult.explanation}\n\nYour account is being suspended for 1 day.`);
-        setPhoto(null);
-        setPhotoUrl("");
-        setIsCheckingAI(false);
-        
-        // Ban user for 1 day after showing the reason
-        try {
-          const banDate = new Date();
-          banDate.setDate(banDate.getDate() + 1);
-          await base44.auth.updateMe({
-            is_banned: true,
-            ban_reason: `Automatic 1-day ban for uploading AI-generated image. Reason: ${aiDetectionResult.explanation}. Ban expires: ${banDate.toLocaleString()}`,
-            ban_expires: banDate.toISOString()
-          });
-          
-          // Reload page after short delay to show ban screen
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-        } catch (banError) {
-          console.error("Failed to apply ban:", banError);
-        }
-        return;
-      }
-
-      // Image passed AI detection - save URL and proceed
       setPhotoUrl(file_url);
-      setIsCheckingAI(false);
+      setIsUploadingPhoto(false);
 
     } catch (error) {
       console.error("Upload error:", error);
-      setError("Failed to upload and verify photo. Please try again.");
+      setError("Failed to upload photo. Please try again.");
       setPhoto(null);
       setPhotoUrl("");
-      setIsCheckingAI(false);
+      setIsUploadingPhoto(false);
     }
   };
 
