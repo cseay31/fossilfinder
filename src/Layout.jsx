@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -121,6 +121,11 @@ export default function Layout({ children, currentPageName }) {
           icon: ScanLine,
         },
         {
+          title: "Scan Results",
+          url: createPageUrl("MultiScanDiscoveries"),
+          icon: Target,
+        },
+        {
           title: "Forum",
           url: createPageUrl("Forum"),
           icon: MessageCircle,
@@ -191,7 +196,7 @@ export default function Layout({ children, currentPageName }) {
                             ? 'bg-gradient-to-r from-amber-100 to-stone-100 text-amber-800 shadow-sm' 
                             : item.title === "Admin Panel" 
                               ? 'text-blue-700 hover:bg-blue-50 hover:text-blue-800'
-                              : item.title === "Multi-Scan"
+                              : item.title === "Multi-Scan" || item.title === "Scan Results"
                                     ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
                                     : item.title === "Forum"
                                       ? 'text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800'

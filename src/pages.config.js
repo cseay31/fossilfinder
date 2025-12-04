@@ -8,6 +8,7 @@ import Wiki from './pages/Wiki';
 import Forum from './pages/Forum';
 import DiscoveryMap from './pages/DiscoveryMap';
 import MultiScan from './pages/MultiScan';
+import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +23,7 @@ export const PAGES = {
     "Forum": Forum,
     "DiscoveryMap": DiscoveryMap,
     "MultiScan": MultiScan,
+    "MultiScanDiscoveries": MultiScanDiscoveries,
 }
 
 export const pagesConfig = {
