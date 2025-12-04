@@ -82,31 +82,29 @@ export default function MultiScanPage() {
         const { file_url } = await base44.integrations.Core.UploadFile({ file: image.file });
 
         const analysis = await base44.integrations.Core.InvokeLLM({
-          prompt: `You are a helpful paleontologist assistant analyzing a rock photograph. Your job is to help amateur fossil hunters find ANYTHING that could potentially be interesting.
+          prompt: `You are an expert paleontologist analyzing a rock photograph to identify potential fossils or interesting geological features.
 
-Be VERY liberal and inclusive in what you highlight. Err heavily on the side of finding things - false positives are fine!
+CRITICAL RULES:
+1. ONLY mark areas that have VISIBLE features - textures, patterns, shapes, or anomalies
+2. NEVER mark blank, smooth, uniform, or featureless areas of rock
+3. NEVER mark empty background, sky, shadows, or areas outside the rock
+4. Each point MUST have a specific visible feature you can describe
+5. Position circles PRECISELY on the feature, not vaguely in general areas
 
-Look for and highlight ANY of these, even if you're not sure:
-- Anything that could be a fossil (shells, bones, teeth, plant impressions, tracks, burrows, coral, crinoids, bryozoans, etc.)
-- Circular or spiral patterns (could be ammonites, gastropods)
-- Linear ridges or grooves (could be plant stems, bones, shells)
-- Textured surfaces different from surrounding rock
-- Color variations or staining patterns
-- Bumps, nodules, or protrusions
-- Depressions or holes
-- Any geometric or organic-looking shapes
-- Crystalline structures
-- Layered or striated areas
-- Anything that looks "out of place" in the rock
+What to look for (must be VISIBLE in the image):
+- Fossils: shells, bones, teeth, plant impressions, tracks, coral, crinoids, ammonites
+- Textures: ridges, grooves, bumps, nodules, depressions, holes
+- Patterns: circular/spiral shapes, linear features, layered/striated areas
+- Anomalies: color variations, crystalline structures, anything distinctly different from surrounding rock
 
-For EACH point of interest (aim to find at least 2-5 per image if possible):
-1. A center point (center_x, center_y as percentages 0-100 of image dimensions)
-2. A radius (as percentage, typically 5-15)
-3. A label with what it MIGHT be (be speculative, suggest possibilities)
-4. Confidence level (low, medium, high)
-5. A brief explanation encouraging the user to examine it closer
+For EACH point of interest you identify:
+1. center_x, center_y: EXACT center of the visible feature (as percentage 0-100 of image dimensions)
+2. radius: Size to encompass JUST the feature (percentage, typically 3-12, sized to match the actual feature)
+3. label: Specific identification (e.g., "Possible brachiopod shell", "Linear ridge - potential crinoid stem")
+4. confidence: low/medium/high based on how clearly fossil-like the feature appears
+5. explanation: Describe what SPECIFIC visual feature you see
 
-Remember: It's much better to highlight something that turns out to be nothing than to miss a real fossil. Be generous with your findings!`,
+Quality over quantity - only mark genuine points of interest. If the rock appears completely featureless, it's okay to find 0-1 points. A good scan might have 2-6 precise markers on actual features.`,
           file_urls: [file_url],
           response_json_schema: {
             type: "object",
