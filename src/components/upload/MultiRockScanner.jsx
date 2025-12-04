@@ -49,23 +49,30 @@ export default function MultiRockScanner({ onAnalysisComplete }) {
 
         // Analyze for fossils/points of interest
         const analysis = await base44.integrations.Core.InvokeLLM({
-          prompt: `You are an expert paleontologist analyzing a rock photograph for potential fossils or points of interest.
+          prompt: `You are a helpful paleontologist assistant analyzing a rock photograph. Your job is to help amateur fossil hunters find ANYTHING that could potentially be interesting.
 
-Carefully examine this image and identify ANY areas that might contain:
-- Fossils (shells, bones, plant impressions, tracks, etc.)
-- Interesting geological features
-- Potential artifacts
-- Unusual textures or patterns that warrant closer examination
+Be VERY liberal and inclusive in what you highlight. Err heavily on the side of finding things - false positives are fine!
 
-For EACH point of interest found, provide:
-1. A bounding box (x, y, width, height as percentages 0-100 of the image dimensions)
-2. A label describing what it might be
+Look for and highlight ANY of these, even if you're not sure:
+- Anything that could be a fossil (shells, bones, teeth, plant impressions, tracks, burrows, coral, crinoids, bryozoans, etc.)
+- Circular or spiral patterns (could be ammonites, gastropods)
+- Linear ridges or grooves (could be plant stems, bones, shells)
+- Textured surfaces different from surrounding rock
+- Color variations or staining patterns
+- Bumps, nodules, or protrusions
+- Depressions or holes
+- Any geometric or organic-looking shapes
+- Crystalline structures
+- Layered or striated areas
+- Anything that looks "out of place" in the rock
+
+For EACH point of interest (aim to find at least 2-5 per image if possible):
+1. A bounding box (x, y, width, height as percentages 0-100 of the image)
+2. A label with what it MIGHT be (be speculative, suggest possibilities)
 3. Confidence level (low, medium, high)
-4. A brief explanation of why this area is interesting
+4. A brief explanation encouraging the user to examine it closer
 
-If no points of interest are found, return an empty array but explain why.
-
-Be thorough - it's better to highlight something that turns out to be nothing than to miss a potential fossil.`,
+Remember: It's much better to highlight something that turns out to be nothing than to miss a real fossil. Be generous with your findings!`,
           file_urls: [file_url],
           response_json_schema: {
             type: "object",
