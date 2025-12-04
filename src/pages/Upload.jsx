@@ -129,16 +129,78 @@ export default function UploadPage() {
     setError("");
 
     try {
+      // Step 1: AI Detection Check
+      const aiDetectionResult = await InvokeLLM({
+        prompt: `Analyze this image carefully and determine if it appears to be AI-generated or a real photograph.
+
+Look for indicators such as:
+- Unnatural textures or patterns
+- Inconsistent lighting or shadows
+- Anatomical impossibilities or distortions
+- Overly smooth or artificial surfaces
+- Telltale signs of AI generation (weird artifacts, impossible physics, etc.)
+- Whether it appears to be a photograph of a real, physical object
+
+Provide your assessment with a confidence score (0-100) where:
+- 0-30 = Definitely a real photograph
+- 31-70 = Uncertain/ambiguous
+- 71-100 = Likely AI-generated
+
+Be thorough and err on the side of caution to protect the integrity of archaeological research.`,
+        file_urls: [photoUrl],
+        response_json_schema: {
+          type: "object",
+          properties: {
+            is_ai_generated: { type: "boolean" },
+            confidence_score: { type: "number", minimum: 0, maximum: 100 },
+            explanation: { type: "string" }
+          }
+        }
+      });
+
+      // Handle AI detection result
+      if (aiDetectionResult.is_ai_generated) {
+        setError(`🚫 AI-Generated Image Detected\n\nReason: ${aiDetectionResult.explanation}\n\nYour account is being suspended for 1 day.`);
+        setCurrentStep("upload");
+        setIsAnalyzing(false);
+        
+        // Ban user for 1 day
+        try {
+          const banDate = new Date();
+          banDate.setDate(banDate.getDate() + 1);
+          await base44.auth.updateMe({
+            is_banned: true,
+            ban_reason: `Automatic 1-day ban for uploading AI-generated image. Reason: ${aiDetectionResult.explanation}. Ban expires: ${banDate.toLocaleString()}`,
+            ban_expires: banDate.toISOString()
+          });
+          
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        } catch (banError) {
+          console.error("Failed to apply ban:", banError);
+        }
+        return;
+      }
+
+      // Step 2: Create discovery with location data
       const discoveryData = {
         photo_url: photoUrl,
         location: location || "Unknown location",
+        latitude: latitude,
+        longitude: longitude,
         analysis_status: "analyzing"
       };
 
       const discovery = await Discovery.create(discoveryData);
 
+      // Step 3: Analyze the fossil
       const analysisPrompt = `
 You are an expert archaeologist and paleontologist. Analyze this photo of a potential fossil, artifact, or archaeological finding.
+
+Additional context from user:
+- Location: ${location || "Not provided"}
+- Notes: ${additionalNotes || "None"}
 
 Provide detailed analysis including:
 1. Classification: What type of fossil, artifact, or archaeological item this appears to be
@@ -282,7 +344,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
           </motion.div>
         )}
 
-        {isCheckingAI && (
+        {isUploadingPhoto && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -292,8 +354,8 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
               <Loader2 className="h-4 w-4 text-blue-600 animate-spin" />
               <AlertDescription className="text-blue-800">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
-                  <span>Verifying image authenticity... AI-generated images will be rejected.</span>
+                  <Upload className="w-4 h-4" />
+                  <span>Uploading photo...</span>
                 </div>
               </AlertDescription>
             </Alert>
@@ -319,11 +381,11 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                   </p>
                 </CardHeader>
                 <CardContent>
-                  <PhotoUpload onPhotoCapture={handlePhotoCapture} photo={photo} isProcessing={isCheckingAI} />
+                  <PhotoUpload onPhotoCapture={handlePhotoCapture} photo={photo} isProcessing={isUploadingPhoto} />
                 </CardContent>
               </Card>
 
-              {photo && !isCheckingAI && (
+              {photo && photoUrl && !isUploadingPhoto && (
                 <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 text-xl text-stone-800">
@@ -333,17 +395,37 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label htmlFor="location" className="text-stone-700 font-medium">
-                        Discovery Location
-                      </Label>
-                      <Input
-                        id="location"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder="Where did you find this item? (GPS coordinates, site name, etc.)"
-                        className="mt-1 border-stone-200 focus:border-amber-400 focus:ring-amber-400"
-                      />
-                    </div>
+                        <Label htmlFor="location" className="text-stone-700 font-medium">
+                          Discovery Location
+                        </Label>
+                        <div className="flex gap-2 mt-1">
+                          <Input
+                            id="location"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            placeholder="Where did you find this item? (GPS coordinates, site name, etc.)"
+                            className="flex-1 border-stone-200 focus:border-amber-400 focus:ring-amber-400"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={getCurrentLocation}
+                            disabled={isGettingLocation}
+                            className="border-stone-200 hover:bg-stone-50"
+                          >
+                            {isGettingLocation ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Navigation className="w-4 h-4" />
+                            )}
+                          </Button>
+                        </div>
+                        {latitude && longitude && (
+                          <p className="text-xs text-green-600 mt-1">
+                            ✓ GPS coordinates captured: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+                          </p>
+                        )}
+                      </div>
 
                     <div>
                       <Label htmlFor="notes" className="text-stone-700 font-medium">
