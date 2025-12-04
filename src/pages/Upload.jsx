@@ -9,18 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Camera, Upload, MapPin, Loader2, CheckCircle, AlertCircle, Search, Users, Shield, Ban, Navigation, ZoomIn } from "lucide-react";
+import { Camera, Upload, MapPin, Loader2, CheckCircle, AlertCircle, Search, Users, Shield, Ban, Navigation } from "lucide-react";
 import { motion } from "framer-motion";
 import PhotoUpload from "../components/upload/PhotoUpload";
 import AnalysisProgress from "../components/upload/AnalysisProgress";
 import AnalysisResults from "../components/upload/AnalysisResults";
-import MultiRockScanner from "../components/upload/MultiRockScanner";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
 export default function UploadPage() {
   const [currentStep, setCurrentStep] = useState("upload");
-  const [mode, setMode] = useState("discovery"); // "discovery" or "scanner"
   const [photo, setPhoto] = useState(null);
   const [photoUrl, setPhotoUrl] = useState("");
   const [location, setLocation] = useState("");
@@ -327,26 +325,6 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">
             Upload a photo of your archaeological finding for AI-powered identification and analysis
           </p>
-          
-          {/* Mode Toggle */}
-          <div className="flex justify-center gap-2 mt-6">
-            <Button
-              variant={mode === "discovery" ? "default" : "outline"}
-              onClick={() => setMode("discovery")}
-              className={mode === "discovery" ? "bg-amber-600 hover:bg-amber-700" : ""}
-            >
-              <Camera className="w-4 h-4 mr-2" />
-              Log Discovery
-            </Button>
-            <Button
-              variant={mode === "scanner" ? "default" : "outline"}
-              onClick={() => setMode("scanner")}
-              className={mode === "scanner" ? "bg-amber-600 hover:bg-amber-700" : ""}
-            >
-              <ZoomIn className="w-4 h-4 mr-2" />
-              Rock Scanner
-            </Button>
-          </div>
         </motion.div>
 
         {error && (
@@ -390,11 +368,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
         )}
 
         <div className="space-y-6">
-          {mode === "scanner" && (
-            <MultiRockScanner />
-          )}
-
-          {mode === "discovery" && currentStep === "upload" && (
+          {currentStep === "upload" && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -499,11 +473,11 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
             </motion.div>
           )}
 
-          {mode === "discovery" && currentStep === "analyzing" && (
+          {currentStep === "analyzing" && (
             <AnalysisProgress />
           )}
 
-          {mode === "discovery" && currentStep === "results" && analysisResults && (
+          {currentStep === "results" && analysisResults && (
             <AnalysisResults
               results={analysisResults}
               onStartNew={startNewAnalysis}
