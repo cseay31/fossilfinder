@@ -6,6 +6,7 @@ import Contact from './pages/Contact';
 import Education from './pages/Education';
 import Wiki from './pages/Wiki';
 import Forum from './pages/Forum';
+import DiscoveryMap from './pages/DiscoveryMap';
 import __Layout from './Layout.jsx';
 
 
@@ -18,6 +19,7 @@ export const PAGES = {
     "Education": Education,
     "Wiki": Wiki,
     "Forum": Forum,
+    "DiscoveryMap": DiscoveryMap,
 }
 
 export const pagesConfig = {

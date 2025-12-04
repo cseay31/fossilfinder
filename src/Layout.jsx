@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, BookOpen, Ban } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -116,10 +116,15 @@ export default function Layout({ children, currentPageName }) {
       icon: FileText,
     },
     {
-      title: "Wiki",
-      url: createPageUrl("Wiki"),
-      icon: BookOpen,
-    },
+          title: "Forum",
+          url: createPageUrl("Forum"),
+          icon: MessageCircle,
+        },
+        {
+          title: "Discovery Map",
+          url: createPageUrl("DiscoveryMap"),
+          icon: Map,
+        },
   ];
 
   // Add admin navigation for admin users
@@ -181,9 +186,11 @@ export default function Layout({ children, currentPageName }) {
                             ? 'bg-gradient-to-r from-amber-100 to-stone-100 text-amber-800 shadow-sm' 
                             : item.title === "Admin Panel" 
                               ? 'text-blue-700 hover:bg-blue-50 hover:text-blue-800'
-                              : item.title === "Wiki"
-                                ? 'text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800'
-                                : 'text-stone-700'
+                              : item.title === "Forum"
+                                    ? 'text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800'
+                                    : item.title === "Discovery Map"
+                                      ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
+                                      : 'text-stone-700'
                         }`}
                       >
                         <Link to={item.url} className="flex items-center gap-3 px-3 py-3">
