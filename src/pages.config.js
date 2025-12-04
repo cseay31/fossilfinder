@@ -5,6 +5,7 @@ import Admin from './pages/Admin';
 import Contact from './pages/Contact';
 import Education from './pages/Education';
 import Wiki from './pages/Wiki';
+import Forum from './pages/Forum';
 import __Layout from './Layout.jsx';
 
 
@@ -16,6 +17,7 @@ export const PAGES = {
     "Contact": Contact,
     "Education": Education,
     "Wiki": Wiki,
+    "Forum": Forum,
 }
 
 export const pagesConfig = {
