@@ -256,10 +256,14 @@ export default function DiscoveryMapPage() {
                   />
                   <MapBounds discoveries={filteredDiscoveries} />
                   
-                  {filteredDiscoveries.map((discovery) => (
+                  {filteredDiscoveries.map((discovery) => {
+                    // Round to ~1km precision for privacy (2 decimal places ≈ 1.1km)
+                    const approxLat = Math.round(discovery.latitude * 100) / 100;
+                    const approxLng = Math.round(discovery.longitude * 100) / 100;
+                    return (
                     <Marker
                       key={discovery.id}
-                      position={[discovery.latitude, discovery.longitude]}
+                      position={[approxLat, approxLng]}
                       icon={createCustomIcon(discovery.significance_level)}
                     >
                       <Popup>
@@ -298,7 +302,8 @@ export default function DiscoveryMapPage() {
                         </div>
                       </Popup>
                     </Marker>
-                  ))}
+                  );
+                  })}
                 </MapContainer>
               </div>
             )}
@@ -308,6 +313,9 @@ export default function DiscoveryMapPage() {
         {/* Legend */}
         <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg mt-6">
           <CardContent className="p-4">
+            <p className="text-xs text-slate-500 mb-3">
+              📍 Locations are approximate (~1km) for privacy protection
+            </p>
             <div className="flex items-center gap-6 flex-wrap">
               <span className="text-sm font-medium text-slate-700">Legend:</span>
               <div className="flex items-center gap-2">
