@@ -52,8 +52,8 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
               }}
             />
           ) : null}
-          <div className="w-full h-full items-center justify-center text-slate-400" style={{ display: discovery.photo_url ? 'none' : 'flex' }}>
-            No image available
+          <div className={`w-full h-full items-center justify-center text-slate-400 ${discovery.photo_url ? 'hidden' : 'flex'}`}>
+            <span className="text-sm">No image available</span>
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <div className="absolute top-3 right-3">
