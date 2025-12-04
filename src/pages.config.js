@@ -7,6 +7,7 @@ import Education from './pages/Education';
 import Wiki from './pages/Wiki';
 import Forum from './pages/Forum';
 import DiscoveryMap from './pages/DiscoveryMap';
+import MultiScan from './pages/MultiScan';
 import __Layout from './Layout.jsx';
 
 
@@ -20,6 +21,7 @@ export const PAGES = {
     "Wiki": Wiki,
     "Forum": Forum,
     "DiscoveryMap": DiscoveryMap,
+    "MultiScan": MultiScan,
 }
 
 export const pagesConfig = {

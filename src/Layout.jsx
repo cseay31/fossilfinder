@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -116,6 +116,11 @@ export default function Layout({ children, currentPageName }) {
       icon: FileText,
     },
     {
+          title: "Multi-Scan",
+          url: createPageUrl("MultiScan"),
+          icon: ScanLine,
+        },
+        {
           title: "Forum",
           url: createPageUrl("Forum"),
           icon: MessageCircle,
@@ -186,11 +191,13 @@ export default function Layout({ children, currentPageName }) {
                             ? 'bg-gradient-to-r from-amber-100 to-stone-100 text-amber-800 shadow-sm' 
                             : item.title === "Admin Panel" 
                               ? 'text-blue-700 hover:bg-blue-50 hover:text-blue-800'
-                              : item.title === "Forum"
-                                    ? 'text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800'
-                                    : item.title === "Discovery Map"
-                                      ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
-                                      : 'text-stone-700'
+                              : item.title === "Multi-Scan"
+                                    ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
+                                    : item.title === "Forum"
+                                      ? 'text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800'
+                                      : item.title === "Discovery Map"
+                                        ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
+                                        : 'text-stone-700'
                         }`}
                       >
                         <Link to={item.url} className="flex items-center gap-3 px-3 py-3">

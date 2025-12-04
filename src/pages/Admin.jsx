@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Users, Search, TrendingUp, Calendar, AlertTriangle, MessageSquare, Gavel, Megaphone } from "lucide-react";
+import { Shield, Users, Search, TrendingUp, Calendar, AlertTriangle, MessageSquare, Gavel, Megaphone, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AdminDiscoveryCard from "../components/admin/AdminDiscoveryCard";
 import AdminStats from "../components/admin/AdminStats";
@@ -17,6 +16,7 @@ import AnalyticsDashboard from "../components/admin/AnalyticsDashboard";
 import MessageManagement from "../components/admin/MessageManagement";
 import ModerationPanel from "../components/admin/ModerationPanel";
 import AdminMessaging from "../components/admin/AdminMessaging";
+import SlideshowReview from "../components/admin/SlideshowReview";
 
 export default function AdminPage() {
   const [discoveries, setDiscoveries] = useState([]);
@@ -25,6 +25,7 @@ export default function AdminPage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedDiscovery, setSelectedDiscovery] = useState(null);
+  const [showSlideshowReview, setShowSlideshowReview] = useState(false);
 
   useEffect(() => {
     const checkAdminAccess = async () => {
@@ -193,14 +194,23 @@ export default function AdminPage() {
             
             <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
               <CardHeader>
-                <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-                  <Search className="w-6 h-6 text-blue-600" />
-                  System-wide Discoveries
-                  <Badge variant="outline" className="ml-auto">
-                    {discoveries.length} total
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
+                  <div className="flex items-center justify-between flex-wrap gap-3">
+                    <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
+                      <Search className="w-6 h-6 text-blue-600" />
+                      System-wide Discoveries
+                      <Badge variant="outline">
+                        {discoveries.length} total
+                      </Badge>
+                    </CardTitle>
+                    <Button 
+                      onClick={() => setShowSlideshowReview(true)}
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                    >
+                      <SlidersHorizontal className="w-4 h-4 mr-2" />
+                      Slideshow Review
+                    </Button>
+                  </div>
+                </CardHeader>
               <CardContent>
                 <AdminFilters 
                   activeFilter={activeFilter} 
@@ -272,15 +282,26 @@ export default function AdminPage() {
         </Tabs>
 
         {/* Review Panel Modal */}
-        <AnimatePresence>
-          {selectedDiscovery && (
-            <ReviewPanel
-              discovery={selectedDiscovery}
-              onClose={handleCloseReview}
-              onUpdate={loadAllDiscoveries}
-            />
-          )}
-        </AnimatePresence>
+          <AnimatePresence>
+            {selectedDiscovery && (
+              <ReviewPanel
+                discovery={selectedDiscovery}
+                onClose={handleCloseReview}
+                onUpdate={loadAllDiscoveries}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Slideshow Review Modal */}
+          <AnimatePresence>
+            {showSlideshowReview && (
+              <SlideshowReview
+                discoveries={discoveries}
+                onClose={() => setShowSlideshowReview(false)}
+                onUpdate={loadAllDiscoveries}
+              />
+            )}
+          </AnimatePresence>
       </div>
     </div>
   );
