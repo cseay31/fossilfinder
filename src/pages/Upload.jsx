@@ -124,6 +124,11 @@ export default function UploadPage() {
       return;
     }
 
+    if (!latitude || !longitude) {
+      setError("Location is required. Please use the GPS button to capture your current location.");
+      return;
+    }
+
     setIsAnalyzing(true);
     setCurrentStep("analyzing");
     setError("");
@@ -396,7 +401,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                   <CardContent className="space-y-4">
                     <div>
                         <Label htmlFor="location" className="text-stone-700 font-medium">
-                          Discovery Location
+                          Discovery Location <span className="text-red-500">*</span>
                         </Label>
                         <div className="flex gap-2 mt-1">
                           <Input
@@ -420,9 +425,13 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                             )}
                           </Button>
                         </div>
-                        {latitude && longitude && (
+                        {latitude && longitude ? (
                           <p className="text-xs text-green-600 mt-1">
                             ✓ GPS coordinates captured: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+                          </p>
+                        ) : (
+                          <p className="text-xs text-amber-600 mt-1">
+                            ⚠️ GPS location required - click the location button to capture coordinates
                           </p>
                         )}
                       </div>
@@ -443,8 +452,8 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
 
                     <Button
                       onClick={analyzePhoto}
-                      disabled={isAnalyzing}
-                      className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                      disabled={isAnalyzing || !latitude || !longitude}
+                      className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
                     >
                       {isAnalyzing ? (
                         <>
