@@ -131,7 +131,7 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
                   </Badge>
                 </div>
 
-                <div className="space-y-2 text-sm text-stone-600">
+                <div className={`space-y-2 text-sm ${isDarkMode ? 'text-slate-300' : 'text-stone-600'}`}
                   {selectedDiscovery.location && (
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4" />
@@ -145,20 +145,20 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
                 </div>
 
                 {selectedDiscovery.description && (
-                  <p className="text-stone-700 bg-stone-50 rounded-lg p-3">{selectedDiscovery.description}</p>
+                  <p className={`${isDarkMode ? 'text-slate-200 bg-slate-800/50' : 'text-stone-700 bg-stone-50'} rounded-lg p-3`}>{selectedDiscovery.description}</p>
                 )}
 
                 {/* Points of Interest */}
                 {scanResults.length > 0 && (
                   <div className="space-y-2">
-                    <h4 className="font-semibold text-stone-800">Points of Interest</h4>
+                    <h4 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>Points of Interest</h4>
                     <div className="space-y-2 max-h-64 overflow-y-auto">
                       {scanResults.map((poi, idx) => {
                         const colors = getConfidenceColor(poi.confidence);
                         return (
                           <div
                             key={idx}
-                            className="flex items-start gap-3 p-3 rounded-lg bg-white border-l-4 shadow-sm cursor-pointer hover:shadow-md transition-all"
+                            className={`flex items-start gap-3 p-3 rounded-lg ${isDarkMode ? 'bg-slate-800/50' : 'bg-white'} border-l-4 shadow-sm cursor-pointer hover:shadow-md transition-all`}
                             style={{ borderLeftColor: colors.border }}
                             onMouseEnter={() => setHoveredPoi(idx)}
                             onMouseLeave={() => setHoveredPoi(null)}
@@ -168,12 +168,12 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
                             </span>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-medium text-stone-800">{poi.label}</span>
+                                <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>{poi.label}</span>
                                 <Badge variant="outline" className="text-xs" style={{ borderColor: colors.border, color: colors.border }}>
                                   {poi.confidence}
                                 </Badge>
                               </div>
-                              <p className="text-sm text-stone-600 mt-1">{poi.explanation}</p>
+                              <p className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-stone-600'} mt-1`}>{poi.explanation}</p>
                             </div>
                           </div>
                         );
@@ -205,9 +205,9 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
         ) : discoveries.length === 0 ? (
           <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardContent className="p-12 text-center">
-              <Target className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-stone-700 mb-2">No Multi-Scan Discoveries</h3>
-              <p className="text-stone-500 mb-6">You haven't created any multi-scan discoveries yet.</p>
+              <Target className={`w-16 h-16 ${isDarkMode ? 'text-slate-500' : 'text-stone-300'} mx-auto mb-4`} />
+              <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-stone-700'} mb-2`}>No Multi-Scan Discoveries</h3>
+              <p className={`${isDarkMode ? 'text-slate-400' : 'text-stone-500'} mb-6`}>You haven't created any multi-scan discoveries yet.</p>
               <Button asChild className="bg-cyan-600 hover:bg-cyan-700">
                 <Link to={createPageUrl("MultiScan")}>
                   <Target className="w-4 h-4 mr-2" />
@@ -247,17 +247,17 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
                         <Badge className={getSignificanceColor(discovery.significance_level)}>
                           {discovery.significance_level || 'medium'}
                         </Badge>
-                        <span className="text-xs text-stone-500">
+                        <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-stone-500'}`}>
                           {format(new Date(discovery.created_date), 'MMM d, yyyy')}
                         </span>
                       </div>
                       {discovery.location && (
-                        <p className="text-sm text-stone-600 flex items-center gap-1 truncate">
+                        <p className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-stone-600'} flex items-center gap-1 truncate`}>
                           <MapPin className="w-3 h-3" />
                           {discovery.location}
                         </p>
                       )}
-                      <Button variant="ghost" size="sm" className="w-full mt-2 text-cyan-700 hover:bg-cyan-50">
+                      <Button variant="ghost" size="sm" className={`w-full mt-2 ${isDarkMode ? 'text-cyan-400 hover:bg-cyan-900/30' : 'text-cyan-700 hover:bg-cyan-50'}`}>
                         View Details <ChevronRight className="w-4 h-4 ml-1" />
                       </Button>
                     </CardContent>
