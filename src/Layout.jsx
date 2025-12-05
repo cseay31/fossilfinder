@@ -27,9 +27,10 @@ import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('fossilfinder-theme') === 'dark';
+      const saved = localStorage.getItem('fossilfinder-theme');
+      return saved === null ? true : saved === 'dark';
     }
-    return false;
+    return true;
   });
 
   React.useEffect(() => {
