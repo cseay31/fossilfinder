@@ -1,125 +1,141 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Users, Search, TrendingUp, Calendar, AlertTriangle, MessageSquare, Gavel, Megaphone, SlidersHorizontal, LayoutDashboard, Settings, Award, FileText, Trophy, Map, BookOpen } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { 
+  Shield, Users, Search, TrendingUp, AlertTriangle, MessageSquare, 
+  Gavel, Megaphone, SlidersHorizontal, LayoutDashboard, Settings, 
+  Award, FileText, Trophy, Eye, Clock, CheckCircle, Star, Activity,
+  Loader2, RefreshCw, Filter, ChevronRight, Zap, Globe, Heart
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { format, subDays, isAfter } from "date-fns";
 import AdminDiscoveryCard from "../components/admin/AdminDiscoveryCard";
-import AdminStats from "../components/admin/AdminStats";
 import UserManagement from "../components/admin/UserManagement";
-import AdminFilters from "../components/admin/AdminFilters";
-import ReviewPanel from "../components/admin/ReviewPanel";
 import SiteSettings from "../components/admin/SiteSettings";
 import AnalyticsDashboard from "../components/admin/AnalyticsDashboard";
 import MessageManagement from "../components/admin/MessageManagement";
 import ModerationPanel from "../components/admin/ModerationPanel";
 import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
-import AdminOverview from "../components/admin/AdminOverview";
 
 export default function AdminPage() {
   const [discoveries, setDiscoveries] = useState([]);
-  const [filteredDiscoveries, setFilteredDiscoveries] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [forumPosts, setForumPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [contactMessages, setContactMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
-  const [selectedDiscovery, setSelectedDiscovery] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [showSlideshowReview, setShowSlideshowReview] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
-    const checkAdminAccess = async () => {
-      try {
-        const user = await base44.auth.me();
-        setCurrentUser(user);
-        
-        if (user.role !== 'admin') {
-          // Redirect non-admins away from admin page
-          window.location.href = '/';
-          return;
-        }
-        
-        // Load discoveries if user is admin
-        try {
-          const data = await base44.entities.Discovery.list("-created_date");
-          setDiscoveries(data);
-        } catch (error) {
-          console.error("Failed to load discoveries:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error("Failed to verify admin access:", error);
-        window.location.href = '/';
-      }
-    };
-
     checkAdminAccess();
   }, []);
 
-  useEffect(() => {
-    let filtered = discoveries;
-    
-    switch (activeFilter) {
-      case "analyzing":
-        filtered = discoveries.filter(d => d.analysis_status === "analyzing");
-        break;
-      case "completed":
-        filtered = discoveries.filter(d => d.analysis_status === "completed");
-        break;
-      case "sent_to_expert":
-        filtered = discoveries.filter(d => d.analysis_status === "sent_to_expert");
-        break;
-      case "high_significance":
-        filtered = discoveries.filter(d => d.significance_level === "high" || d.significance_level === "exceptional");
-        break;
-      case "low_confidence":
-        filtered = discoveries.filter(d => d.confidence_score && d.confidence_score < 60);
-        break;
-      default:
-        filtered = discoveries;
-    }
-    
-    setFilteredDiscoveries(filtered);
-  }, [discoveries, activeFilter]);
-
-  const loadAllDiscoveries = async () => {
+  const checkAdminAccess = async () => {
     try {
-      const data = await base44.entities.Discovery.list("-created_date");
-      setDiscoveries(data);
+      const user = await base44.auth.me();
+      setCurrentUser(user);
+      
+      if (user.role !== 'admin') {
+        window.location.href = '/';
+        return;
+      }
+      
+      await loadAllData();
     } catch (error) {
-      console.error("Failed to load discoveries:", error);
+      console.error("Failed to verify admin access:", error);
+      window.location.href = '/';
+    }
+  };
+
+  const loadAllData = async () => {
+    setIsLoading(true);
+    try {
+      const [discoveriesData, usersData, postsData, commentsData, messagesData] = await Promise.all([
+        base44.entities.Discovery.list("-created_date"),
+        base44.entities.User.list(),
+        base44.entities.ForumPost.list('-created_date', 100),
+        base44.entities.DiscoveryComment.list('-created_date', 100),
+        base44.entities.ContactMessage.filter({ status: 'new' })
+      ]);
+      
+      setDiscoveries(discoveriesData);
+      setUsers(usersData);
+      setForumPosts(postsData);
+      setComments(commentsData);
+      setContactMessages(messagesData);
+    } catch (error) {
+      console.error("Failed to load data:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleReviewDiscovery = (discovery) => {
-    setSelectedDiscovery(discovery);
+  // Stats calculations
+  const last7Days = subDays(new Date(), 7);
+  const last24Hours = subDays(new Date(), 1);
+
+  const stats = {
+    totalUsers: users.length,
+    totalDiscoveries: discoveries.length,
+    analyzingCount: discoveries.filter(d => d.analysis_status === 'analyzing').length,
+    completedCount: discoveries.filter(d => d.analysis_status === 'completed').length,
+    exceptionalCount: discoveries.filter(d => d.significance_level === 'exceptional').length,
+    highSignificance: discoveries.filter(d => d.significance_level === 'high').length,
+    staffPicks: discoveries.filter(d => d.is_staff_pick).length,
+    featured: discoveries.filter(d => d.is_featured).length,
+    newThisWeek: discoveries.filter(d => isAfter(new Date(d.created_date), last7Days)).length,
+    newToday: discoveries.filter(d => isAfter(new Date(d.created_date), last24Hours)).length,
+    forumPosts: forumPosts.length,
+    totalComments: comments.length,
+    pendingMessages: contactMessages.length,
+    totalLikes: discoveries.reduce((sum, d) => sum + (d.likes || 0), 0),
+    publicDiscoveries: discoveries.filter(d => d.visibility === 'public').length
   };
 
-  const handleCloseReview = () => {
-    setSelectedDiscovery(null);
+  // Filter discoveries
+  const getFilteredDiscoveries = () => {
+    let filtered = discoveries;
+    
+    if (searchQuery) {
+      filtered = filtered.filter(d => 
+        d.classification?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        d.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        d.created_by?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    switch (activeFilter) {
+      case "analyzing": return filtered.filter(d => d.analysis_status === "analyzing");
+      case "completed": return filtered.filter(d => d.analysis_status === "completed");
+      case "exceptional": return filtered.filter(d => d.significance_level === "exceptional");
+      case "high": return filtered.filter(d => d.significance_level === "high");
+      case "featured": return filtered.filter(d => d.is_featured);
+      case "staff_pick": return filtered.filter(d => d.is_staff_pick);
+      default: return filtered;
+    }
   };
 
   if (!currentUser || currentUser.role !== 'admin') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full bg-slate-800/50 border-red-500/50">
           <CardHeader className="text-center">
             <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <CardTitle className="text-xl text-red-800">Access Denied</CardTitle>
+            <CardTitle className="text-xl text-red-400">Access Denied</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-red-600 mb-4">
-              You need administrator privileges to access this page.
-            </p>
-            <Button 
-              onClick={() => window.location.href = '/'}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Return to Dashboard
+            <p className="text-slate-400 mb-4">Administrator privileges required.</p>
+            <Button onClick={() => window.location.href = '/'} variant="outline">
+              Return Home
             </Button>
           </CardContent>
         </Card>
@@ -127,249 +143,384 @@ export default function AdminPage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center">
-              <Shield className="w-6 h-6 text-white" />
-            </div>
+  const StatCard = ({ icon: Icon, label, value, subValue, color, bgColor }) => (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+      <Card className="bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50 transition-all">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-slate-800">
-                Admin Dashboard
-              </h1>
-              <p className="text-lg text-slate-600">
-                System-wide archaeological discoveries and user management
-              </p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider">{label}</p>
+              <p className="text-2xl font-bold text-white mt-1">{value}</p>
+              {subValue && <p className="text-xs text-slate-500 mt-1">{subValue}</p>}
+            </div>
+            <div className={`p-3 rounded-xl ${bgColor}`}>
+              <Icon className={`w-5 h-5 ${color}`} />
             </div>
           </div>
-          
-          <div className="flex items-center gap-2 text-sm">
-            <Badge className="bg-blue-100 text-blue-800 border-blue-200">
-              <Shield className="w-3 h-3 mr-1" />
-              Administrator Access
-            </Badge>
-            <span className="text-slate-500">Logged in as {currentUser.full_name || currentUser.email}</span>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+
+  const QuickAction = ({ icon: Icon, label, onClick, color }) => (
+    <Button
+      onClick={onClick}
+      variant="ghost"
+      className="flex flex-col items-center gap-2 h-auto py-4 px-6 bg-slate-800/30 hover:bg-slate-700/50 border border-slate-700/50 rounded-xl"
+    >
+      <Icon className={`w-6 h-6 ${color}`} />
+      <span className="text-xs text-slate-300">{label}</span>
+    </Button>
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
+      {/* Aurora Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
+        <div className="absolute top-20 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/25">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-white">Admin Control Center</h1>
+                <p className="text-sm text-slate-400">Welcome back, {currentUser.full_name || 'Admin'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={loadAllData}
+                variant="ghost"
+                size="sm"
+                disabled={isLoading}
+                className="text-slate-400 hover:text-white"
+              >
+                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                Refresh
+              </Button>
+              <Button
+                onClick={() => setShowSlideshowReview(true)}
+                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Quick Review
+              </Button>
+            </div>
           </div>
         </motion.div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="bg-white/80 backdrop-blur-sm shadow-sm flex-wrap h-auto gap-1 p-2">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <LayoutDashboard className="w-4 h-4" />
-              Overview
+        {/* Main Content */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="bg-slate-800/50 border border-slate-700/50 p-1 flex-wrap h-auto gap-1">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-purple-600">
+              <LayoutDashboard className="w-4 h-4 mr-2" /> Overview
             </TabsTrigger>
-            <TabsTrigger value="discoveries" className="flex items-center gap-2">
-              <Search className="w-4 h-4" />
-              Discoveries
+            <TabsTrigger value="discoveries" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-600 data-[state=active]:to-orange-600">
+              <Search className="w-4 h-4 mr-2" /> Discoveries
             </TabsTrigger>
-            <TabsTrigger value="showcase" className="flex items-center gap-2">
-              <Trophy className="w-4 h-4" />
-              Showcase
+            <TabsTrigger value="showcase" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-yellow-500">
+              <Trophy className="w-4 h-4 mr-2" /> Showcase
             </TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Users
+            <TabsTrigger value="users" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-indigo-600">
+              <Users className="w-4 h-4 mr-2" /> Users
             </TabsTrigger>
-            <TabsTrigger value="moderation" className="flex items-center gap-2">
-              <Gavel className="w-4 h-4" />
-              Moderation
+            <TabsTrigger value="moderation" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-600 data-[state=active]:to-pink-600">
+              <Gavel className="w-4 h-4 mr-2" /> Moderation
             </TabsTrigger>
-            <TabsTrigger value="messages" className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              Messages
+            <TabsTrigger value="messages" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-emerald-600">
+              <MessageSquare className="w-4 h-4 mr-2" /> Messages
+              {stats.pendingMessages > 0 && (
+                <Badge className="ml-2 bg-red-500 text-white text-xs px-1.5">{stats.pendingMessages}</Badge>
+              )}
             </TabsTrigger>
-            <TabsTrigger value="announcements" className="flex items-center gap-2">
-              <Megaphone className="w-4 h-4" />
-              Announcements
+            <TabsTrigger value="announcements" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600">
+              <Megaphone className="w-4 h-4 mr-2" /> Announce
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
+            <TabsTrigger value="settings" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-slate-600 data-[state=active]:to-slate-500">
+              <Settings className="w-4 h-4 mr-2" /> Settings
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
-              Analytics
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-600 data-[state=active]:to-cyan-600">
+              <TrendingUp className="w-4 h-4 mr-2" /> Analytics
             </TabsTrigger>
           </TabsList>
 
+          {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
-            <AdminOverview discoveries={discoveries} />
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              <StatCard icon={Users} label="Users" value={stats.totalUsers} color="text-blue-400" bgColor="bg-blue-500/20" />
+              <StatCard icon={Search} label="Discoveries" value={stats.totalDiscoveries} subValue={`+${stats.newToday} today`} color="text-amber-400" bgColor="bg-amber-500/20" />
+              <StatCard icon={Clock} label="Analyzing" value={stats.analyzingCount} color="text-cyan-400" bgColor="bg-cyan-500/20" />
+              <StatCard icon={Star} label="Exceptional" value={stats.exceptionalCount} color="text-purple-400" bgColor="bg-purple-500/20" />
+              <StatCard icon={MessageSquare} label="Forum Posts" value={stats.forumPosts} color="text-indigo-400" bgColor="bg-indigo-500/20" />
+              <StatCard icon={Heart} label="Total Likes" value={stats.totalLikes} color="text-red-400" bgColor="bg-red-500/20" />
+            </div>
+
+            {/* Quick Actions */}
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg text-white flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-yellow-400" /> Quick Actions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-3">
+                  <QuickAction icon={SlidersHorizontal} label="Review Queue" onClick={() => setShowSlideshowReview(true)} color="text-purple-400" />
+                  <QuickAction icon={Trophy} label="Manage Showcase" onClick={() => setActiveTab('showcase')} color="text-amber-400" />
+                  <QuickAction icon={Users} label="User Management" onClick={() => setActiveTab('users')} color="text-blue-400" />
+                  <QuickAction icon={Megaphone} label="Post Announcement" onClick={() => setActiveTab('announcements')} color="text-pink-400" />
+                  <QuickAction icon={Settings} label="Site Settings" onClick={() => setActiveTab('settings')} color="text-slate-400" />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Alerts & Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Requires Attention */}
+              <Card className="bg-slate-800/30 border-slate-700/50">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg text-white flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-orange-400" /> Requires Attention
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {stats.pendingMessages > 0 && (
+                    <div className="flex items-center justify-between p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <MessageSquare className="w-5 h-5 text-red-400" />
+                        <span className="text-slate-300">Unread Messages</span>
+                      </div>
+                      <Badge className="bg-red-500">{stats.pendingMessages}</Badge>
+                    </div>
+                  )}
+                  {stats.analyzingCount > 0 && (
+                    <div className="flex items-center justify-between p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Clock className="w-5 h-5 text-cyan-400" />
+                        <span className="text-slate-300">Pending Analysis</span>
+                      </div>
+                      <Badge className="bg-cyan-500">{stats.analyzingCount}</Badge>
+                    </div>
+                  )}
+                  {stats.pendingMessages === 0 && stats.analyzingCount === 0 && (
+                    <div className="flex items-center justify-center p-6 text-slate-500">
+                      <CheckCircle className="w-5 h-5 mr-2 text-green-500" />
+                      All caught up!
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Showcase Stats */}
+              <Card className="bg-slate-800/30 border-slate-700/50">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg text-white flex items-center gap-2">
+                    <Trophy className="w-5 h-5 text-amber-400" /> Showcase Status
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex items-center justify-between p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Award className="w-5 h-5 text-purple-400" />
+                      <span className="text-slate-300">Staff Picks</span>
+                    </div>
+                    <Badge className="bg-purple-500">{stats.staffPicks}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Star className="w-5 h-5 text-amber-400" />
+                      <span className="text-slate-300">Featured</span>
+                    </div>
+                    <Badge className="bg-amber-500">{stats.featured}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Globe className="w-5 h-5 text-emerald-400" />
+                      <span className="text-slate-300">Public Discoveries</span>
+                    </div>
+                    <Badge className="bg-emerald-500">{stats.publicDiscoveries}</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Recent Activity */}
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg text-white flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-green-400" /> Recent Discoveries
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {discoveries.slice(0, 5).map((d, i) => (
+                    <div key={d.id} className="flex items-center gap-4 p-3 bg-slate-900/50 rounded-lg hover:bg-slate-800/50 transition-colors">
+                      <img src={d.photo_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-white truncate">{d.classification || 'Analyzing...'}</p>
+                        <p className="text-xs text-slate-500">{d.created_by}</p>
+                      </div>
+                      <Badge variant="outline" className={
+                        d.significance_level === 'exceptional' ? 'border-purple-500 text-purple-400' :
+                        d.significance_level === 'high' ? 'border-red-500 text-red-400' :
+                        'border-slate-600 text-slate-400'
+                      }>
+                        {d.significance_level || 'pending'}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
+          {/* Discoveries Tab */}
           <TabsContent value="discoveries" className="space-y-6">
-            <AdminStats discoveries={discoveries} />
-            
-            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+            <Card className="bg-slate-800/30 border-slate-700/50">
               <CardHeader>
-                  <div className="flex items-center justify-between flex-wrap gap-3">
-                    <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-                      <Search className="w-6 h-6 text-blue-600" />
-                      System-wide Discoveries
-                      <Badge variant="outline">
-                        {discoveries.length} total
-                      </Badge>
-                    </CardTitle>
-                    <Button 
-                      onClick={() => setShowSlideshowReview(true)}
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
-                    >
-                      <SlidersHorizontal className="w-4 h-4 mr-2" />
-                      Slideshow Review
-                    </Button>
-                  </div>
-                </CardHeader>
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <CardTitle className="text-xl text-white flex items-center gap-3">
+                    <Search className="w-6 h-6 text-amber-400" />
+                    All Discoveries
+                    <Badge variant="outline" className="border-slate-600">{discoveries.length}</Badge>
+                  </CardTitle>
+                </div>
+              </CardHeader>
               <CardContent>
-                <AdminFilters 
-                  activeFilter={activeFilter} 
-                  onFilterChange={setActiveFilter}
-                  discoveries={discoveries}
-                />
-                
-                {isLoading ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {Array(6).fill(0).map((_, i) => (
-                      <div key={i} className="h-80 bg-slate-100 rounded-xl animate-pulse" />
+                {/* Filters */}
+                <div className="flex flex-wrap gap-3 mb-6">
+                  <Input
+                    placeholder="Search discoveries..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="max-w-xs bg-slate-900/50 border-slate-700 text-white"
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {['all', 'analyzing', 'completed', 'exceptional', 'high', 'featured', 'staff_pick'].map(filter => (
+                      <Button
+                        key={filter}
+                        size="sm"
+                        variant={activeFilter === filter ? 'default' : 'outline'}
+                        onClick={() => setActiveFilter(filter)}
+                        className={activeFilter === filter ? 'bg-amber-600' : 'border-slate-600 text-slate-300'}
+                      >
+                        {filter.replace('_', ' ').charAt(0).toUpperCase() + filter.slice(1).replace('_', ' ')}
+                      </Button>
                     ))}
                   </div>
+                </div>
+
+                {/* Grid */}
+                {isLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+                  </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredDiscoveries.slice(0, 30).map((discovery, index) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {getFilteredDiscoveries().slice(0, 30).map((discovery, index) => (
                       <AdminDiscoveryCard 
                         key={discovery.id} 
                         discovery={discovery} 
                         index={index}
-                        onUpdate={loadAllDiscoveries}
-                        onReview={handleReviewDiscovery}
+                        onUpdate={loadAllData}
                       />
                     ))}
                   </div>
                 )}
-                {filteredDiscoveries.length > 30 && (
-                  <p className="text-center text-slate-500 mt-4">
-                    Showing 30 of {filteredDiscoveries.length} discoveries
-                  </p>
-                )}
-
-                {!isLoading && filteredDiscoveries.length === 0 && (
-                  <div className="text-center py-12">
-                    <Search className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-slate-600 mb-2">
-                      No discoveries found
-                    </h3>
-                    <p className="text-slate-500">
-                      {activeFilter === "all" 
-                        ? "No users have uploaded discoveries yet."
-                        : "Try adjusting your filters to see more results."
-                      }
-                    </p>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </TabsContent>
 
+          {/* Showcase Tab */}
           <TabsContent value="showcase" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <StatCard icon={Award} label="Staff Picks" value={stats.staffPicks} color="text-purple-400" bgColor="bg-purple-500/20" />
+              <StatCard icon={Star} label="Featured" value={stats.featured} color="text-amber-400" bgColor="bg-amber-500/20" />
+              <StatCard icon={Star} label="Exceptional" value={stats.exceptionalCount} color="text-pink-400" bgColor="bg-pink-500/20" />
+            </div>
+            
+            <Card className="bg-slate-800/30 border-slate-700/50">
               <CardHeader>
-                <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-                  <Trophy className="w-6 h-6 text-amber-600" />
+                <CardTitle className="text-xl text-white flex items-center gap-3">
+                  <Trophy className="w-6 h-6 text-amber-400" />
                   Community Showcase Management
                 </CardTitle>
+                <CardDescription className="text-slate-400">
+                  Use the Quick Review to easily manage Staff Picks and Featured discoveries
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <Card className="bg-gradient-to-br from-indigo-50 to-purple-50 border-0">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-slate-600">Staff Picks</p>
-                          <p className="text-2xl font-bold text-indigo-700">
-                            {discoveries.filter(d => d.is_staff_pick).length}
-                          </p>
-                        </div>
-                        <Award className="w-8 h-8 text-indigo-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-0">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-slate-600">Featured</p>
-                          <p className="text-2xl font-bold text-amber-700">
-                            {discoveries.filter(d => d.is_featured).length}
-                          </p>
-                        </div>
-                        <FileText className="w-8 h-8 text-amber-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-                <p className="text-slate-600">Use the Slideshow Review to manage Staff Picks and Featured discoveries.</p>
                 <Button 
                   onClick={() => setShowSlideshowReview(true)}
-                  className="mt-4 bg-gradient-to-r from-purple-600 to-indigo-600"
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500"
+                  size="lg"
                 >
-                  <SlidersHorizontal className="w-4 h-4 mr-2" />
+                  <SlidersHorizontal className="w-5 h-5 mr-2" />
                   Open Slideshow Review
                 </Button>
+
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="text-sm font-medium text-slate-400 mb-3">Current Staff Picks</h4>
+                    <div className="space-y-2">
+                      {discoveries.filter(d => d.is_staff_pick).slice(0, 5).map(d => (
+                        <div key={d.id} className="flex items-center gap-3 p-2 bg-slate-900/50 rounded-lg">
+                          <img src={d.photo_url} alt="" className="w-10 h-10 rounded-lg object-cover" />
+                          <span className="text-sm text-slate-300 truncate">{d.classification}</span>
+                        </div>
+                      ))}
+                      {discoveries.filter(d => d.is_staff_pick).length === 0 && (
+                        <p className="text-slate-500 text-sm">No staff picks yet</p>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-slate-400 mb-3">Featured Discoveries</h4>
+                    <div className="space-y-2">
+                      {discoveries.filter(d => d.is_featured).slice(0, 5).map(d => (
+                        <div key={d.id} className="flex items-center gap-3 p-2 bg-slate-900/50 rounded-lg">
+                          <img src={d.photo_url} alt="" className="w-10 h-10 rounded-lg object-cover" />
+                          <span className="text-sm text-slate-300 truncate">{d.classification}</span>
+                        </div>
+                      ))}
+                      {discoveries.filter(d => d.is_featured).length === 0 && (
+                        <p className="text-slate-500 text-sm">No featured discoveries yet</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="messages" className="space-y-6">
-            <MessageManagement />
-          </TabsContent>
-
-          <TabsContent value="announcements" className="space-y-6">
-            <AdminMessaging />
-          </TabsContent>
-
-          <TabsContent value="users" className="space-y-6">
-            <UserManagement />
-          </TabsContent>
-
-          <TabsContent value="moderation" className="space-y-6">
-            <ModerationPanel />
-          </TabsContent>
-
-          <TabsContent value="settings" className="space-y-6">
-            <SiteSettings />
-          </TabsContent>
-
-          <TabsContent value="analytics" className="space-y-6">
-            <AnalyticsDashboard discoveries={discoveries} />
-          </TabsContent>
+          {/* Other Tabs */}
+          <TabsContent value="users"><UserManagement /></TabsContent>
+          <TabsContent value="moderation"><ModerationPanel /></TabsContent>
+          <TabsContent value="messages"><MessageManagement /></TabsContent>
+          <TabsContent value="announcements"><AdminMessaging /></TabsContent>
+          <TabsContent value="settings"><SiteSettings /></TabsContent>
+          <TabsContent value="analytics"><AnalyticsDashboard discoveries={discoveries} /></TabsContent>
         </Tabs>
-
-        {/* Review Panel Modal */}
-          <AnimatePresence>
-            {selectedDiscovery && (
-              <ReviewPanel
-                discovery={selectedDiscovery}
-                onClose={handleCloseReview}
-                onUpdate={loadAllDiscoveries}
-              />
-            )}
-          </AnimatePresence>
-
-          {/* Slideshow Review Modal */}
-          <AnimatePresence>
-            {showSlideshowReview && (
-              <SlideshowReview
-                discoveries={discoveries}
-                onClose={() => setShowSlideshowReview(false)}
-                onUpdate={loadAllDiscoveries}
-              />
-            )}
-          </AnimatePresence>
       </div>
+
+      {/* Slideshow Review Modal */}
+      <AnimatePresence>
+        {showSlideshowReview && (
+          <SlideshowReview
+            discoveries={discoveries}
+            onClose={() => setShowSlideshowReview(false)}
+            onUpdate={loadAllData}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
