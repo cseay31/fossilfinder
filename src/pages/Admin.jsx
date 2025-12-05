@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Users, Search, TrendingUp, Calendar, AlertTriangle, MessageSquare, Gavel, Megaphone, SlidersHorizontal } from "lucide-react";
+import { Shield, Users, Search, TrendingUp, Calendar, AlertTriangle, MessageSquare, Gavel, Megaphone, SlidersHorizontal, LayoutDashboard, Settings, Award, FileText, Trophy, Map, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AdminDiscoveryCard from "../components/admin/AdminDiscoveryCard";
 import AdminStats from "../components/admin/AdminStats";
@@ -17,6 +17,7 @@ import MessageManagement from "../components/admin/MessageManagement";
 import ModerationPanel from "../components/admin/ModerationPanel";
 import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
+import AdminOverview from "../components/admin/AdminOverview";
 
 export default function AdminPage() {
   const [discoveries, setDiscoveries] = useState([]);
@@ -157,37 +158,49 @@ export default function AdminPage() {
           </div>
         </motion.div>
 
-        <Tabs defaultValue="discoveries" className="space-y-6">
-          <TabsList className="bg-white/80 backdrop-blur-sm shadow-sm">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="bg-white/80 backdrop-blur-sm shadow-sm flex-wrap h-auto gap-1 p-2">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <LayoutDashboard className="w-4 h-4" />
+              Overview
+            </TabsTrigger>
             <TabsTrigger value="discoveries" className="flex items-center gap-2">
               <Search className="w-4 h-4" />
-              All Discoveries
+              Discoveries
             </TabsTrigger>
-            <TabsTrigger value="dashboard-messages" className="flex items-center gap-2">
-              <Megaphone className="w-4 h-4" />
-              Dashboard Messages
-            </TabsTrigger>
-            <TabsTrigger value="contact-messages" className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              Contact Messages
+            <TabsTrigger value="showcase" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Showcase
             </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
-              User Management
+              Users
             </TabsTrigger>
             <TabsTrigger value="moderation" className="flex items-center gap-2">
               <Gavel className="w-4 h-4" />
               Moderation
             </TabsTrigger>
+            <TabsTrigger value="messages" className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4" />
+              Messages
+            </TabsTrigger>
+            <TabsTrigger value="announcements" className="flex items-center gap-2">
+              <Megaphone className="w-4 h-4" />
+              Announcements
+            </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
-              Site Settings
+              <Settings className="w-4 h-4" />
+              Settings
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               Analytics
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <AdminOverview discoveries={discoveries} />
+          </TabsContent>
 
           <TabsContent value="discoveries" className="space-y-6">
             <AdminStats discoveries={discoveries} />
@@ -261,12 +274,61 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="dashboard-messages" className="space-y-6">
-            <AdminMessaging />
+          <TabsContent value="showcase" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+              <CardHeader>
+                <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
+                  <Trophy className="w-6 h-6 text-amber-600" />
+                  Community Showcase Management
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <Card className="bg-gradient-to-br from-indigo-50 to-purple-50 border-0">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-slate-600">Staff Picks</p>
+                          <p className="text-2xl font-bold text-indigo-700">
+                            {discoveries.filter(d => d.is_staff_pick).length}
+                          </p>
+                        </div>
+                        <Award className="w-8 h-8 text-indigo-500" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-0">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-slate-600">Featured</p>
+                          <p className="text-2xl font-bold text-amber-700">
+                            {discoveries.filter(d => d.is_featured).length}
+                          </p>
+                        </div>
+                        <FileText className="w-8 h-8 text-amber-500" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                <p className="text-slate-600">Use the Slideshow Review to manage Staff Picks and Featured discoveries.</p>
+                <Button 
+                  onClick={() => setShowSlideshowReview(true)}
+                  className="mt-4 bg-gradient-to-r from-purple-600 to-indigo-600"
+                >
+                  <SlidersHorizontal className="w-4 h-4 mr-2" />
+                  Open Slideshow Review
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
-          <TabsContent value="contact-messages" className="space-y-6">
+          <TabsContent value="messages" className="space-y-6">
             <MessageManagement />
+          </TabsContent>
+
+          <TabsContent value="announcements" className="space-y-6">
+            <AdminMessaging />
           </TabsContent>
 
           <TabsContent value="users" className="space-y-6">
