@@ -75,7 +75,7 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Image with overlay */}
-            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-xl overflow-hidden`}
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-xl overflow-hidden`}>
               <div className="relative bg-stone-900">
                 <img
                   src={selectedDiscovery.photo_url}
