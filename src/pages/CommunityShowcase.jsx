@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Trophy, Heart, MessageCircle, Search, TrendingUp, 
-  Calendar, MapPin, Star, Loader2, Filter, Sparkles
+  Calendar, MapPin, Star, Loader2, Filter, Sparkles, Award
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format, formatDistanceToNow } from "date-fns";
@@ -87,7 +87,13 @@ export default function CommunityShowcasePage({ isDarkMode }) {
     return colors[level] || colors.medium;
   };
 
-  const filteredDiscoveries = (activeTab === 'featured' ? featuredDiscoveries : discoveries)
+  const getTabDiscoveries = () => {
+    if (activeTab === 'featured') return featuredDiscoveries;
+    if (activeTab === 'staff') return discoveries.filter(d => d.is_staff_pick);
+    return discoveries;
+  };
+
+  const filteredDiscoveries = getTabDiscoveries()
     .filter(d => 
       !searchQuery || 
       d.classification?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -128,6 +134,11 @@ export default function CommunityShowcasePage({ isDarkMode }) {
               {discovery.is_featured && (
                 <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
                   <Star className="w-3 h-3 mr-1 fill-current" /> Featured
+                </Badge>
+              )}
+              {discovery.is_staff_pick && (
+                <Badge className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-0">
+                  <Award className="w-3 h-3 mr-1" /> Staff Pick
                 </Badge>
               )}
               {discovery.significance_level && (
@@ -210,6 +221,9 @@ export default function CommunityShowcasePage({ isDarkMode }) {
             <TabsList className={`${isDarkMode ? 'bg-slate-800/50' : 'bg-white/80'}`}>
               <TabsTrigger value="featured" className="flex items-center gap-2">
                 <Star className="w-4 h-4" /> Featured
+              </TabsTrigger>
+              <TabsTrigger value="staff" className="flex items-center gap-2">
+                <Award className="w-4 h-4" /> Staff Shoutout
               </TabsTrigger>
               <TabsTrigger value="trending" className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4" /> Trending
