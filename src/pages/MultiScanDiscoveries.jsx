@@ -76,45 +76,56 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Image with overlay */}
             <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-xl overflow-hidden`}>
-              <div className="relative bg-stone-900">
-                <img
-                  src={selectedDiscovery.photo_url}
-                  alt="Scanned rock"
-                  className="w-full h-auto max-h-[500px] object-contain mx-auto block"
-                />
-                
-                {scanResults.length > 0 && (
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    {scanResults.map((poi, idx) => {
-                      const colors = getConfidenceColor(poi.confidence);
-                      const isHovered = hoveredPoi === idx;
-                      return (
-                        <g key={idx}>
-                          <circle
-                            cx={poi.center_x}
-                            cy={poi.center_y}
-                            r={poi.radius || 8}
-                            fill={isHovered ? colors.bg : 'transparent'}
-                            stroke={colors.border}
-                            strokeWidth={isHovered ? "1" : "0.5"}
-                            strokeDasharray={isHovered ? "0" : "2,1"}
-                            className="transition-all duration-200"
-                          />
-                          <text
-                            x={poi.center_x}
-                            y={poi.center_y - (poi.radius || 8) - 2}
-                            textAnchor="middle"
-                            fill={colors.border}
-                            fontSize="3"
-                            fontWeight="bold"
+              <div className="bg-stone-900 flex items-center justify-center">
+                <div className="relative inline-block">
+                  <img
+                    src={selectedDiscovery.photo_url}
+                    alt="Scanned rock"
+                    className="max-w-full h-auto max-h-[500px] block"
+                  />
+                  
+                  {scanResults.length > 0 && (
+                    <div className="absolute inset-0">
+                      {scanResults.map((poi, idx) => {
+                        const colors = getConfidenceColor(poi.confidence);
+                        const isHovered = hoveredPoi === idx;
+                        const size = (poi.radius || 8) * 2;
+                        return (
+                          <div
+                            key={idx}
+                            className="absolute transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                            style={{
+                              left: `${poi.center_x}%`,
+                              top: `${poi.center_y}%`,
+                            }}
                           >
-                            {idx + 1}
-                          </text>
-                        </g>
-                      );
-                    })}
-                  </svg>
-                )}
+                            <div
+                              className="rounded-full border-2 transition-all duration-200"
+                              style={{
+                                width: `${Math.max(size * 4, 24)}px`,
+                                height: `${Math.max(size * 4, 24)}px`,
+                                borderColor: colors.border,
+                                backgroundColor: isHovered ? colors.bg : 'transparent',
+                                borderStyle: isHovered ? 'solid' : 'dashed',
+                              }}
+                            />
+                            <div
+                              className="absolute left-1/2 transform -translate-x-1/2 text-xs font-bold px-1.5 py-0.5 rounded"
+                              style={{
+                                bottom: '100%',
+                                marginBottom: '4px',
+                                color: colors.border,
+                                backgroundColor: 'rgba(0,0,0,0.7)',
+                              }}
+                            >
+                              {idx + 1}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
             </Card>
 
