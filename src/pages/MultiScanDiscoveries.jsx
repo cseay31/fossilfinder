@@ -131,7 +131,7 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
                   </Badge>
                 </div>
 
-                <div className={`space-y-2 text-sm ${isDarkMode ? 'text-slate-300' : 'text-stone-600'}`}
+                <div className={`space-y-2 text-sm ${isDarkMode ? 'text-slate-300' : 'text-stone-600'}`}>
                   {selectedDiscovery.location && (
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4" />
