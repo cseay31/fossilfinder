@@ -25,7 +25,7 @@ import LessonPlanViewer from "../components/education/LessonPlanViewer";
 import ProjectGuideViewer from "../components/education/ProjectGuideViewer";
 import VirtualTourViewer from "../components/education/VirtualTourViewer";
 
-export default function EducationPage() {
+export default function EducationPage({ isDarkMode }) {
   const [completedLessons, setCompletedLessons] = useState(new Set());
   const [selectedModule, setSelectedModule] = useState(null);
   const [selectedLessonPlan, setSelectedLessonPlan] = useState(null);
@@ -204,7 +204,7 @@ export default function EducationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'} p-4 md:p-8`}
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -212,14 +212,14 @@ export default function EducationPage() {
           className="mb-8"
         >
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl flex items-center justify-center">
+            <div className={`w-12 h-12 ${isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600' : 'bg-gradient-to-r from-blue-600 to-purple-700'} rounded-xl flex items-center justify-center`}>
               <GraduationCap className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-slate-800">
+              <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
                 Education Center
               </h1>
-              <p className="text-lg text-slate-600">
+              <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 Learning resources for students, teachers, and archaeology enthusiasts
               </p>
             </div>
@@ -227,7 +227,7 @@ export default function EducationPage() {
         </motion.div>
 
         <Tabs defaultValue="students" className="space-y-6">
-          <TabsList className="bg-white/80 backdrop-blur-sm shadow-sm">
+          <TabsList className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-sm`}
             <TabsTrigger value="students" className="flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
               For Students
@@ -244,7 +244,7 @@ export default function EducationPage() {
 
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
               <CardHeader>
                 <CardTitle className="text-2xl text-slate-800 flex items-center gap-3">
                   <BookOpen className="w-6 h-6 text-blue-600" />
@@ -360,7 +360,7 @@ export default function EducationPage() {
 
           {/* Teachers Tab */}
           <TabsContent value="teachers" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
               <CardHeader>
                 <CardTitle className="text-2xl text-slate-800 flex items-center gap-3">
                   <Users className="w-6 h-6 text-purple-600" />
@@ -422,7 +422,7 @@ export default function EducationPage() {
 
           {/* Projects Tab */}
           <TabsContent value="projects" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
               <CardHeader>
                 <CardTitle className="text-2xl text-slate-800 flex items-center gap-3">
                   <Award className="w-6 h-6 text-amber-600" />

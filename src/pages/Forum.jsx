@@ -25,7 +25,7 @@ import { format } from "date-fns";
 import ForumPostViewer from "../components/forum/ForumPostViewer";
 import ForumPostEditor from "../components/forum/ForumPostEditor";
 
-export default function ForumPage() {
+export default function ForumPage({ isDarkMode }) {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -427,7 +427,7 @@ Any questions? Ask below! 👇`,
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'} p-4 md:p-8`}
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -436,14 +436,14 @@ Any questions? Ask below! 👇`,
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center">
+              <div className={`w-12 h-12 ${isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600' : 'bg-gradient-to-r from-blue-600 to-indigo-700'} rounded-xl flex items-center justify-center`}>
                 <MessageSquare className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-slate-800">
+                <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
                   Community Forum
                 </h1>
-                <p className="text-lg text-slate-600">
+                <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                   Discuss, share discoveries, and learn from fellow enthusiasts
                 </p>
               </div>
@@ -459,7 +459,7 @@ Any questions? Ask below! 👇`,
         </motion.div>
 
         {/* Search and Filters */}
-        <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 mb-6">
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mb-6`}
           <CardContent className="p-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col md:flex-row gap-4">
@@ -524,10 +524,10 @@ Any questions? Ask below! 👇`,
         <div className="space-y-4">
           {isLoading ? (
             Array(5).fill(0).map((_, i) => (
-              <div key={i} className="h-32 bg-slate-100 rounded-xl animate-pulse" />
+              <div key={i} className={`h-32 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-100'} rounded-xl animate-pulse`} />
             ))
           ) : filteredPosts.length === 0 ? (
-            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
               <CardContent className="py-12 text-center">
                 <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-slate-600 mb-2">

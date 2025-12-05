@@ -61,7 +61,7 @@ function MapBounds({ discoveries }) {
   return null;
 }
 
-export default function DiscoveryMapPage() {
+export default function DiscoveryMapPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
   const [filteredDiscoveries, setFilteredDiscoveries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -116,7 +116,7 @@ export default function DiscoveryMapPage() {
   const discoveriesWithLocation = discoveries.filter(d => d.latitude && d.longitude);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50'} p-4 md:p-8`}
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -124,14 +124,14 @@ export default function DiscoveryMapPage() {
           className="mb-8"
         >
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-teal-700 rounded-xl flex items-center justify-center">
+            <div className={`w-12 h-12 ${isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600' : 'bg-gradient-to-r from-emerald-600 to-teal-700'} rounded-xl flex items-center justify-center`}>
               <Map className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-slate-800">
+              <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
                 Discovery Map
               </h1>
-              <p className="text-lg text-slate-600">
+              <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 Explore fossil discoveries from around the world
               </p>
             </div>
@@ -140,61 +140,61 @@ export default function DiscoveryMapPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-emerald-600" />
+              <div className={`w-10 h-10 ${isDarkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'} rounded-lg flex items-center justify-center`}>
+                <MapPin className={`w-5 h-5 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-slate-800">{discoveriesWithLocation.length}</p>
-                <p className="text-xs text-slate-500">Mapped Discoveries</p>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{discoveriesWithLocation.length}</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Mapped Discoveries</p>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-purple-600" />
+              <div className={`w-10 h-10 ${isDarkMode ? 'bg-purple-900/50' : 'bg-purple-100'} rounded-lg flex items-center justify-center`}>
+                <TrendingUp className={`w-5 h-5 ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-slate-800">
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
                   {discoveriesWithLocation.filter(d => d.significance_level === 'exceptional' || d.significance_level === 'high').length}
                 </p>
-                <p className="text-xs text-slate-500">High Significance</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>High Significance</p>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-                <Eye className="w-5 h-5 text-amber-600" />
+              <div className={`w-10 h-10 ${isDarkMode ? 'bg-amber-900/50' : 'bg-amber-100'} rounded-lg flex items-center justify-center`}>
+                <Eye className={`w-5 h-5 ${isDarkMode ? 'text-amber-400' : 'text-amber-600'}`} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-slate-800">
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
                   {discoveriesWithLocation.filter(d => d.analysis_status === 'completed').length}
                 </p>
-                <p className="text-xs text-slate-500">Analyzed</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Analyzed</p>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-blue-600" />
+              <div className={`w-10 h-10 ${isDarkMode ? 'bg-blue-900/50' : 'bg-blue-100'} rounded-lg flex items-center justify-center`}>
+                <Calendar className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-slate-800">{discoveries.length}</p>
-                <p className="text-xs text-slate-500">Total Discoveries</p>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{discoveries.length}</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Total Discoveries</p>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Filter */}
-        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg mb-6">
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mb-6`}
           <CardContent className="p-4">
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex items-center gap-2">
@@ -228,7 +228,7 @@ export default function DiscoveryMapPage() {
         </Card>
 
         {/* Map */}
-        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg overflow-hidden`}
           <CardContent className="p-0">
             {isLoading ? (
               <div className="h-[600px] flex items-center justify-center bg-slate-100">
@@ -311,7 +311,7 @@ export default function DiscoveryMapPage() {
         </Card>
 
         {/* Legend */}
-        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg mt-6">
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mt-6`}
           <CardContent className="p-4">
             <p className="text-xs text-slate-500 mb-3">
               📍 Locations are approximate (~1km) for privacy protection

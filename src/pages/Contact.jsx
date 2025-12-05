@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Mail, Send, CheckCircle, AlertTriangle, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function ContactPage() {
+export default function ContactPage({ isDarkMode }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -66,7 +66,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -74,13 +74,13 @@ export default function ContactPage() {
           className="mb-8"
         >
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className={`w-16 h-16 ${isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600' : 'bg-gradient-to-r from-blue-600 to-indigo-700'} rounded-full flex items-center justify-center mx-auto mb-4`}>
               <MessageSquare className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-stone-800 mb-3">
+            <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
               Contact Admin
             </h1>
-            <p className="text-lg text-stone-600">
+            <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
               Have a question, suggestion, or need help? Send us a message!
             </p>
           </div>
@@ -104,7 +104,7 @@ export default function ContactPage() {
             </Alert>
           )}
 
-          <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
             <CardHeader>
               <CardTitle className="text-xl text-stone-800 flex items-center gap-3">
                 <Mail className="w-6 h-6 text-blue-600" />
@@ -195,7 +195,7 @@ export default function ContactPage() {
           </Card>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-stone-600">
+            <p className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-stone-600'}`}>
               We typically respond within 24-48 hours. For urgent matters, please mark it clearly in your subject line.
             </p>
           </div>

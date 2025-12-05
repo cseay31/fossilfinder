@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Discovery } from "@/entities/Discovery";
 import { InvokeLLM } from "@/integrations/Core";
@@ -11,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Users, Mail, MapPin, GraduationCap, Search, BrainCircuit, FileText, Calendar, Loader2, Sparkles, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function ExpertsPage() {
+export default function ExpertsPage({ isDarkMode }) {
   const [filteredExperts, setFilteredExperts] = useState([]);
   const [discovery, setDiscovery] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -173,7 +172,7 @@ Focus on finding experts who are actively publishing and well-regarded in their 
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
       {/* Password Box Modal */}
       <AnimatePresence>
         {showPasswordBox && (
@@ -256,10 +255,10 @@ Focus on finding experts who are actively publishing and well-regarded in their 
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold text-stone-800 mb-3">
+          <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
             {discovery ? "Recommended Experts" : "Research Experts"}
           </h1>
-          <p className="text-lg text-stone-600">
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
             {discovery 
               ? "AI-sourced expert matches from the web based on your discovery"
               : "Use AI to find archaeologists and paleontologists from universities and institutions worldwide"
@@ -268,7 +267,7 @@ Focus on finding experts who are actively publishing and well-regarded in their 
         </motion.div>
 
         {discovery && (
-          <Card className="mb-8 bg-white/80 backdrop-blur-sm shadow-lg border-0">
+          <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-xl text-stone-800">
                 <FileText className="w-6 h-6 text-amber-600" />
@@ -293,10 +292,10 @@ Focus on finding experts who are actively publishing and well-regarded in their 
         )}
 
         {/* Research Parameters Form */}
-        <Card className="mb-8 bg-white/80 backdrop-blur-sm shadow-lg border-0">
+        <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
           <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-xl text-stone-800">
-              <Sparkles className="w-6 h-6 text-amber-600" />
+            <CardTitle className={`flex items-center gap-3 text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>
+              <Sparkles className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
               Research Parameters
             </CardTitle>
           </CardHeader>
@@ -370,11 +369,11 @@ Focus on finding experts who are actively publishing and well-regarded in their 
 
         {isSearching && !isLoading && (
           <div className="text-center py-12">
-            <Loader2 className="w-16 h-16 text-amber-500 mx-auto mb-4 animate-spin" />
-            <h3 className="text-lg font-semibold text-stone-600 mb-2">
+            <Loader2 className={`w-16 h-16 ${isDarkMode ? 'text-cyan-400' : 'text-amber-500'} mx-auto mb-4 animate-spin`} />
+            <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-slate-300' : 'text-stone-600'} mb-2`}>
               Searching for experts across universities and institutions...
             </h3>
-            <p className="text-stone-500">This may take a moment as we search the web.</p>
+            <p className={isDarkMode ? 'text-slate-500' : 'text-stone-500'}>This may take a moment as we search the web.</p>
           </div>
         )}
 
@@ -393,7 +392,7 @@ Focus on finding experts who are actively publishing and well-regarded in their 
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className={`bg-white/80 backdrop-blur-sm shadow-lg border-0 hover:shadow-xl transition-all duration-200 ${hasJustification ? 'border-amber-400 border-2' : ''}`}>
+                  <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-200 ${hasJustification ? (isDarkMode ? 'border-cyan-400 border-2' : 'border-amber-400 border-2') : ''}`}>
                     {hasJustification && (
                       <div className="p-3 bg-amber-50 border-b-2 border-amber-400">
                         <div className="flex items-start gap-2">
@@ -481,11 +480,11 @@ Focus on finding experts who are actively publishing and well-regarded in their 
 
         {!isSearching && !isLoading && filteredExperts.length === 0 && (
           <div className="text-center py-12">
-            <Users className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-stone-600 mb-2">
+            <Users className={`w-16 h-16 ${isDarkMode ? 'text-slate-600' : 'text-stone-300'} mx-auto mb-4`} />
+            <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-slate-300' : 'text-stone-600'} mb-2`}>
               No experts found yet
             </h3>
-            <p className="text-stone-500">
+            <p className={isDarkMode ? 'text-slate-500' : 'text-stone-500'}>
               Enter your search criteria above and click "Research Experts" to find matching archaeologists and paleontologists.
             </p>
           </div>

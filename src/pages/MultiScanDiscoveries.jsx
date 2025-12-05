@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from "@/utils";
 
-export default function MultiScanDiscoveriesPage() {
+export default function MultiScanDiscoveriesPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedDiscovery, setSelectedDiscovery] = useState(null);
@@ -64,18 +64,18 @@ export default function MultiScanDiscoveriesPage() {
     const scanResults = parseScanResults(selectedDiscovery);
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-stone-50 to-cyan-100 p-4 md:p-8">
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-cyan-50 via-stone-50 to-cyan-100'} p-4 md:p-8`}
         <div className="max-w-5xl mx-auto space-y-6">
           <div className="flex items-center gap-4">
-            <Button variant="outline" onClick={() => setSelectedDiscovery(null)}>
+            <Button variant="outline" onClick={() => setSelectedDiscovery(null)} className={isDarkMode ? 'border-white/20 text-white hover:bg-white/10' : ''}>
               ← Back to List
             </Button>
-            <h1 className="text-2xl font-bold text-stone-800">Scan Details</h1>
+            <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>Scan Details</h1>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Image with overlay */}
-            <Card className="bg-white/90 shadow-xl border-0 overflow-hidden">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-xl overflow-hidden`}
               <div className="relative bg-stone-900">
                 <img
                   src={selectedDiscovery.photo_url}
@@ -119,7 +119,7 @@ export default function MultiScanDiscoveriesPage() {
             </Card>
 
             {/* Details */}
-            <Card className="bg-white/90 shadow-xl border-0">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-xl`}
               <CardContent className="p-6 space-y-4">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge className={getSignificanceColor(selectedDiscovery.significance_level)}>
@@ -190,20 +190,20 @@ export default function MultiScanDiscoveriesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-stone-50 to-cyan-100 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-cyan-50 via-stone-50 to-cyan-100'} p-4 md:p-8`}>
       <div className="max-w-6xl mx-auto space-y-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-stone-800 mb-2">Multi-Scan Discoveries</h1>
-          <p className="text-lg text-stone-600">View all your rock scans with highlighted points of interest</p>
+          <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-2`}>Multi-Scan Discoveries</h1>
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>View all your rock scans with highlighted points of interest</p>
         </motion.div>
 
         {isLoading ? (
           <div className="text-center py-12">
-            <Loader2 className="w-10 h-10 text-cyan-500 animate-spin mx-auto mb-4" />
-            <p className="text-stone-600">Loading discoveries...</p>
+            <Loader2 className={`w-10 h-10 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'} animate-spin mx-auto mb-4`} />
+            <p className={isDarkMode ? 'text-slate-400' : 'text-stone-600'}>Loading discoveries...</p>
           </div>
         ) : discoveries.length === 0 ? (
-          <Card className="bg-white/80 shadow-lg border-0">
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
             <CardContent className="p-12 text-center">
               <Target className="w-16 h-16 text-stone-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-stone-700 mb-2">No Multi-Scan Discoveries</h3>
@@ -228,7 +228,7 @@ export default function MultiScanDiscoveriesPage() {
                   transition={{ delay: index * 0.05 }}
                 >
                   <Card
-                    className="bg-white/90 shadow-lg border-0 overflow-hidden cursor-pointer hover:shadow-xl transition-all group"
+                    className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all group`}
                     onClick={() => setSelectedDiscovery(discovery)}
                   >
                     <div className="relative h-48 bg-stone-900">

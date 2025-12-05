@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Discovery } from "@/entities/Discovery";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +10,7 @@ import DiscoveryCard from "../components/dashboard/DiscoveryCard";
 import StatsOverview from "../components/dashboard/StatsOverview";
 import FilterBar from "../components/dashboard/FilterBar";
 
-export default function Dashboard() {
+export default function Dashboard({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
   const [filteredDiscoveries, setFilteredDiscoveries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,17 +55,17 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold text-stone-800 mb-3">
+          <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
             Discovery Dashboard
           </h1>
-          <p className="text-lg text-stone-600">
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
             Track and manage your archaeological findings
           </p>
         </motion.div>
@@ -75,10 +74,10 @@ export default function Dashboard() {
           
           <StatsOverview discoveries={discoveries} />
           
-          <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardHeader>
-              <CardTitle className="text-xl text-stone-800 flex items-center gap-3">
-                <Search className="w-6 h-6 text-amber-600" />
+              <CardTitle className={`text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'} flex items-center gap-3`}>
+                <Search className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
                 Your Discoveries
               </CardTitle>
             </CardHeader>
@@ -88,7 +87,7 @@ export default function Dashboard() {
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {Array(6).fill(0).map((_, i) => (
-                    <div key={i} className="h-64 bg-stone-100 rounded-xl animate-pulse" />
+                    <div key={i} className={`h-64 ${isDarkMode ? 'bg-slate-800/50' : 'bg-stone-100'} rounded-xl animate-pulse`} />
                   ))}
                 </div>
               ) : (
@@ -105,11 +104,11 @@ export default function Dashboard() {
 
               {!isLoading && filteredDiscoveries.length === 0 && (
                 <div className="text-center py-12">
-                  <Search className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-stone-600 mb-2">
+                  <Search className={`w-16 h-16 ${isDarkMode ? 'text-slate-600' : 'text-stone-300'} mx-auto mb-4`} />
+                  <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-slate-300' : 'text-stone-600'} mb-2`}>
                     No discoveries found
                   </h3>
-                  <p className="text-stone-500">
+                  <p className={isDarkMode ? 'text-slate-500' : 'text-stone-500'}>
                     {activeFilter === "all" 
                       ? "Upload your first archaeological photo to get started!"
                       : "Try adjusting your filters to see more results."
