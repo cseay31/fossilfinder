@@ -17,7 +17,7 @@ import AnalysisResults from "../components/upload/AnalysisResults";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-export default function UploadPage() {
+export default function UploadPage({ isDarkMode }) {
   const [currentStep, setCurrentStep] = useState("upload");
   const [photo, setPhoto] = useState(null);
   const [photoUrl, setPhotoUrl] = useState("");
@@ -266,27 +266,27 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
 
   if (!isLoadingSettings && isDiscoveryDisabled) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 p-4 md:p-8">
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 p-8">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg p-8`}>
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <AlertCircle className="w-8 h-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl text-stone-800 mb-3">
-                  Discovery Uploads Temporarily Unavailable
-                </CardTitle>
-                <p className="text-stone-600 max-w-2xl mx-auto">
-                  New discovery uploads are currently disabled by an administrator.
-                </p>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <p className="text-stone-500 mb-6">
+                      <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <AlertCircle className="w-8 h-8 text-white" />
+                      </div>
+                      <CardTitle className={`text-2xl ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
+                        Discovery Uploads Temporarily Unavailable
+                      </CardTitle>
+                      <p className={`${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
+                        New discovery uploads are currently disabled by an administrator.
+                      </p>
+                    </CardHeader>
+                    <CardContent className="pt-4">
+                      <p className={`${isDarkMode ? 'text-slate-500' : 'text-stone-500'} mb-6`}
                   Please check back later. You can still browse your existing discoveries and connect with experts.
                 </p>
                 <div className="flex gap-3 justify-center">
@@ -312,17 +312,17 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-bold text-stone-800 mb-3">
+          <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
             Archaeological Analysis
           </h1>
-          <p className="text-lg text-stone-600 max-w-2xl mx-auto">
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
             Upload a photo of your archaeological finding for AI-powered identification and analysis
           </p>
         </motion.div>
@@ -374,49 +374,49 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
               animate={{ opacity: 1 }}
               className="space-y-6"
             >
-              <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-3 text-xl text-stone-800">
-                    <Camera className="w-6 h-6 text-amber-600" />
-                    Capture or Upload Photo
-                  </CardTitle>
-                  <p className="text-sm text-stone-600 mt-2">
-                    <Shield className="w-4 h-4 inline mr-1 text-green-600" />
-                    AI-generated images are automatically detected and blocked
-                  </p>
-                </CardHeader>
+              <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
+                  <CardHeader className="pb-4">
+                    <CardTitle className={`flex items-center gap-3 text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>
+                      <Camera className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
+                      Capture or Upload Photo
+                    </CardTitle>
+                    <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} mt-2`}>
+                      <Shield className="w-4 h-4 inline mr-1 text-green-500" />
+                      AI-generated images are automatically detected and blocked
+                    </p>
+                  </CardHeader>
                 <CardContent>
                   <PhotoUpload onPhotoCapture={handlePhotoCapture} photo={photo} isProcessing={isUploadingPhoto} />
                 </CardContent>
               </Card>
 
               {photo && photoUrl && !isUploadingPhoto && (
-                <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-3 text-xl text-stone-800">
-                      <MapPin className="w-6 h-6 text-amber-600" />
-                      Additional Information
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                        <Label htmlFor="location" className="text-stone-700 font-medium">
-                          Discovery Location <span className="text-red-500">*</span>
-                        </Label>
-                        <div className="flex gap-2 mt-1">
-                          <Input
-                            id="location"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            placeholder="Where did you find this item? (GPS coordinates, site name, etc.)"
-                            className="flex-1 border-stone-200 focus:border-amber-400 focus:ring-amber-400"
-                          />
+                <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
+                      <CardHeader className="pb-4">
+                        <CardTitle className={`flex items-center gap-3 text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>
+                          <MapPin className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
+                          Additional Information
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                            <Label htmlFor="location" className={`${isDarkMode ? 'text-slate-300' : 'text-stone-700'} font-medium`}>
+                              Discovery Location <span className="text-red-500">*</span>
+                            </Label>
+                            <div className="flex gap-2 mt-1">
+                              <Input
+                                id="location"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                placeholder="Where did you find this item? (GPS coordinates, site name, etc.)"
+                                className={`flex-1 ${isDarkMode ? 'bg-slate-800/50 border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-500 focus:ring-cyan-500' : 'border-stone-200 focus:border-amber-400 focus:ring-amber-400'}`}
+                              />
                           <Button
                             type="button"
                             variant="outline"
                             onClick={getCurrentLocation}
                             disabled={isGettingLocation}
-                            className="border-stone-200 hover:bg-stone-50"
+                            className={`${isDarkMode ? 'border-white/10 bg-slate-800/50 hover:bg-slate-700/50 text-white' : 'border-stone-200 hover:bg-stone-50'}`}
                           >
                             {isGettingLocation ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
@@ -437,7 +437,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                       </div>
 
                     <div>
-                      <Label htmlFor="notes" className="text-stone-700 font-medium">
+                      <Label htmlFor="notes" className={`${isDarkMode ? 'text-slate-300' : 'text-stone-700'} font-medium`}>
                         Additional Notes (Optional)
                       </Label>
                       <Textarea
@@ -445,7 +445,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                         value={additionalNotes}
                         onChange={(e) => setAdditionalNotes(e.target.value)}
                         placeholder="Any additional context, observations, or details about the discovery..."
-                        className="mt-1 border-stone-200 focus:border-amber-400 focus:ring-amber-400"
+                        className={`mt-1 ${isDarkMode ? 'bg-slate-800/50 border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-500 focus:ring-cyan-500' : 'border-stone-200 focus:border-amber-400 focus:ring-amber-400'}`}
                         rows={3}
                       />
                     </div>
@@ -453,7 +453,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                     <Button
                       onClick={analyzePhoto}
                       disabled={isAnalyzing || !latitude || !longitude}
-                      className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
+                      className={`w-full ${isDarkMode ? 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500' : 'bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800'} text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50`}
                     >
                       {isAnalyzing ? (
                         <>
