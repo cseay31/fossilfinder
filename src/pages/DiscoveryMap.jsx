@@ -140,7 +140,7 @@ export default function DiscoveryMapPage({ isDarkMode }) {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardContent className="p-4 flex items-center gap-3">
               <div className={`w-10 h-10 ${isDarkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'} rounded-lg flex items-center justify-center`}>
                 <MapPin className={`w-5 h-5 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`} />
