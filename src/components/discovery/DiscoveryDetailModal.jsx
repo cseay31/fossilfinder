@@ -70,16 +70,20 @@ export default function DiscoveryDetailModal({ discovery, onClose, currentUser, 
     
     setIsSubmitting(true);
     try {
-      // AI moderation check
+      // AI moderation check - only block inappropriate content
       const moderation = await base44.integrations.Core.InvokeLLM({
-        prompt: `Check if this comment is appropriate for a scientific discovery platform. The comment should be:
-- Respectful and constructive
-- Related to archaeology/paleontology
-- Free of spam, hate speech, or inappropriate content
+        prompt: `You are a content moderator. Check if this comment contains any inappropriate content that should be blocked. ONLY block comments that contain:
+- Hate speech, slurs, or discrimination
+- Explicit sexual content
+- Graphic violence
+- Harassment or personal attacks
+- Spam or advertisements
+
+Do NOT block comments just because they are off-topic, casual, or unrelated to archaeology. Users are free to discuss whatever they want as long as it's not harmful.
 
 Comment: "${newComment}"
 
-Return whether it's appropriate and a brief reason if not.`,
+Return is_appropriate=true unless the comment contains genuinely harmful/inappropriate content.`,
         response_json_schema: {
           type: "object",
           properties: {
