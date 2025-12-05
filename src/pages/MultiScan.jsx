@@ -263,42 +263,57 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
                 </div>
               )}
 
-              {/* Image with SVG overlay */}
-              <div className="relative rounded-xl overflow-hidden bg-stone-900">
-                <div className="relative">
-                  <img src={current.preview} alt="Scanned rock" className="w-full h-auto max-h-[500px] object-contain mx-auto block" />
+              {/* Image with overlay */}
+              <div className="relative rounded-xl overflow-hidden bg-stone-900 flex items-center justify-center">
+                <div className="relative inline-block">
+                  <img src={current.preview} alt="Scanned rock" className="max-w-full h-auto max-h-[500px] block" />
                   
-                  {/* SVG Overlay for highlights */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  {/* Overlay for highlights - positioned relative to the image */}
+                  <div className="absolute inset-0">
                     {current.points_of_interest?.map((poi, idx) => {
                       const colors = getConfidenceColor(poi.confidence);
                       const isHovered = hoveredPoi === idx;
+                      const size = (poi.radius || 8) * 2;
                       return (
-                        <g key={idx}>
-                          <circle
-                            cx={poi.center_x}
-                            cy={poi.center_y}
-                            r={poi.radius || 8}
-                            fill={isHovered ? colors.bg : 'transparent'}
-                            stroke={colors.border}
-                            strokeWidth={isHovered ? "1" : "0.5"}
-                            strokeDasharray={isHovered ? "0" : "2,1"}
-                            className="transition-all duration-200"
+                        <div
+                          key={idx}
+                          className="absolute transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                          style={{
+                            left: `${poi.center_x}%`,
+                            top: `${poi.center_y}%`,
+                          }}
+                        >
+                          {/* Circle marker */}
+                          <div
+                            className="rounded-full border-2 transition-all duration-200"
+                            style={{
+                              width: `${size}vmin`,
+                              height: `${size}vmin`,
+                              maxWidth: `${size * 3}px`,
+                              maxHeight: `${size * 3}px`,
+                              minWidth: '24px',
+                              minHeight: '24px',
+                              borderColor: colors.border,
+                              backgroundColor: isHovered ? colors.bg : 'transparent',
+                              borderStyle: isHovered ? 'solid' : 'dashed',
+                            }}
                           />
-                          <text
-                            x={poi.center_x}
-                            y={poi.center_y - (poi.radius || 8) - 2}
-                            textAnchor="middle"
-                            fill={colors.border}
-                            fontSize="3"
-                            fontWeight="bold"
+                          {/* Number label */}
+                          <div
+                            className="absolute left-1/2 transform -translate-x-1/2 text-xs font-bold px-1.5 py-0.5 rounded"
+                            style={{
+                              bottom: '100%',
+                              marginBottom: '4px',
+                              color: colors.border,
+                              backgroundColor: 'rgba(0,0,0,0.7)',
+                            }}
                           >
                             {idx + 1}
-                          </text>
-                        </g>
+                          </div>
+                        </div>
                       );
                     })}
-                  </svg>
+                  </div>
                 </div>
               </div>
 
