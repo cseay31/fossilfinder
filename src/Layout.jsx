@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -136,10 +136,10 @@ export default function Layout({ children, currentPageName }) {
                     icon: Target,
                   },
                   {
-                    title: "Community",
-                    url: createPageUrl("CommunityShowcase"),
-                    icon: Users,
-                  },
+                              title: "Community",
+                              url: createPageUrl("CommunityShowcase"),
+                              icon: Trophy,
+                            },
                   {
                     title: "Forum",
                     url: createPageUrl("Forum"),
