@@ -64,12 +64,14 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
               {discovery.analysis_status?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
             </Badge>
           </div>
-          <div className="absolute top-3 left-3">
-            <Badge className="bg-black/60 text-white border-black/20 max-w-[150px] truncate">
-              <User className="w-3 h-3 mr-1 flex-shrink-0" />
-              <span className="truncate">{discovery.created_by?.split('@')[0] || 'Unknown'}</span>
-            </Badge>
-          </div>
+          {discovery.created_by && (
+            <div className="absolute top-3 left-3">
+              <Badge className="bg-black/60 text-white border-black/20">
+                <User className="w-3 h-3 mr-1" />
+                {discovery.created_by.split('@')[0]}
+              </Badge>
+            </div>
+          )}
         </div>
         
         <CardHeader className="pb-3">
@@ -79,10 +81,12 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
             </h3>
             
             {/* User Information */}
-            <div className="flex items-center gap-2 text-sm text-slate-600">
-              <Mail className="w-4 h-4" />
-              <span className="font-medium">{discovery.created_by}</span>
-            </div>
+            {discovery.created_by && (
+              <div className="flex items-center gap-2 text-sm text-slate-600">
+                <Mail className="w-4 h-4" />
+                <span className="font-medium">{discovery.created_by}</span>
+              </div>
+            )}
             
             <div className="flex flex-wrap gap-2">
               {discovery.confidence_score && (
