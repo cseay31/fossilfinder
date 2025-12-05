@@ -119,7 +119,7 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
             </Card>
 
             {/* Details */}
-            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-xl`}
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/90 border-0'} backdrop-blur-xl shadow-xl`}>
               <CardContent className="p-6 space-y-4">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge className={getSignificanceColor(selectedDiscovery.significance_level)}>
