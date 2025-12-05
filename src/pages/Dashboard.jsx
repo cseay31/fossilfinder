@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Discovery } from "@/entities/Discovery";
+import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,16 +9,29 @@ import { motion } from "framer-motion";
 import DiscoveryCard from "../components/dashboard/DiscoveryCard";
 import StatsOverview from "../components/dashboard/StatsOverview";
 import FilterBar from "../components/dashboard/FilterBar";
+import PersonalizedInsights from "../components/dashboard/PersonalizedInsights";
+import RecentActivity from "../components/dashboard/RecentActivity";
 
 export default function Dashboard({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
   const [filteredDiscoveries, setFilteredDiscoveries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("all");
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     loadDiscoveries();
+    loadCurrentUser();
   }, []);
+
+  const loadCurrentUser = async () => {
+    try {
+      const user = await base44.auth.me();
+      setCurrentUser(user);
+    } catch (error) {
+      console.error("Failed to load user:", error);
+    }
+  };
 
   useEffect(() => {
     let filtered = discoveries;
@@ -45,7 +58,7 @@ export default function Dashboard({ isDarkMode }) {
 
   const loadDiscoveries = async () => {
     try {
-      const data = await Discovery.list("-created_date");
+      const data = await base44.entities.Discovery.list("-created_date");
       setDiscoveries(data);
     } catch (error) {
       console.error("Failed to load discoveries:", error);
@@ -63,7 +76,7 @@ export default function Dashboard({ isDarkMode }) {
           className="mb-8"
         >
           <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
-            Discovery Dashboard
+            {currentUser ? `Welcome back, ${currentUser.full_name?.split(' ')[0] || 'Explorer'}!` : 'Discovery Dashboard'}
           </h1>
           <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
             Track and manage your archaeological findings
@@ -71,8 +84,13 @@ export default function Dashboard({ isDarkMode }) {
         </motion.div>
 
         <div className="space-y-6">
+          {/* Personalized Insights */}
+          <PersonalizedInsights discoveries={discoveries} user={currentUser} isDarkMode={isDarkMode} />
+
+          {/* Recent Activity */}
+          <RecentActivity discoveries={discoveries} isDarkMode={isDarkMode} />
           
-          <StatsOverview discoveries={discoveries} />
+          <StatsOverview discoveries={discoveries} isDarkMode={isDarkMode} />
           
           <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardHeader>
