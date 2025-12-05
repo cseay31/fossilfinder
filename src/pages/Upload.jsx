@@ -286,9 +286,9 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
                       </p>
                     </CardHeader>
                     <CardContent className="pt-4">
-                      <p className={`${isDarkMode ? 'text-slate-500' : 'text-stone-500'} mb-6`}
-                  Please check back later. You can still browse your existing discoveries and connect with experts.
-                </p>
+                      <p className={`${isDarkMode ? 'text-slate-500' : 'text-stone-500'} mb-6`}>
+                        Please check back later. You can still browse your existing discoveries and connect with experts.
+                      </p>
                 <div className="flex gap-3 justify-center">
                   <Button asChild variant="outline">
                     <Link to={createPageUrl("Dashboard")}>

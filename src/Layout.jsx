@@ -23,7 +23,6 @@ import AnnouncementBanner from "./components/layout/AnnouncementBanner";
 
 import ModerationNotification from "./components/layout/ModerationNotification";
 import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
-import { Button } from "@/components/ui/button";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
