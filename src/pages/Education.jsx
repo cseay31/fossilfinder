@@ -227,7 +227,7 @@ export default function EducationPage({ isDarkMode }) {
         </motion.div>
 
         <Tabs defaultValue="students" className="space-y-6">
-          <TabsList className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-sm`}
+          <TabsList className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-sm`}>
             <TabsTrigger value="students" className="flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
               For Students
