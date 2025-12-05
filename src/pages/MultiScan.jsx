@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Camera, Upload, Loader2, Target, X, ChevronLeft, ChevronRight, Navigation, Save, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function MultiScanPage() {
+export default function MultiScanPage({ isDarkMode }) {
   const [images, setImages] = useState([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState([]);
@@ -210,7 +210,7 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
     const current = results[selectedResult];
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 p-4 md:p-8">
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}
         <div className="max-w-5xl mx-auto space-y-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
             <h1 className="text-3xl font-bold text-stone-800">Scan Results</h1>
@@ -362,11 +362,11 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
 
   // Upload view
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 p-4 md:p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
       <div className="max-w-4xl mx-auto space-y-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-stone-800 mb-2">Multi-Rock Scanner</h1>
-          <p className="text-lg text-stone-600">Upload photos of rocks and AI will highlight potential fossils</p>
+          <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-2`}>Multi-Rock Scanner</h1>
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>Upload photos of rocks and AI will highlight potential fossils</p>
         </motion.div>
 
         {error && (
@@ -375,10 +375,10 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
           </Alert>
         )}
 
-        <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Camera className="w-5 h-5 text-amber-600" />
+            <CardTitle className={`flex items-center gap-2 ${isDarkMode ? 'text-white' : ''}`}>
+              <Camera className={`w-5 h-5 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
               Upload Rock Photos
             </CardTitle>
           </CardHeader>
