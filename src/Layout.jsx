@@ -131,15 +131,20 @@ export default function Layout({ children, currentPageName }) {
           icon: ScanLine,
         },
         {
-          title: "Scan Results",
-          url: createPageUrl("MultiScanDiscoveries"),
-          icon: Target,
-        },
-        {
-          title: "Forum",
-          url: createPageUrl("Forum"),
-          icon: MessageCircle,
-        },
+                    title: "Scan Results",
+                    url: createPageUrl("MultiScanDiscoveries"),
+                    icon: Target,
+                  },
+                  {
+                    title: "Community",
+                    url: createPageUrl("CommunityShowcase"),
+                    icon: Users,
+                  },
+                  {
+                    title: "Forum",
+                    url: createPageUrl("Forum"),
+                    icon: MessageCircle,
+                  },
         {
           title: "Discovery Map",
           url: createPageUrl("DiscoveryMap"),

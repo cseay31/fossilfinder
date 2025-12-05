@@ -186,15 +186,27 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
       }
 
       // Step 2: Create discovery with location data
-      const discoveryData = {
-        photo_url: photoUrl,
-        location: location || "Unknown location",
-        latitude: latitude,
-        longitude: longitude,
-        analysis_status: "analyzing"
-      };
+      // Get user info for owner_name
+                  let ownerName = 'Explorer';
+                  try {
+                    const user = await base44.auth.me();
+                    ownerName = user.full_name || 'Explorer';
+                  } catch (e) {}
 
-      const discovery = await base44.entities.Discovery.create(discoveryData);
+                  const discoveryData = {
+                    photo_url: photoUrl,
+                    location: location || "Unknown location",
+                    latitude: latitude,
+                    longitude: longitude,
+                    analysis_status: "analyzing",
+                    visibility: "public",
+                    owner_name: ownerName,
+                    likes: 0,
+                    liked_by: [],
+                    comment_count: 0
+                  };
+
+                  const discovery = await base44.entities.Discovery.create(discoveryData);
 
       // Step 3: Analyze the fossil
       const analysisPrompt = `

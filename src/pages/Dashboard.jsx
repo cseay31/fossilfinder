@@ -115,6 +115,10 @@ export default function Dashboard({ isDarkMode }) {
                       key={discovery.id} 
                       discovery={discovery} 
                       index={index}
+                      currentUser={currentUser}
+                      onUpdate={(updated) => {
+                        setDiscoveries(discoveries.map(d => d.id === updated.id ? updated : d));
+                      }}
                     />
                   ))}
                 </div>
