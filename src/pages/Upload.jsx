@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Discovery } from "@/entities/Discovery";
-import { Settings } from "@/entities/Settings";
-import { InvokeLLM, UploadFile } from "@/integrations/Core";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -46,12 +43,12 @@ export default function UploadPage({ isDarkMode }) {
 
   const loadSettings = async () => {
     try {
-      const data = await Settings.filter({ setting_key: 'global' });
+      const data = await base44.entities.Settings.filter({ setting_key: 'global' });
       if (data.length > 0) {
         setDiscoverySettings(data[0]);
       } else {
         // auto-create default if missing
-        const created = await Settings.create({
+        const created = await base44.entities.Settings.create({
           announcement_text: '',
           announcement_active: false,
           announcement_type: 'info',
@@ -100,7 +97,7 @@ export default function UploadPage({ isDarkMode }) {
     setIsUploadingPhoto(true);
 
     try {
-      const { file_url } = await UploadFile({ file });
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
       
       if (!file_url) {
         throw new Error("Failed to get file URL");
@@ -135,7 +132,7 @@ export default function UploadPage({ isDarkMode }) {
 
     try {
       // Step 1: AI Detection Check
-      const aiDetectionResult = await InvokeLLM({
+      const aiDetectionResult = await base44.integrations.Core.InvokeLLM({
         prompt: `Analyze this image carefully and determine if it appears to be AI-generated or a real photograph.
 
 Look for indicators such as:
@@ -197,7 +194,7 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
         analysis_status: "analyzing"
       };
 
-      const discovery = await Discovery.create(discoveryData);
+      const discovery = await base44.entities.Discovery.create(discoveryData);
 
       // Step 3: Analyze the fossil
       const analysisPrompt = `
@@ -218,7 +215,7 @@ Provide detailed analysis including:
 Be thorough and scientific in your analysis. If you're not certain about the identification, explain why and suggest alternative possibilities.
       `;
 
-      const aiResponse = await InvokeLLM({
+      const aiResponse = await base44.integrations.Core.InvokeLLM({
         prompt: analysisPrompt,
         file_urls: [photoUrl],
         response_json_schema: {
@@ -234,7 +231,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
         }
       });
 
-      const updatedDiscovery = await Discovery.update(discovery.id, {
+      const updatedDiscovery = await base44.entities.Discovery.update(discovery.id, {
         ...aiResponse,
         analysis_status: "completed"
       });
