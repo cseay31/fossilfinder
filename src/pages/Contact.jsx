@@ -104,7 +104,7 @@ export default function ContactPage({ isDarkMode }) {
             </Alert>
           )}
 
-          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardHeader>
               <CardTitle className="text-xl text-stone-800 flex items-center gap-3">
                 <Mail className="w-6 h-6 text-blue-600" />

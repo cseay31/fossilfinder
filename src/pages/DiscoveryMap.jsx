@@ -194,7 +194,7 @@ export default function DiscoveryMapPage({ isDarkMode }) {
         </div>
 
         {/* Filter */}
-        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mb-6`}
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mb-6`}>
           <CardContent className="p-4">
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex items-center gap-2">
@@ -228,7 +228,7 @@ export default function DiscoveryMapPage({ isDarkMode }) {
         </Card>
 
         {/* Map */}
-        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg overflow-hidden`}
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg overflow-hidden`}>
           <CardContent className="p-0">
             {isLoading ? (
               <div className="h-[600px] flex items-center justify-center bg-slate-100">
@@ -311,7 +311,7 @@ export default function DiscoveryMapPage({ isDarkMode }) {
         </Card>
 
         {/* Legend */}
-        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mt-6`}
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mt-6`}>
           <CardContent className="p-4">
             <p className="text-xs text-slate-500 mb-3">
               📍 Locations are approximate (~1km) for privacy protection

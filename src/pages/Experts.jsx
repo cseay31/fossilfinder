@@ -267,7 +267,7 @@ Focus on finding experts who are actively publishing and well-regarded in their 
         </motion.div>
 
         {discovery && (
-          <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+          <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-xl text-stone-800">
                 <FileText className="w-6 h-6 text-amber-600" />
@@ -292,7 +292,7 @@ Focus on finding experts who are actively publishing and well-regarded in their 
         )}
 
         {/* Research Parameters Form */}
-        <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+        <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
           <CardHeader>
             <CardTitle className={`flex items-center gap-3 text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>
               <Sparkles className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />

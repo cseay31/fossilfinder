@@ -244,7 +244,7 @@ export default function EducationPage({ isDarkMode }) {
 
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-6">
-            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
               <CardHeader>
                 <CardTitle className="text-2xl text-slate-800 flex items-center gap-3">
                   <BookOpen className="w-6 h-6 text-blue-600" />
@@ -360,7 +360,7 @@ export default function EducationPage({ isDarkMode }) {
 
           {/* Teachers Tab */}
           <TabsContent value="teachers" className="space-y-6">
-            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
               <CardHeader>
                 <CardTitle className="text-2xl text-slate-800 flex items-center gap-3">
                   <Users className="w-6 h-6 text-purple-600" />
@@ -422,7 +422,7 @@ export default function EducationPage({ isDarkMode }) {
 
           {/* Projects Tab */}
           <TabsContent value="projects" className="space-y-6">
-            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
               <CardHeader>
                 <CardTitle className="text-2xl text-slate-800 flex items-center gap-3">
                   <Award className="w-6 h-6 text-amber-600" />

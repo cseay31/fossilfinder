@@ -459,7 +459,7 @@ Any questions? Ask below! 👇`,
         </motion.div>
 
         {/* Search and Filters */}
-        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mb-6`}
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg mb-6`}>
           <CardContent className="p-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col md:flex-row gap-4">
@@ -527,7 +527,7 @@ Any questions? Ask below! 👇`,
               <div key={i} className={`h-32 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-100'} rounded-xl animate-pulse`} />
             ))
           ) : filteredPosts.length === 0 ? (
-            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
               <CardContent className="py-12 text-center">
                 <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-slate-600 mb-2">

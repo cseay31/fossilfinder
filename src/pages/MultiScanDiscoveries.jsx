@@ -203,7 +203,7 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
             <p className={isDarkMode ? 'text-slate-400' : 'text-stone-600'}>Loading discoveries...</p>
           </div>
         ) : discoveries.length === 0 ? (
-          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
             <CardContent className="p-12 text-center">
               <Target className="w-16 h-16 text-stone-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-stone-700 mb-2">No Multi-Scan Discoveries</h3>
