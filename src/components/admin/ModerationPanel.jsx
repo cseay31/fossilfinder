@@ -83,12 +83,12 @@ export default function ModerationPanel() {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+        <Card className="bg-slate-900/50 border-slate-700/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 mb-1">Total Actions</p>
-                <p className="text-2xl font-bold text-slate-800">{totalActions}</p>
+                <p className="text-sm text-slate-400 mb-1">Total Actions</p>
+                <p className="text-2xl font-bold text-white">{totalActions}</p>
               </div>
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                 <Shield className="w-5 h-5 text-white" />
@@ -97,12 +97,12 @@ export default function ModerationPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+        <Card className="bg-slate-900/50 border-slate-700/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 mb-1">Verbal Warnings</p>
-                <p className="text-2xl font-bold text-slate-800">{verbalWarnings}</p>
+                <p className="text-sm text-slate-400 mb-1">Verbal Warnings</p>
+                <p className="text-2xl font-bold text-white">{verbalWarnings}</p>
               </div>
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center">
                 <MessageSquare className="w-5 h-5 text-white" />
@@ -111,12 +111,12 @@ export default function ModerationPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+        <Card className="bg-slate-900/50 border-slate-700/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 mb-1">Formal Warnings</p>
-                <p className="text-2xl font-bold text-slate-800">{formalWarnings}</p>
+                <p className="text-sm text-slate-400 mb-1">Formal Warnings</p>
+                <p className="text-2xl font-bold text-white">{formalWarnings}</p>
               </div>
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
                 <AlertTriangle className="w-5 h-5 text-white" />
@@ -125,12 +125,12 @@ export default function ModerationPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+        <Card className="bg-slate-900/50 border-slate-700/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 mb-1">Active Bans</p>
-                <p className="text-2xl font-bold text-slate-800">{bans}</p>
+                <p className="text-sm text-slate-400 mb-1">Active Bans</p>
+                <p className="text-2xl font-bold text-white">{bans}</p>
               </div>
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
                 <Ban className="w-5 h-5 text-white" />
@@ -141,10 +141,10 @@ export default function ModerationPanel() {
       </div>
 
       {/* Moderation History */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-            <Clock className="w-6 h-6 text-blue-600" />
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Clock className="w-6 h-6 text-blue-400" />
             Moderation History
             <Badge variant="outline" className="ml-auto">
               {moderationHistory.length} actions
@@ -159,7 +159,7 @@ export default function ModerationPanel() {
                 placeholder="Search by user email or reason..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 border-slate-200 focus:border-blue-400 focus:ring-blue-400"
+                className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function ModerationPanel() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors duration-200"
+                  className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4 hover:bg-slate-800/50 transition-colors duration-200"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -197,18 +197,18 @@ export default function ModerationPanel() {
                           {getActionIcon(record.action_type)}
                           <span className="ml-1">{getActionLabel(record.action_type)}</span>
                         </Badge>
-                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                        <div className="flex items-center gap-2 text-sm text-slate-300">
                           <User className="w-4 h-4" />
                           <span className="font-medium">{record.user_email}</span>
                         </div>
                       </div>
                       
-                      <p className="text-sm text-slate-700 mb-2">
+                      <p className="text-sm text-slate-300 mb-2">
                         <strong>Reason:</strong> {record.reason}
                       </p>
                       
                       {record.notes && (
-                        <p className="text-sm text-slate-600 mb-2">
+                        <p className="text-sm text-slate-400 mb-2">
                           <strong>Notes:</strong> {record.notes}
                         </p>
                       )}

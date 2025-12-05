@@ -149,11 +149,11 @@ export default function AdminMessaging() {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-              <Megaphone className="w-6 h-6 text-purple-600" />
+            <CardTitle className="text-xl text-white flex items-center gap-3">
+              <Megaphone className="w-6 h-6 text-purple-400" />
               Dashboard Messages
             </CardTitle>
             <Button
@@ -164,7 +164,7 @@ export default function AdminMessaging() {
               New Message
             </Button>
           </div>
-          <p className="text-sm text-slate-600 mt-2">
+          <p className="text-sm text-slate-400 mt-2">
             Post messages that appear on the Dashboard page for all users to see
           </p>
         </CardHeader>
@@ -175,9 +175,9 @@ export default function AdminMessaging() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-6 p-6 bg-slate-50 rounded-lg border-2 border-slate-200"
+              className="mb-6 p-6 bg-slate-800/50 rounded-lg border-2 border-slate-700"
             >
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">Create New Message</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Create New Message</h3>
               
               {statusMessage && (
                 <Alert className={`mb-4 ${
@@ -200,13 +200,13 @@ export default function AdminMessaging() {
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="fromName">From Name *</Label>
+                  <Label htmlFor="fromName" className="text-white">From Name *</Label>
                   <Input
                     id="fromName"
                     value={fromName}
                     onChange={(e) => setFromName(e.target.value)}
                     placeholder="Admin seayc31"
-                    className="mt-1"
+                    className="mt-1 bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500"
                     disabled={isSaving}
                   />
                   <p className="text-xs text-slate-500 mt-1">
@@ -215,23 +215,23 @@ export default function AdminMessaging() {
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Message *</Label>
+                  <Label htmlFor="message" className="text-white">Message *</Label>
                   <Textarea
                     id="message"
                     value={formMessage}
                     onChange={(e) => setFormMessage(e.target.value)}
                     placeholder="Welcome to FossilFinder! We're excited to have you here..."
                     rows={3}
-                    className="mt-1"
+                    className="mt-1 bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500"
                     disabled={isSaving}
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="messageType">Message Type</Label>
+                    <Label htmlFor="messageType" className="text-white">Message Type</Label>
                     <Select value={messageType} onValueChange={setMessageType}>
-                      <SelectTrigger className="mt-1">
+                      <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -244,13 +244,13 @@ export default function AdminMessaging() {
                   </div>
 
                   <div>
-                    <Label htmlFor="expiresAt">Expires At (Optional)</Label>
+                    <Label htmlFor="expiresAt" className="text-white">Expires At (Optional)</Label>
                     <Input
                       id="expiresAt"
                       type="datetime-local"
                       value={expiresAt}
                       onChange={(e) => setExpiresAt(e.target.value)}
-                      className="mt-1"
+                      className="mt-1 bg-slate-900/50 border-slate-700 text-white"
                       disabled={isSaving}
                     />
                   </div>
@@ -304,10 +304,10 @@ export default function AdminMessaging() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`bg-slate-50 rounded-lg p-4 border-2 ${
+                  className={`bg-slate-900/50 border rounded-lg p-4 ${
                     message.is_active && !isExpired(message.expires_at)
-                      ? 'border-slate-200'
-                      : 'border-slate-200 opacity-60'
+                      ? 'border-slate-700'
+                      : 'border-slate-700 opacity-60'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -331,7 +331,7 @@ export default function AdminMessaging() {
                         )}
                       </div>
                       
-                      <p className="text-slate-700 mb-2">{message.message}</p>
+                      <p className="text-slate-300 mb-2">{message.message}</p>
                       
                       <div className="flex items-center gap-4 text-xs text-slate-500">
                         <span>Posted: {format(new Date(message.created_date), "MMM d, yyyy 'at' h:mm a")}</span>

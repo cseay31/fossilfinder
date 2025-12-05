@@ -96,12 +96,12 @@ export default function SiteSettings() {
   };
 
   const SettingToggle = ({ icon: Icon, iconColor, title, description, settingKey, danger = false }) => (
-    <div className={`flex items-center justify-between p-4 rounded-lg ${danger ? 'bg-red-50 border border-red-200' : 'bg-slate-50'}`}>
+    <div className={`flex items-center justify-between p-4 rounded-lg ${danger ? 'bg-red-900/20 border border-red-500/30' : 'bg-slate-900/50 border border-slate-700/50'}`}>
       <div className="flex items-start gap-3">
         <Icon className={`w-5 h-5 mt-0.5 ${iconColor}`} />
         <div>
-          <Label className="text-base font-medium">{title}</Label>
-          <p className="text-sm text-slate-600">{description}</p>
+          <Label className="text-base font-medium text-white">{title}</Label>
+          <p className="text-sm text-slate-400">{description}</p>
         </div>
       </div>
       <Switch
@@ -122,29 +122,29 @@ export default function SiteSettings() {
   return (
     <div className="space-y-6">
       {message && (
-        <Alert className={message.includes('Failed') ? 'border-red-200 bg-red-50' : 'border-green-200 bg-green-50'}>
-          <AlertDescription className={message.includes('Failed') ? 'text-red-800' : 'text-green-800'}>
+        <Alert className={message.includes('Failed') ? 'border-red-500/50 bg-red-900/20' : 'border-green-500/50 bg-green-900/20'}>
+          <AlertDescription className={message.includes('Failed') ? 'text-red-400' : 'text-green-400'}>
             {message}
           </AlertDescription>
         </Alert>
       )}
 
       {/* Maintenance Mode - Top Priority */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 border-l-4 border-l-red-500">
+      <Card className="bg-slate-900/50 border-slate-700/50 border-l-4 border-l-red-500">
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-            <Wrench className="w-6 h-6 text-red-600" />
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Wrench className="w-6 h-6 text-red-500" />
             Maintenance Mode
             {settings.maintenance_mode && (
-              <Badge className="bg-red-100 text-red-800 border-red-200">ACTIVE</Badge>
+              <Badge className="bg-red-500/20 text-red-400 border-red-500/30">ACTIVE</Badge>
             )}
           </CardTitle>
-          <CardDescription>Put the entire site in maintenance mode - only admins can access</CardDescription>
+          <CardDescription className="text-slate-400">Put the entire site in maintenance mode - only admins can access</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <SettingToggle
             icon={Wrench}
-            iconColor="text-red-600"
+            iconColor="text-red-500"
             title="Enable Maintenance Mode"
             description="Block all non-admin users from accessing the site"
             settingKey="maintenance_mode"
@@ -152,12 +152,13 @@ export default function SiteSettings() {
           />
           {settings.maintenance_mode && (
             <div className="space-y-2">
-              <Label>Maintenance Message</Label>
+              <Label className="text-white">Maintenance Message</Label>
               <Textarea
                 placeholder="We're currently performing maintenance. Please check back soon!"
                 value={settings.maintenance_message || ''}
                 onChange={(e) => setSettings({ ...settings, maintenance_message: e.target.value })}
                 rows={2}
+                className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
               />
             </div>
           )}
@@ -165,21 +166,21 @@ export default function SiteSettings() {
       </Card>
 
       {/* Announcement Banner */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-            <Megaphone className="w-6 h-6 text-blue-600" />
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Megaphone className="w-6 h-6 text-blue-400" />
             Site Announcement
           </CardTitle>
-          <CardDescription>Display a banner message to all users</CardDescription>
+          <CardDescription className="text-slate-400">Display a banner message to all users</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between p-4 rounded-lg bg-slate-50">
+          <div className="flex items-center justify-between p-4 rounded-lg bg-slate-900/50 border border-slate-700/50">
             <div className="flex items-start gap-3">
-              <Megaphone className="w-5 h-5 mt-0.5 text-blue-600" />
+              <Megaphone className="w-5 h-5 mt-0.5 text-blue-400" />
               <div>
-                <Label className="text-base font-medium">Enable Announcement Banner</Label>
-                <p className="text-sm text-slate-600">Show announcement to all users site-wide</p>
+                <Label className="text-base font-medium text-white">Enable Announcement Banner</Label>
+                <p className="text-sm text-slate-400">Show announcement to all users site-wide</p>
               </div>
             </div>
             <Switch
@@ -190,12 +191,12 @@ export default function SiteSettings() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Announcement Type</Label>
+              <Label className="text-white">Announcement Type</Label>
               <Select
                 value={settings.announcement_type}
                 onValueChange={(value) => setSettings({ ...settings, announcement_type: value })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="bg-slate-800/50 border-slate-700 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -209,25 +210,26 @@ export default function SiteSettings() {
           </div>
 
           <div className="space-y-2">
-            <Label>Announcement Text</Label>
+            <Label className="text-white">Announcement Text</Label>
             <Textarea
               placeholder="Enter your announcement message..."
               value={settings.announcement_text || ''}
               onChange={(e) => setSettings({ ...settings, announcement_text: e.target.value })}
               rows={2}
+              className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Page Controls */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-            <ToggleLeft className="w-6 h-6 text-purple-600" />
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <ToggleLeft className="w-6 h-6 text-purple-400" />
             Page Controls
           </CardTitle>
-          <CardDescription>Enable or disable specific pages and features</CardDescription>
+          <CardDescription className="text-slate-400">Enable or disable specific pages and features</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <SettingToggle
@@ -269,13 +271,13 @@ export default function SiteSettings() {
       </Card>
 
       {/* Community Features */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-            <Trophy className="w-6 h-6 text-amber-600" />
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Trophy className="w-6 h-6 text-amber-400" />
             Community Features
           </CardTitle>
-          <CardDescription>Control social and community features</CardDescription>
+          <CardDescription className="text-slate-400">Control social and community features</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <SettingToggle
@@ -325,28 +327,28 @@ export default function SiteSettings() {
       </Card>
 
       {/* Upload Settings */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-            <Upload className="w-6 h-6 text-amber-600" />
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Upload className="w-6 h-6 text-amber-400" />
             Upload Settings
           </CardTitle>
-          <CardDescription>Configure upload requirements and limits</CardDescription>
+          <CardDescription className="text-slate-400">Configure upload requirements and limits</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <SettingToggle
             icon={MapPin}
-            iconColor="text-emerald-600"
+            iconColor="text-emerald-400"
             title="Require GPS Location"
             description="Users must provide GPS coordinates when uploading"
             settingKey="require_location"
           />
-          <div className="flex items-center justify-between p-4 rounded-lg bg-slate-50">
+          <div className="flex items-center justify-between p-4 rounded-lg bg-slate-900/50 border border-slate-700/50">
             <div className="flex items-start gap-3">
-              <Upload className="w-5 h-5 mt-0.5 text-amber-600" />
+              <Upload className="w-5 h-5 mt-0.5 text-amber-400" />
               <div>
-                <Label className="text-base font-medium">Max Uploads Per Day</Label>
-                <p className="text-sm text-slate-600">Limit how many discoveries a user can upload daily</p>
+                <Label className="text-base font-medium text-white">Max Uploads Per Day</Label>
+                <p className="text-sm text-slate-400">Limit how many discoveries a user can upload daily</p>
               </div>
             </div>
             <Input
@@ -355,20 +357,20 @@ export default function SiteSettings() {
               max="100"
               value={settings.max_uploads_per_day || 10}
               onChange={(e) => setSettings({ ...settings, max_uploads_per_day: parseInt(e.target.value) || 10 })}
-              className="w-20"
+              className="w-20 bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Moderation */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 flex items-center gap-3">
-            <Shield className="w-6 h-6 text-blue-600" />
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Shield className="w-6 h-6 text-blue-400" />
             Moderation
           </CardTitle>
-          <CardDescription>Content moderation settings</CardDescription>
+          <CardDescription className="text-slate-400">Content moderation settings</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <SettingToggle
@@ -382,12 +384,12 @@ export default function SiteSettings() {
       </Card>
 
       {/* Save Button */}
-      <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+      <Card className="bg-slate-900/50 border-slate-700/50">
         <CardContent className="pt-6">
           <Button
             onClick={saveSettings}
             disabled={isSaving}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-lg py-6"
+            className="w-full bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-lg py-6"
           >
             {isSaving ? (
               <>
