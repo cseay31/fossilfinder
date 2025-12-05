@@ -226,7 +226,7 @@ export default function AdminPage() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredDiscoveries.map((discovery, index) => (
+                    {filteredDiscoveries.slice(0, 30).map((discovery, index) => (
                       <AdminDiscoveryCard 
                         key={discovery.id} 
                         discovery={discovery} 
@@ -236,6 +236,11 @@ export default function AdminPage() {
                       />
                     ))}
                   </div>
+                )}
+                {filteredDiscoveries.length > 30 && (
+                  <p className="text-center text-slate-500 mt-4">
+                    Showing 30 of {filteredDiscoveries.length} discoveries
+                  </p>
                 )}
 
                 {!isLoading && filteredDiscoveries.length === 0 && (

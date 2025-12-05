@@ -37,7 +37,7 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
+      transition={{ delay: Math.min(index * 0.05, 0.3) }}
     >
       <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 hover:shadow-xl transition-all duration-200 overflow-hidden">
         <div className="aspect-video relative overflow-hidden bg-slate-100">
@@ -52,8 +52,8 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
               }}
             />
           ) : null}
-          <div className={`w-full h-full items-center justify-center text-slate-400 ${discovery.photo_url ? 'hidden' : 'flex'}`}>
-            <span className="text-sm">No image available</span>
+          <div className="w-full h-full items-center justify-center text-slate-400" style={{ display: discovery.photo_url ? 'none' : 'flex' }}>
+            No image available
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <div className="absolute top-3 right-3">
@@ -65,9 +65,9 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
             </Badge>
           </div>
           <div className="absolute top-3 left-3">
-            <Badge className="bg-black/60 text-white border-black/20">
-              <User className="w-3 h-3 mr-1" />
-              User Upload
+            <Badge className="bg-black/60 text-white border-black/20 max-w-[150px] truncate">
+              <User className="w-3 h-3 mr-1 flex-shrink-0" />
+              <span className="truncate">{discovery.created_by?.split('@')[0] || 'Unknown'}</span>
             </Badge>
           </div>
         </div>
