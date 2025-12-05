@@ -9,6 +9,7 @@ import Forum from './pages/Forum';
 import DiscoveryMap from './pages/DiscoveryMap';
 import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
+import CommunityShowcase from './pages/CommunityShowcase';
 import __Layout from './Layout.jsx';
 
 
@@ -24,6 +25,7 @@ export const PAGES = {
     "DiscoveryMap": DiscoveryMap,
     "MultiScan": MultiScan,
     "MultiScanDiscoveries": MultiScanDiscoveries,
+    "CommunityShowcase": CommunityShowcase,
 }
 
 export const pagesConfig = {
