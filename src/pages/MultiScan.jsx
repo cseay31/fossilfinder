@@ -210,7 +210,7 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
     const current = results[selectedResult];
     
     return (
-      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
         <div className="max-w-5xl mx-auto space-y-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
             <h1 className="text-3xl font-bold text-stone-800">Scan Results</h1>

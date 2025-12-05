@@ -116,7 +116,7 @@ export default function DiscoveryMapPage({ isDarkMode }) {
   const discoveriesWithLocation = discoveries.filter(d => d.latitude && d.longitude);
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50'} p-4 md:p-8`}
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50'} p-4 md:p-8`}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -64,7 +64,7 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
     const scanResults = parseScanResults(selectedDiscovery);
     
     return (
-      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-cyan-50 via-stone-50 to-cyan-100'} p-4 md:p-8`}
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-cyan-50 via-stone-50 to-cyan-100'} p-4 md:p-8`}>
         <div className="max-w-5xl mx-auto space-y-6">
           <div className="flex items-center gap-4">
             <Button variant="outline" onClick={() => setSelectedDiscovery(null)} className={isDarkMode ? 'border-white/20 text-white hover:bg-white/10' : ''}>
