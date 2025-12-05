@@ -5,7 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, Check, X, Star, Loader2, MapPin, Calendar, Target } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, X, Star, Loader2, MapPin, Calendar, Target, Award } from 'lucide-react';
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 
@@ -34,7 +36,9 @@ export default function SlideshowReview({ discoveries, onClose, onUpdate }) {
     try {
       await base44.entities.Discovery.update(editedDiscovery.id, {
         significance_level: editedDiscovery.significance_level,
-        expert_notes: editedDiscovery.expert_notes
+        expert_notes: editedDiscovery.expert_notes,
+        is_staff_pick: editedDiscovery.is_staff_pick || false,
+        is_featured: editedDiscovery.is_featured || false
       });
       setReviewed(prev => new Set([...prev, editedDiscovery.id]));
       onUpdate();
@@ -224,6 +228,33 @@ export default function SlideshowReview({ discoveries, onClose, onUpdate }) {
                   placeholder="Add your expert assessment..."
                   rows={3}
                 />
+              </div>
+
+              {/* Staff Pick & Featured Toggles */}
+              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4 space-y-3">
+                <h4 className="font-medium text-slate-700 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-indigo-600" /> Community Showcase
+                </h4>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="staff-pick" className="text-sm text-slate-600 flex items-center gap-2">
+                    <Award className="w-4 h-4 text-purple-500" /> Staff Shoutout
+                  </Label>
+                  <Switch
+                    id="staff-pick"
+                    checked={editedDiscovery.is_staff_pick || false}
+                    onCheckedChange={(checked) => setEditedDiscovery(prev => ({ ...prev, is_staff_pick: checked }))}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="featured" className="text-sm text-slate-600 flex items-center gap-2">
+                    <Star className="w-4 h-4 text-amber-500" /> Featured Discovery
+                  </Label>
+                  <Switch
+                    id="featured"
+                    checked={editedDiscovery.is_featured || false}
+                    onCheckedChange={(checked) => setEditedDiscovery(prev => ({ ...prev, is_featured: checked }))}
+                  />
+                </div>
               </div>
 
               {/* Actions */}
