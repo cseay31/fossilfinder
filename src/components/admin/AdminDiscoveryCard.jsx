@@ -122,7 +122,7 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
 
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <Calendar className="w-3 h-3" />
-            <span>Uploaded {format(new Date(discovery.created_date), "MMM d, yyyy 'at' HH:mm")}</span>
+            <span>Uploaded {format(new Date(new Date(discovery.created_date).toLocaleString("en-US", { timeZone: "America/Chicago" })), "MMM d, yyyy 'at' h:mm a")} CT</span>
           </div>
 
           {discovery.description && discovery.analysis_status === 'completed' && (
