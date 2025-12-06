@@ -22,6 +22,7 @@ import ModerationPanel from "../components/admin/ModerationPanel";
 import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
 import LiveUserActivity from "../components/admin/LiveUserActivity";
+import LiveMessaging from "../components/admin/LiveMessaging";
 
 export default function AdminPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -259,7 +260,10 @@ export default function AdminPage({ isDarkMode }) {
             <TabsTrigger value="live-activity" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-emerald-600">
               <Activity className="w-4 h-4 mr-2" /> Live Activity
             </TabsTrigger>
-          </TabsList>
+            <TabsTrigger value="live-messaging" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600">
+              <MessageSquare className="w-4 h-4 mr-2" /> Live Chat
+            </TabsTrigger>
+            </TabsList>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
@@ -518,6 +522,7 @@ export default function AdminPage({ isDarkMode }) {
           <TabsContent value="settings"><SiteSettings /></TabsContent>
           <TabsContent value="analytics"><AnalyticsDashboard discoveries={discoveries} /></TabsContent>
           <TabsContent value="live-activity"><LiveUserActivity isDarkMode={isDarkMode} /></TabsContent>
+          <TabsContent value="live-messaging"><LiveMessaging isDarkMode={isDarkMode} /></TabsContent>
           
           {/* Full System Discoveries Tab */}
           <TabsContent value="full-system" className="space-y-6">
