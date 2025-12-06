@@ -21,6 +21,8 @@ import MessageManagement from "../components/admin/MessageManagement";
 import ModerationPanel from "../components/admin/ModerationPanel";
 import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
+import JudgeSupport from "../components/admin/JudgeSupport";
+import LiveUserActivity from "../components/admin/LiveUserActivity";
 
 export default function AdminPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -254,6 +256,12 @@ export default function AdminPage({ isDarkMode }) {
             </TabsTrigger>
             <TabsTrigger value="full-system" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-blue-600">
               <FileText className="w-4 h-4 mr-2" /> Full System Discoveries
+            </TabsTrigger>
+            <TabsTrigger value="judge-support" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-cyan-600">
+              <Users className="w-4 h-4 mr-2" /> Judge Support
+            </TabsTrigger>
+            <TabsTrigger value="live-activity" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-emerald-600">
+              <Activity className="w-4 h-4 mr-2" /> Live Activity
             </TabsTrigger>
           </TabsList>
 
@@ -513,6 +521,8 @@ export default function AdminPage({ isDarkMode }) {
           <TabsContent value="announcements"><AdminMessaging /></TabsContent>
           <TabsContent value="settings"><SiteSettings /></TabsContent>
           <TabsContent value="analytics"><AnalyticsDashboard discoveries={discoveries} /></TabsContent>
+          <TabsContent value="judge-support"><JudgeSupport isDarkMode={isDarkMode} /></TabsContent>
+          <TabsContent value="live-activity"><LiveUserActivity isDarkMode={isDarkMode} /></TabsContent>
           
           {/* Full System Discoveries Tab */}
           <TabsContent value="full-system" className="space-y-6">

@@ -13,6 +13,7 @@ import AnalysisProgress from "../components/upload/AnalysisProgress";
 import AnalysisResults from "../components/upload/AnalysisResults";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { trackAction } from "../components/tracking/ActivityTracker";
 
 export default function UploadPage({ isDarkMode }) {
   const [currentStep, setCurrentStep] = useState("upload");
@@ -112,6 +113,8 @@ export default function UploadPage({ isDarkMode }) {
     setIsAnalyzing(true);
     setCurrentStep("analyzing");
     setError("");
+
+    trackAction("Started analyzing discovery");
 
     try {
       // Step 1: AI Detection Check
@@ -238,6 +241,8 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
 
       setAnalysisResults(updatedDiscovery);
       setCurrentStep("results");
+
+      trackAction("Completed discovery analysis");
 
     } catch (error) {
       console.error("Analysis failed:", error);

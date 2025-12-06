@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
+import ActivityTracker from "./components/tracking/ActivityTracker";
 import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench } from "lucide-react";
 import {
   Sidebar,
@@ -23,6 +24,7 @@ import AnnouncementBanner from "./components/layout/AnnouncementBanner";
 
 import ModerationNotification from "./components/layout/ModerationNotification";
 import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
+import JudgeMessageBanner from "./components/layout/JudgeMessageBanner";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -209,6 +211,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <SidebarProvider>
+      <ActivityTracker />
       <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
         {/* Northern Lights Background for Dark Mode */}
         {isDarkMode && (
@@ -396,6 +399,7 @@ export default function Layout({ children, currentPageName }) {
           <AnnouncementBanner />
           <ModerationNotification />
           <AdminMessageBanner />
+          <JudgeMessageBanner />
 
           <header className={`${isDarkMode ? 'bg-slate-900/70 border-white/10' : 'bg-white/70 border-stone-200'} backdrop-blur-sm border-b px-6 py-4 md:hidden`}>
             <div className="flex items-center gap-4">
