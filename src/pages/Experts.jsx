@@ -15,6 +15,7 @@ export default function ExpertsPage({ isDarkMode }) {
   const [discovery, setDiscovery] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [appSettings, setAppSettings] = useState(null);
   
   // Research parameters
   const [specialization, setSpecialization] = useState("");
@@ -44,6 +45,7 @@ export default function ExpertsPage({ isDarkMode }) {
   };
 
   useEffect(() => {
+    checkSettings();
     const params = new URLSearchParams(window.location.search);
     const discoveryId = params.get('discoveryId');
 
@@ -53,6 +55,17 @@ export default function ExpertsPage({ isDarkMode }) {
       setIsLoading(false);
     }
   }, []);
+
+  const checkSettings = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0) {
+        setAppSettings(settings[0]);
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    }
+  };
 
   const loadDiscoveryAndFindExperts = async (discoveryId) => {
     setIsLoading(true);
@@ -170,6 +183,19 @@ Focus on finding experts who are actively publishing and well-regarded in their 
     industrial_archaeology: "bg-gray-100 text-gray-800 border-gray-200",
     environmental_archaeology: "bg-emerald-100 text-emerald-800 border-emerald-200"
   };
+
+  // Check if expert matching is disabled
+  if (appSettings && !appSettings.expert_matching_enabled) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8 flex items-center justify-center`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <Users className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Expert Matching Unavailable</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>Expert matching has been temporarily disabled by an administrator.</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>

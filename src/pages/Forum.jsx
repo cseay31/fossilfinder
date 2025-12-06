@@ -35,12 +35,25 @@ export default function ForumPage({ isDarkMode }) {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [appSettings, setAppSettings] = useState(null);
 
   useEffect(() => {
     loadPosts();
     loadCurrentUser();
     initializeForum();
+    checkSettings();
   }, []);
+
+  const checkSettings = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0) {
+        setAppSettings(settings[0]);
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    }
+  };
 
   useEffect(() => {
     let filtered = [...posts];
@@ -426,6 +439,21 @@ Any questions? Ask below! 👇`,
     return colors[category] || colors.general;
   };
 
+  // Check if forum is disabled
+  if (appSettings && !appSettings.forum_enabled) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'} p-4 md:p-8 flex items-center justify-center`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <MessageSquare className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Forum Unavailable</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>The forum has been temporarily disabled by an administrator.</p>
+        </Card>
+      </div>
+    );
+  }
+
+  const canPost = !appSettings || appSettings.forum_posting_enabled;
+
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'} p-4 md:p-8`}>
       <div className="max-w-6xl mx-auto">
@@ -448,13 +476,15 @@ Any questions? Ask below! 👇`,
                 </p>
               </div>
             </div>
-            <Button
-              onClick={() => setIsCreating(true)}
-              className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Post
-            </Button>
+            {canPost && (
+              <Button
+                onClick={() => setIsCreating(true)}
+                className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                New Post
+              </Button>
+            )}
           </div>
         </motion.div>
 
