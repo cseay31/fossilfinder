@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
-import LiveMessagePopup from "./components/messaging/LiveMessagePopup";
 import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench } from "lucide-react";
 import {
   Sidebar,
@@ -211,9 +210,8 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <SidebarProvider>
-        <ActivityTracker />
-        <LiveMessagePopup />
-        <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
+      <ActivityTracker />
+      <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
         {/* Northern Lights Background for Dark Mode */}
         {isDarkMode && (
           <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
