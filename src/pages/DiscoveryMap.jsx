@@ -67,11 +67,24 @@ export default function DiscoveryMapPage({ isDarkMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSignificance, setSelectedSignificance] = useState("all");
   const [currentUser, setCurrentUser] = useState(null);
+  const [appSettings, setAppSettings] = useState(null);
 
   useEffect(() => {
     loadDiscoveries();
     loadCurrentUser();
+    checkSettings();
   }, []);
+
+  const checkSettings = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0) {
+        setAppSettings(settings[0]);
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    }
+  };
 
   useEffect(() => {
     let filtered = discoveries.filter(d => d.latitude && d.longitude);
@@ -114,6 +127,19 @@ export default function DiscoveryMapPage({ isDarkMode }) {
   };
 
   const discoveriesWithLocation = discoveries.filter(d => d.latitude && d.longitude);
+
+  // Check if map is disabled
+  if (appSettings && !appSettings.discovery_map_enabled) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50'} p-4 md:p-8 flex items-center justify-center`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <Map className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Discovery Map Unavailable</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>The discovery map has been temporarily disabled by an administrator.</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50'} p-4 md:p-8`}>

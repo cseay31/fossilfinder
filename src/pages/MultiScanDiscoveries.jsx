@@ -14,10 +14,23 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedDiscovery, setSelectedDiscovery] = useState(null);
   const [hoveredPoi, setHoveredPoi] = useState(null);
+  const [appSettings, setAppSettings] = useState(null);
 
   useEffect(() => {
     loadDiscoveries();
+    checkSettings();
   }, []);
+
+  const checkSettings = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0) {
+        setAppSettings(settings[0]);
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    }
+  };
 
   const loadDiscoveries = async () => {
     try {
@@ -196,6 +209,19 @@ export default function MultiScanDiscoveriesPage({ isDarkMode }) {
             </Card>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // Check if multi-scan is disabled
+  if (appSettings && !appSettings.multi_scan_enabled) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-cyan-50 via-stone-50 to-cyan-100'} p-4 md:p-8 flex items-center justify-center`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <Target className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Multi-Scan Unavailable</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>The multi-scan feature has been temporarily disabled by an administrator.</p>
+        </Card>
       </div>
     );
   }

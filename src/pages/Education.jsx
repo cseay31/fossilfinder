@@ -31,6 +31,25 @@ export default function EducationPage({ isDarkMode }) {
   const [selectedLessonPlan, setSelectedLessonPlan] = useState(null);
   const [selectedProjectGuide, setSelectedProjectGuide] = useState(null);
   const [selectedVirtualTour, setSelectedVirtualTour] = useState(null);
+  const [appSettings, setAppSettings] = useState(null);
+  const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+
+  useEffect(() => {
+    checkSettings();
+  }, []);
+
+  const checkSettings = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0) {
+        setAppSettings(settings[0]);
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    } finally {
+      setIsLoadingSettings(false);
+    }
+  };
 
   const learningModules = [
     {
@@ -202,6 +221,19 @@ export default function EducationPage({ isDarkMode }) {
     };
     return colors[difficulty] || colors.Easy;
   };
+
+  // Check if education is disabled
+  if (!isLoadingSettings && appSettings && !appSettings.education_enabled) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'} p-4 md:p-8 flex items-center justify-center`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <GraduationCap className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Education Hub Unavailable</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>The education hub has been temporarily disabled by an administrator.</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'} p-4 md:p-8`}>

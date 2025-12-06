@@ -21,10 +21,23 @@ export default function CommunityShowcasePage({ isDarkMode }) {
   const [selectedDiscovery, setSelectedDiscovery] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("featured");
+  const [appSettings, setAppSettings] = useState(null);
 
   useEffect(() => {
     loadData();
+    checkSettings();
   }, []);
+
+  const checkSettings = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0) {
+        setAppSettings(settings[0]);
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    }
+  };
 
   const loadData = async () => {
     try {
@@ -194,6 +207,19 @@ export default function CommunityShowcasePage({ isDarkMode }) {
       </motion.div>
     );
   };
+
+  // Check if showcase is disabled
+  if (appSettings && !appSettings.community_showcase_enabled) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8 flex items-center justify-center`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <Trophy className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Showcase Unavailable</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>The community showcase has been temporarily disabled by an administrator.</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
