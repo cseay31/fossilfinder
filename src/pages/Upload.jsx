@@ -193,21 +193,25 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
 
       // Step 3: Analyze the fossil
       const analysisPrompt = `
-You are an expert archaeologist and paleontologist. Analyze this photo of a potential fossil, artifact, or archaeological finding.
+      You are an expert archaeologist and paleontologist. Analyze this photo of a potential fossil, artifact, or archaeological finding.
 
-Additional context from user:
-- Location: ${location || "Not provided"}
-- Notes: ${additionalNotes || "None"}
+      Additional context from user:
+      - Location: ${location || "Not provided"}
+      - Notes: ${additionalNotes || "None"}
 
-Provide detailed analysis including:
-1. Classification: What type of fossil, artifact, or archaeological item this appears to be
-2. Confidence level (0-100): How certain you are of this identification
-3. Time period: Geological era or archaeological period
-4. Description: Detailed scientific description of what you observe
-5. Significance: Scientific importance of this finding
-6. Recommendations: What should be done next with this discovery
+      Provide detailed analysis including:
+      1. Classification: What type of fossil, artifact, or archaeological item this appears to be
+      2. Confidence level (0-100): How certain you are of this identification
+      3. Time period: Geological era or archaeological period
+      4. Description: Detailed scientific description of what you observe
+      5. Significance: Scientific importance of this finding
+      6. Recommendations: What should be done next with this discovery
+      7. Worth Admin Review: Determine if this discovery is significant enough to warrant admin review (true/false)
+      - Consider: exceptional significance, rare finds, high scientific value, unclear/unusual findings that need expert validation
+      - Routine or common findings with clear identification = false
+      - Significant, rare, or scientifically important findings = true
 
-Be thorough and scientific in your analysis. If you're not certain about the identification, explain why and suggest alternative possibilities.
+      Be thorough and scientific in your analysis. If you're not certain about the identification, explain why and suggest alternative possibilities.
       `;
 
       const aiResponse = await base44.integrations.Core.InvokeLLM({
@@ -221,7 +225,8 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
             time_period: { type: "string" },
             description: { type: "string" },
             significance_level: { type: "string", enum: ["low", "medium", "high", "exceptional"] },
-            recommendations: { type: "string" }
+            recommendations: { type: "string" },
+            needs_admin_review: { type: "boolean" }
           }
         }
       });
