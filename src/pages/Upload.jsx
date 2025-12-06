@@ -114,7 +114,7 @@ export default function UploadPage({ isDarkMode }) {
     setCurrentStep("analyzing");
     setError("");
 
-    trackAction("Started analyzing discovery");
+    await trackAction("Started analyzing discovery");
 
     try {
       // Step 1: AI Detection Check
@@ -242,7 +242,7 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
       setAnalysisResults(updatedDiscovery);
       setCurrentStep("results");
 
-      trackAction("Completed discovery analysis");
+      await trackAction("Completed discovery analysis");
 
     } catch (error) {
       console.error("Analysis failed:", error);

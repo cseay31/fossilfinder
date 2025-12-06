@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 
+let globalActivityId = null;
+
 export default function ActivityTracker() {
   const location = useLocation();
-  const activityIdRef = useRef(null);
-  const updateTimeoutRef = useRef(null);
+  const intervalRef = useRef(null);
 
   const getPageName = (pathname) => {
     const path = pathname.replace('/', '');
@@ -26,46 +27,40 @@ export default function ActivityTracker() {
         last_seen: new Date().toISOString()
       };
 
-      if (activityIdRef.current) {
-        await base44.entities.UserActivity.update(activityIdRef.current, activityData);
+      if (globalActivityId) {
+        await base44.entities.UserActivity.update(globalActivityId, activityData);
       } else {
         const existing = await base44.entities.UserActivity.filter({ user_email: user.email });
         if (existing.length > 0) {
-          activityIdRef.current = existing[0].id;
+          globalActivityId = existing[0].id;
           await base44.entities.UserActivity.update(existing[0].id, activityData);
         } else {
           const created = await base44.entities.UserActivity.create(activityData);
-          activityIdRef.current = created.id;
+          globalActivityId = created.id;
         }
       }
     } catch (error) {
-      console.error("Failed to update activity:", error);
+      // Silently fail to avoid console spam
     }
   };
 
   useEffect(() => {
     updateActivity();
 
-    const interval = setInterval(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    intervalRef.current = setInterval(() => {
       updateActivity();
-    }, 10000); // Update every 10 seconds
+    }, 5000); // Update every 5 seconds
 
-    return () => clearInterval(interval);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (activityIdRef.current) {
-        navigator.sendBeacon(
-          '/api/activity/close',
-          JSON.stringify({ id: activityIdRef.current })
-        );
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
       }
     };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, []);
+  }, [location.pathname]);
 
   return null;
 }
@@ -82,6 +77,6 @@ export const trackAction = async (action) => {
       });
     }
   } catch (error) {
-    console.error("Failed to track action:", error);
+    // Silently fail
   }
 };
