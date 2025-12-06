@@ -13,32 +13,13 @@ import { Separator } from "@/components/ui/separator";
 import { 
   Megaphone, Settings as SettingsIcon, Ban, Save, AlertTriangle, UserCheck, 
   MessageCircle, Heart, Share2, Shield, Map, BookOpen, ScanLine, Trophy,
-  MessageSquare, Upload, MapPin, Bot, Wrench, ToggleLeft, Loader2
+  MessageSquare, Upload, MapPin, Bot, Wrench, ToggleLeft, Loader2, RefreshCw, Trash2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function SiteSettings() {
-  const [settings, setSettings] = useState({
-    announcement_text: '',
-    announcement_active: false,
-    announcement_type: 'info',
-    discoveries_enabled: true,
-    expert_matching_enabled: true,
-    forum_enabled: true,
-    forum_posting_enabled: true,
-    community_showcase_enabled: true,
-    multi_scan_enabled: true,
-    discovery_map_enabled: true,
-    education_enabled: true,
-    comments_enabled: true,
-    likes_enabled: true,
-    sharing_enabled: true,
-    ai_moderation_enabled: true,
-    maintenance_mode: false,
-    maintenance_message: '',
-    max_uploads_per_day: 10,
-    require_location: true
-  });
+  const [settings, setSettings] = useState(null);
+  const [settingsId, setSettingsId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
@@ -49,47 +30,91 @@ export default function SiteSettings() {
 
   const loadSettings = async () => {
     try {
-      const data = await base44.entities.Settings.filter({ setting_key: 'global' });
+      const data = await base44.entities.AppSettings.list();
+      
       if (data.length > 0) {
-        setSettings({ ...settings, ...data[0] });
+        // Use first settings record
+        setSettings(data[0]);
+        setSettingsId(data[0].id);
       } else {
-        const created = await base44.entities.Settings.create({
-          ...settings,
-          setting_key: 'global'
-        });
+        // Create default settings
+        const defaults = {
+          announcement_text: '',
+          announcement_active: false,
+          announcement_type: 'info',
+          discoveries_enabled: true,
+          expert_matching_enabled: true,
+          forum_enabled: true,
+          forum_posting_enabled: true,
+          community_showcase_enabled: true,
+          multi_scan_enabled: true,
+          discovery_map_enabled: true,
+          education_enabled: true,
+          comments_enabled: true,
+          likes_enabled: true,
+          sharing_enabled: true,
+          ai_moderation_enabled: true,
+          maintenance_mode: false,
+          maintenance_message: '',
+          max_uploads_per_day: 10,
+          require_location: true
+        };
+        
+        const created = await base44.entities.AppSettings.create(defaults);
         setSettings(created);
+        setSettingsId(created.id);
       }
     } catch (error) {
       console.error("Failed to load settings:", error);
-      setMessage(`Failed to load settings: ${error.message || error}`);
+      setMessage('Failed to load settings');
     } finally {
       setIsLoading(false);
     }
   };
 
   const saveSettings = async () => {
+    if (!settingsId || !settings) return;
+    
     setIsSaving(true);
     setMessage('');
 
     try {
-      const payload = { ...settings, setting_key: 'global' };
+      // Clean payload - remove system fields
+      const payload = { ...settings };
       delete payload.id;
       delete payload.created_date;
       delete payload.updated_date;
       delete payload.created_by;
 
-      const existing = await base44.entities.Settings.filter({ setting_key: 'global' });
-      if (existing.length > 0) {
-        await base44.entities.Settings.update(existing[0].id, payload);
-      } else {
-        await base44.entities.Settings.create(payload);
-      }
-
-      setMessage('Settings saved successfully!');
-      await loadSettings();
+      await base44.entities.AppSettings.update(settingsId, payload);
+      
+      setMessage('✅ Settings saved successfully!');
+      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error("Failed to save settings:", error);
-      setMessage(`Failed to save settings: ${error.message || error}`);
+      setMessage(`❌ Failed to save: ${error.message || error}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const resetSettings = async () => {
+    if (!confirm('Reset all settings to defaults?')) return;
+    
+    setIsSaving(true);
+    try {
+      // Delete all existing settings
+      const allSettings = await base44.entities.AppSettings.list();
+      for (const s of allSettings) {
+        await base44.entities.AppSettings.delete(s.id);
+      }
+      
+      // Reload (will create defaults)
+      await loadSettings();
+      setMessage('✅ Settings reset to defaults');
+    } catch (error) {
+      console.error("Failed to reset:", error);
+      setMessage('❌ Failed to reset settings');
     } finally {
       setIsSaving(false);
     }
@@ -105,7 +130,7 @@ export default function SiteSettings() {
         </div>
       </div>
       <Switch
-        checked={settings[settingKey] !== false}
+        checked={settings[settingKey] === true}
         onCheckedChange={(checked) => setSettings({ ...settings, [settingKey]: checked })}
       />
     </div>
@@ -114,22 +139,30 @@ export default function SiteSettings() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
       </div>
+    );
+  }
+
+  if (!settings) {
+    return (
+      <Alert className="border-red-500/50 bg-red-900/20">
+        <AlertDescription className="text-red-400">Failed to load settings</AlertDescription>
+      </Alert>
     );
   }
 
   return (
     <div className="space-y-6">
       {message && (
-        <Alert className={message.includes('Failed') ? 'border-red-500/50 bg-red-900/20' : 'border-green-500/50 bg-green-900/20'}>
-          <AlertDescription className={message.includes('Failed') ? 'text-red-400' : 'text-green-400'}>
+        <Alert className={message.includes('❌') ? 'border-red-500/50 bg-red-900/20' : 'border-green-500/50 bg-green-900/20'}>
+          <AlertDescription className={message.includes('❌') ? 'text-red-400' : 'text-green-400'}>
             {message}
           </AlertDescription>
         </Alert>
       )}
 
-      {/* Maintenance Mode - Top Priority */}
+      {/* Maintenance Mode */}
       <Card className="bg-slate-900/50 border-slate-700/50 border-l-4 border-l-red-500">
         <CardHeader>
           <CardTitle className="text-xl text-white flex items-center gap-3">
@@ -184,7 +217,7 @@ export default function SiteSettings() {
               </div>
             </div>
             <Switch
-              checked={Boolean(settings.announcement_active)}
+              checked={settings.announcement_active === true}
               onCheckedChange={(checked) => setSettings({ ...settings, announcement_active: checked })}
             />
           </div>
@@ -232,41 +265,11 @@ export default function SiteSettings() {
           <CardDescription className="text-slate-400">Enable or disable specific pages and features</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <SettingToggle
-            icon={Upload}
-            iconColor="text-amber-600"
-            title="Discovery Uploads"
-            description="Allow users to upload new archaeological photos"
-            settingKey="discoveries_enabled"
-          />
-          <SettingToggle
-            icon={ScanLine}
-            iconColor="text-cyan-600"
-            title="Multi-Scan Feature"
-            description="Allow users to use the multi-rock scanning tool"
-            settingKey="multi_scan_enabled"
-          />
-          <SettingToggle
-            icon={Map}
-            iconColor="text-emerald-600"
-            title="Discovery Map"
-            description="Show the global discovery map page"
-            settingKey="discovery_map_enabled"
-          />
-          <SettingToggle
-            icon={BookOpen}
-            iconColor="text-indigo-600"
-            title="Education Hub"
-            description="Enable the education and learning page"
-            settingKey="education_enabled"
-          />
-          <SettingToggle
-            icon={UserCheck}
-            iconColor="text-purple-600"
-            title="Expert Matching"
-            description="Allow users to find and connect with experts"
-            settingKey="expert_matching_enabled"
-          />
+          <SettingToggle icon={Upload} iconColor="text-amber-400" title="Discovery Uploads" description="Allow users to upload new archaeological photos" settingKey="discoveries_enabled" />
+          <SettingToggle icon={ScanLine} iconColor="text-cyan-400" title="Multi-Scan Feature" description="Allow users to use the multi-rock scanning tool" settingKey="multi_scan_enabled" />
+          <SettingToggle icon={Map} iconColor="text-emerald-400" title="Discovery Map" description="Show the global discovery map page" settingKey="discovery_map_enabled" />
+          <SettingToggle icon={BookOpen} iconColor="text-indigo-400" title="Education Hub" description="Enable the education and learning page" settingKey="education_enabled" />
+          <SettingToggle icon={UserCheck} iconColor="text-purple-400" title="Expert Matching" description="Allow users to find and connect with experts" settingKey="expert_matching_enabled" />
         </CardContent>
       </Card>
 
@@ -280,49 +283,13 @@ export default function SiteSettings() {
           <CardDescription className="text-slate-400">Control social and community features</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <SettingToggle
-            icon={Trophy}
-            iconColor="text-amber-600"
-            title="Community Showcase"
-            description="Enable the community showcase page"
-            settingKey="community_showcase_enabled"
-          />
-          <SettingToggle
-            icon={MessageSquare}
-            iconColor="text-indigo-600"
-            title="Forum Access"
-            description="Allow users to view the forum"
-            settingKey="forum_enabled"
-          />
-          <SettingToggle
-            icon={MessageSquare}
-            iconColor="text-indigo-600"
-            title="Forum Posting"
-            description="Allow users to create new forum posts"
-            settingKey="forum_posting_enabled"
-          />
-          <Separator className="my-4" />
-          <SettingToggle
-            icon={MessageCircle}
-            iconColor="text-blue-600"
-            title="Comments"
-            description="Allow users to comment on discoveries"
-            settingKey="comments_enabled"
-          />
-          <SettingToggle
-            icon={Heart}
-            iconColor="text-red-500"
-            title="Likes"
-            description="Allow users to like discoveries and comments"
-            settingKey="likes_enabled"
-          />
-          <SettingToggle
-            icon={Share2}
-            iconColor="text-green-600"
-            title="Sharing"
-            description="Allow users to share discoveries"
-            settingKey="sharing_enabled"
-          />
+          <SettingToggle icon={Trophy} iconColor="text-amber-400" title="Community Showcase" description="Enable the community showcase page" settingKey="community_showcase_enabled" />
+          <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Access" description="Allow users to view the forum" settingKey="forum_enabled" />
+          <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Posting" description="Allow users to create new forum posts" settingKey="forum_posting_enabled" />
+          <Separator className="my-4 bg-slate-700" />
+          <SettingToggle icon={MessageCircle} iconColor="text-blue-400" title="Comments" description="Allow users to comment on discoveries" settingKey="comments_enabled" />
+          <SettingToggle icon={Heart} iconColor="text-red-400" title="Likes" description="Allow users to like discoveries and comments" settingKey="likes_enabled" />
+          <SettingToggle icon={Share2} iconColor="text-green-400" title="Sharing" description="Allow users to share discoveries" settingKey="sharing_enabled" />
         </CardContent>
       </Card>
 
@@ -336,13 +303,7 @@ export default function SiteSettings() {
           <CardDescription className="text-slate-400">Configure upload requirements and limits</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <SettingToggle
-            icon={MapPin}
-            iconColor="text-emerald-400"
-            title="Require GPS Location"
-            description="Users must provide GPS coordinates when uploading"
-            settingKey="require_location"
-          />
+          <SettingToggle icon={MapPin} iconColor="text-emerald-400" title="Require GPS Location" description="Users must provide GPS coordinates when uploading" settingKey="require_location" />
           <div className="flex items-center justify-between p-4 rounded-lg bg-slate-900/50 border border-slate-700/50">
             <div className="flex items-start gap-3">
               <Upload className="w-5 h-5 mt-0.5 text-amber-400" />
@@ -373,19 +334,13 @@ export default function SiteSettings() {
           <CardDescription className="text-slate-400">Content moderation settings</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <SettingToggle
-            icon={Bot}
-            iconColor="text-purple-600"
-            title="AI Comment Moderation"
-            description="Automatically check comments for inappropriate content"
-            settingKey="ai_moderation_enabled"
-          />
+          <SettingToggle icon={Bot} iconColor="text-purple-400" title="AI Comment Moderation" description="Automatically check comments for inappropriate content" settingKey="ai_moderation_enabled" />
         </CardContent>
       </Card>
 
-      {/* Save Button */}
+      {/* Action Buttons */}
       <Card className="bg-slate-900/50 border-slate-700/50">
-        <CardContent className="pt-6">
+        <CardContent className="pt-6 space-y-3">
           <Button
             onClick={saveSettings}
             disabled={isSaving}
@@ -402,6 +357,16 @@ export default function SiteSettings() {
                 Save All Settings
               </>
             )}
+          </Button>
+          
+          <Button
+            onClick={resetSettings}
+            disabled={isSaving}
+            variant="outline"
+            className="w-full border-red-500/50 text-red-400 hover:bg-red-900/20"
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            Reset to Defaults
           </Button>
         </CardContent>
       </Card>
