@@ -399,6 +399,21 @@ export default function Layout({ children, currentPageName }) {
           <ModerationNotification />
           <AdminMessageBanner />
 
+          {/* Floating Mobile Menu Button */}
+          <div className="md:hidden fixed bottom-6 right-6 z-50">
+            <SidebarTrigger className={`w-14 h-14 rounded-full shadow-2xl ${
+              isDarkMode 
+                ? 'bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 hover:to-emerald-500' 
+                : 'bg-gradient-to-r from-amber-600 to-stone-700 hover:from-amber-700 hover:to-stone-800'
+            } text-white flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </SidebarTrigger>
+          </div>
+
           <header className={`${isDarkMode ? 'bg-slate-900/70 border-white/10' : 'bg-white/70 border-stone-200'} backdrop-blur-sm border-b px-6 py-4 md:hidden`}>
             <div className="flex items-center gap-4">
               <SidebarTrigger className={`${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-stone-100'} p-2 rounded-lg transition-colors duration-200`} />
