@@ -31,8 +31,18 @@ export default function ActivityTracker() {
         await base44.entities.UserActivity.update(globalActivityId, activityData);
       } else {
         const existing = await base44.entities.UserActivity.filter({ user_email: user.email });
+        
         if (existing.length > 0) {
+          // Clean up duplicates - keep only the first one
           globalActivityId = existing[0].id;
+          
+          // Delete any duplicate entries
+          if (existing.length > 1) {
+            for (let i = 1; i < existing.length; i++) {
+              await base44.entities.UserActivity.delete(existing[i].id);
+            }
+          }
+          
           await base44.entities.UserActivity.update(existing[0].id, activityData);
         } else {
           const created = await base44.entities.UserActivity.create(activityData);
