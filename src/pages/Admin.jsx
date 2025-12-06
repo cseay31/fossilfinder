@@ -22,7 +22,7 @@ import ModerationPanel from "../components/admin/ModerationPanel";
 import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
 
-export default function AdminPage() {
+export default function AdminPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
   const [users, setUsers] = useState([]);
   const [forumPosts, setForumPosts] = useState([]);
@@ -145,13 +145,13 @@ export default function AdminPage() {
 
   const StatCard = ({ icon: Icon, label, value, subValue, color, bgColor }) => (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <Card className="bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50 transition-all">
+      <Card className={isDarkMode ? 'bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50' : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'} transition-all>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider">{label}</p>
-              <p className="text-2xl font-bold text-white mt-1">{value}</p>
-              {subValue && <p className="text-xs text-slate-500 mt-1">{subValue}</p>}
+              <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'} uppercase tracking-wider`}>{label}</p>
+              <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mt-1`}>{value}</p>
+              {subValue && <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-500'} mt-1`}>{subValue}</p>}
             </div>
             <div className={`p-3 rounded-xl ${bgColor}`}>
               <Icon className={`w-5 h-5 ${color}`} />
@@ -166,33 +166,35 @@ export default function AdminPage() {
     <Button
       onClick={onClick}
       variant="ghost"
-      className="flex flex-col items-center gap-2 h-auto py-4 px-6 bg-slate-800/30 hover:bg-slate-700/50 border border-slate-700/50 rounded-xl"
+      className={`flex flex-col items-center gap-2 h-auto py-4 px-6 ${isDarkMode ? 'bg-slate-800/30 hover:bg-slate-700/50 border-slate-700/50' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'} border rounded-xl`}
     >
       <Icon className={`w-6 h-6 ${color}`} />
-      <span className="text-xs text-slate-300">{label}</span>
+      <span className={`text-xs ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{label}</span>
     </Button>
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
-      {/* Aurora Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
-        <div className="absolute top-20 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]" />
-      </div>
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950' : 'bg-gradient-to-br from-slate-50 to-slate-100'} p-4 md:p-6`}>
+      {/* Aurora Background - Dark Mode Only */}
+      {isDarkMode && (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
+          <div className="absolute top-20 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]" />
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/25">
+              <div className={`w-12 h-12 ${isDarkMode ? 'bg-gradient-to-br from-cyan-500 to-purple-600 shadow-lg shadow-cyan-500/25' : 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg'} rounded-2xl flex items-center justify-center`}>
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">Admin Control Center</h1>
-                <p className="text-sm text-slate-400">Welcome back, {currentUser.full_name || 'Admin'}</p>
+                <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Admin Control Center</h1>
+                <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Welcome back, {currentUser.full_name || 'Admin'}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -201,14 +203,14 @@ export default function AdminPage() {
                 variant="ghost"
                 size="sm"
                 disabled={isLoading}
-                className="text-slate-400 hover:text-white"
+                className={isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-800'}
               >
                 <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                 Refresh
               </Button>
               <Button
                 onClick={() => setShowSlideshowReview(true)}
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500"
+                className={isDarkMode ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500' : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'}
               >
                 <SlidersHorizontal className="w-4 h-4 mr-2" />
                 Quick Review
@@ -219,7 +221,7 @@ export default function AdminPage() {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="bg-slate-800/50 border border-slate-700/50 p-1 flex-wrap h-auto gap-1">
+          <TabsList className={`${isDarkMode ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-slate-300'} border p-1 flex-wrap h-auto gap-1`}>
             <TabsTrigger value="overview" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-purple-600">
               <LayoutDashboard className="w-4 h-4 mr-2" /> Overview
             </TabsTrigger>
@@ -265,10 +267,10 @@ export default function AdminPage() {
             </div>
 
             {/* Quick Actions */}
-            <Card className="bg-slate-800/30 border-slate-700/50">
+            <Card className={isDarkMode ? 'bg-slate-800/30 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}>
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg text-white flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-yellow-400" /> Quick Actions
+                <CardTitle className={`text-lg ${isDarkMode ? 'text-white' : 'text-slate-800'} flex items-center gap-2`}>
+                  <Zap className="w-5 h-5 text-yellow-500" /> Quick Actions
                 </CardTitle>
               </CardHeader>
               <CardContent>

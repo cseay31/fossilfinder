@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -40,11 +40,26 @@ export default function Layout({ children, currentPageName }) {
   const [discoveries, setDiscoveries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const [maintenanceMode, setMaintenanceMode] = useState(false);
+  const [maintenanceMessage, setMaintenanceMessage] = useState('');
 
   useEffect(() => {
     loadDiscoveries();
     loadCurrentUser();
+    checkMaintenanceMode();
   }, []);
+
+  const checkMaintenanceMode = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0 && settings[0].maintenance_mode) {
+        setMaintenanceMode(true);
+        setMaintenanceMessage(settings[0].maintenance_message || 'Site is currently under maintenance.');
+      }
+    } catch (error) {
+      console.error("Failed to check maintenance mode:", error);
+    }
+  };
 
   const loadCurrentUser = async () => {
     try {
@@ -65,6 +80,33 @@ export default function Layout({ children, currentPageName }) {
       console.error("Failed to load discoveries for stats:", error);
     }
   };
+
+  // Check maintenance mode (non-admin users only)
+  if (!isLoadingUser && maintenanceMode && currentUser?.role !== 'admin') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white/80 backdrop-blur-sm shadow-lg border-0 rounded-xl p-8">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Wrench className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-orange-800 mb-3">
+              Site Maintenance
+            </h1>
+            <Alert className="border-orange-200 bg-orange-50 mb-4">
+              <Wrench className="h-4 w-4 text-orange-600" />
+              <AlertDescription className="text-orange-800">
+                {maintenanceMessage}
+              </AlertDescription>
+            </Alert>
+            <p className="text-slate-600 mb-6">
+              We'll be back shortly. Thank you for your patience!
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Check if user is banned
   if (!isLoadingUser && currentUser?.is_banned) {
