@@ -236,7 +236,10 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
 
       const updatedDiscovery = await base44.entities.Discovery.update(discovery.id, {
         ...aiResponse,
-        analysis_status: "completed"
+        analysis_status: "completed",
+        location: discovery.location,
+        latitude: discovery.latitude,
+        longitude: discovery.longitude
       });
 
       setAnalysisResults(updatedDiscovery);
