@@ -23,7 +23,6 @@ import AnnouncementBanner from "./components/layout/AnnouncementBanner";
 
 import ModerationNotification from "./components/layout/ModerationNotification";
 import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
-import JudgeMessageBanner from "./components/layout/JudgeMessageBanner";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -397,7 +396,6 @@ export default function Layout({ children, currentPageName }) {
           <AnnouncementBanner />
           <ModerationNotification />
           <AdminMessageBanner />
-          <JudgeMessageBanner />
 
           <header className={`${isDarkMode ? 'bg-slate-900/70 border-white/10' : 'bg-white/70 border-stone-200'} backdrop-blur-sm border-b px-6 py-4 md:hidden`}>
             <div className="flex items-center gap-4">
