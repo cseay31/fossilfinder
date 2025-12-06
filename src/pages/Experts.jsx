@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Discovery } from "@/entities/Discovery";
-import { InvokeLLM } from "@/integrations/Core";
+import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -71,7 +70,7 @@ export default function ExpertsPage({ isDarkMode }) {
     setIsLoading(true);
     setIsSearching(true);
     try {
-      const discoveryData = await Discovery.filter({ id: discoveryId });
+      const discoveryData = await base44.entities.Discovery.filter({ id: discoveryId });
       if (!discoveryData || discoveryData.length === 0) {
         throw new Error("Discovery not found");
       }
@@ -129,7 +128,7 @@ For each expert, provide:
 
 Focus on finding experts who are actively publishing and well-regarded in their field.`;
 
-      const aiResponse = await InvokeLLM({
+      const aiResponse = await base44.integrations.Core.InvokeLLM({
         prompt,
         add_context_from_internet: true,
         response_json_schema: {
