@@ -27,35 +27,18 @@ export default function UploadPage({ isDarkMode }) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
-  const [discoverySettings, setDiscoverySettings] = useState(null);
+  const [appSettings, setAppSettings] = useState(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
 
   useEffect(() => {
     loadSettings();
-
-    // Poll settings every 3 seconds to keep in sync
-    const interval = setInterval(() => {
-      loadSettings();
-    }, 3000);
-
-    return () => clearInterval(interval);
   }, []);
 
   const loadSettings = async () => {
     try {
-      const data = await base44.entities.Settings.filter({ setting_key: 'global' });
+      const data = await base44.entities.AppSettings.list();
       if (data.length > 0) {
-        setDiscoverySettings(data[0]);
-      } else {
-        // auto-create default if missing
-        const created = await base44.entities.Settings.create({
-          announcement_text: '',
-          announcement_active: false,
-          announcement_type: 'info',
-          discoveries_enabled: true,
-          setting_key: 'global'
-        });
-        setDiscoverySettings(created);
+        setAppSettings(data[0]);
       }
     } catch (error) {
       console.error("Failed to load settings:", error);
@@ -271,7 +254,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
   };
 
   // Check if discoveries are disabled
-  const isDiscoveryDisabled = discoverySettings && discoverySettings.discoveries_enabled === false;
+  const isDiscoveryDisabled = appSettings && appSettings.discoveries_enabled === false;
 
   if (!isLoadingSettings && isDiscoveryDisabled) {
     return (
@@ -343,7 +326,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
           </Alert>
         )}
 
-        {!isLoadingSettings && discoverySettings?.announcement_active && discoverySettings?.announcement_text && (
+        {!isLoadingSettings && appSettings?.announcement_active && appSettings?.announcement_text && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -352,7 +335,7 @@ Be thorough and scientific in your analysis. If you're not certain about the ide
             <Alert className="border-amber-200 bg-amber-50">
               <AlertCircle className="h-4 w-4 text-amber-600" />
               <AlertDescription className="text-amber-800">
-                {discoverySettings.announcement_text}
+                {appSettings.announcement_text}
               </AlertDescription>
             </Alert>
           </motion.div>
