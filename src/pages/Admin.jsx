@@ -252,6 +252,9 @@ export default function AdminPage({ isDarkMode }) {
             <TabsTrigger value="analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-600 data-[state=active]:to-cyan-600">
               <TrendingUp className="w-4 h-4 mr-2" /> Analytics
             </TabsTrigger>
+            <TabsTrigger value="full-system" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-blue-600">
+              <FileText className="w-4 h-4 mr-2" /> Full System Discoveries
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -510,6 +513,67 @@ export default function AdminPage({ isDarkMode }) {
           <TabsContent value="announcements"><AdminMessaging /></TabsContent>
           <TabsContent value="settings"><SiteSettings /></TabsContent>
           <TabsContent value="analytics"><AnalyticsDashboard discoveries={discoveries} /></TabsContent>
+          
+          {/* Full System Discoveries Tab */}
+          <TabsContent value="full-system" className="space-y-6">
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardHeader>
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <CardTitle className="text-xl text-white flex items-center gap-3">
+                    <FileText className="w-6 h-6 text-indigo-400" />
+                    Full System Discoveries
+                    <Badge variant="outline" className="border-slate-600">{discoveries.length} Total</Badge>
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  Complete list of all discoveries in the system, regardless of review status
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Search */}
+                <div className="mb-6">
+                  <Input
+                    placeholder="Search all discoveries..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="max-w-md bg-slate-900/50 border-slate-700 text-white"
+                  />
+                </div>
+
+                {/* Grid */}
+                {isLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {discoveries
+                      .filter(d => {
+                        if (!searchQuery) return true;
+                        return d.classification?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                               d.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                               d.created_by?.toLowerCase().includes(searchQuery.toLowerCase());
+                      })
+                      .map((discovery, index) => (
+                        <AdminDiscoveryCard 
+                          key={discovery.id} 
+                          discovery={discovery} 
+                          index={index}
+                          onUpdate={loadAllData}
+                        />
+                      ))}
+                  </div>
+                )}
+
+                {discoveries.length === 0 && !isLoading && (
+                  <div className="text-center py-12">
+                    <FileText className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+                    <p className="text-slate-400">No discoveries in the system yet</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
 
