@@ -87,7 +87,7 @@ export default function MultiScanPage({ isDarkMode }) {
       return;
     }
 
-    if (!latitude || !longitude) {
+    if (appSettings?.require_location !== false && (!latitude || !longitude)) {
       setError("Location is required. Please capture your GPS coordinates.");
       return;
     }
@@ -453,7 +453,7 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
 
             {/* Location */}
             <div>
-              <Label className="text-stone-700 font-medium">Location <span className="text-red-500">*</span></Label>
+              <Label className="text-stone-700 font-medium">Location {appSettings?.require_location !== false && <span className="text-red-500">*</span>}</Label>
               <div className="flex gap-2 mt-1">
                 <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="GPS coordinates" className="flex-1" />
                 <Button type="button" variant="outline" onClick={getCurrentLocation} disabled={isGettingLocation}>
@@ -462,12 +462,14 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
               </div>
               {latitude && longitude ? (
                 <p className="text-xs text-green-600 mt-1">✓ GPS captured: {latitude.toFixed(6)}, {longitude.toFixed(6)}</p>
-              ) : (
+              ) : appSettings?.require_location !== false ? (
                 <p className="text-xs text-amber-600 mt-1">⚠️ GPS location required</p>
+              ) : (
+                <p className="text-xs text-slate-500 mt-1">GPS location optional</p>
               )}
             </div>
 
-            <Button onClick={analyzeImages} disabled={images.length === 0 || isAnalyzing || !latitude || !longitude} className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800">
+            <Button onClick={analyzeImages} disabled={images.length === 0 || isAnalyzing || (appSettings?.require_location !== false && (!latitude || !longitude))} className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800">
               {isAnalyzing ? (
                 <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Scanning...</>
               ) : (
