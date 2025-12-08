@@ -105,7 +105,7 @@ export default function UploadPage({ isDarkMode }) {
       return;
     }
 
-    if (!latitude || !longitude) {
+    if (appSettings?.require_location !== false && (!latitude || !longitude)) {
       setError("Location is required. Please use the GPS button to capture your current location.");
       return;
     }
@@ -406,7 +406,7 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
                       <CardContent className="space-y-4">
                         <div>
                             <Label htmlFor="location" className={`${isDarkMode ? 'text-slate-300' : 'text-stone-700'} font-medium`}>
-                              Discovery Location <span className="text-red-500">*</span>
+                              Discovery Location {appSettings?.require_location !== false && <span className="text-red-500">*</span>}
                             </Label>
                             <div className="flex gap-2 mt-1">
                               <Input
@@ -434,9 +434,13 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
                           <p className="text-xs text-green-600 mt-1">
                             ✓ GPS coordinates captured: {latitude.toFixed(6)}, {longitude.toFixed(6)}
                           </p>
-                        ) : (
+                        ) : appSettings?.require_location !== false ? (
                           <p className="text-xs text-amber-600 mt-1">
                             ⚠️ GPS location required - click the location button to capture coordinates
+                          </p>
+                        ) : (
+                          <p className="text-xs text-slate-500 mt-1">
+                            GPS location optional - click the location button to capture coordinates
                           </p>
                         )}
                       </div>
@@ -457,7 +461,7 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
 
                     <Button
                       onClick={analyzePhoto}
-                      disabled={isAnalyzing || !latitude || !longitude}
+                      disabled={isAnalyzing || (appSettings?.require_location !== false && (!latitude || !longitude))}
                       className={`w-full ${isDarkMode ? 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500' : 'bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800'} text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50`}
                     >
                       {isAnalyzing ? (
