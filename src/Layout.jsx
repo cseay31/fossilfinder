@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
+import LoadingScreen from "./components/layout/LoadingScreen";
 import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench } from "lucide-react";
 import {
   Sidebar,
@@ -38,6 +39,7 @@ export default function Layout({ children, currentPageName }) {
     localStorage.setItem('fossilfinder-theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   const [discoveries, setDiscoveries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
@@ -49,6 +51,15 @@ export default function Layout({ children, currentPageName }) {
     loadCurrentUser();
     checkMaintenanceMode();
   }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   const checkMaintenanceMode = async () => {
     try {
@@ -211,6 +222,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <SidebarProvider>
       <ActivityTracker />
+      {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
       <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
         {/* Northern Lights Background for Dark Mode */}
         {isDarkMode && (
