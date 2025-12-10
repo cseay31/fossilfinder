@@ -56,7 +56,7 @@ export default function Layout({ children, currentPageName }) {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 1000);
     
     return () => clearTimeout(timer);
   }, [location.pathname]);
