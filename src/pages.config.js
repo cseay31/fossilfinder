@@ -10,6 +10,7 @@ import DiscoveryMap from './pages/DiscoveryMap';
 import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
 import CommunityShowcase from './pages/CommunityShowcase';
+import FosFeed from './pages/FosFeed';
 import __Layout from './Layout.jsx';
 
 
@@ -26,6 +27,7 @@ export const PAGES = {
     "MultiScan": MultiScan,
     "MultiScanDiscoveries": MultiScanDiscoveries,
     "CommunityShowcase": CommunityShowcase,
+    "FosFeed": FosFeed,
 }
 
 export const pagesConfig = {
