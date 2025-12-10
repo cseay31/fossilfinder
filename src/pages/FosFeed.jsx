@@ -241,119 +241,111 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
                 <div className={`absolute inset-0 ${isDarkMode ? 'bg-slate-950/60' : 'bg-stone-900/60'}`} />
 
                 {/* Content */}
-                <div className="relative h-full flex flex-col justify-between p-6 pt-20">
-                  {/* Main Image */}
-                  <div className="flex-1 flex items-center justify-center">
+                <div className="relative h-full flex items-center justify-center">
+                  {/* Main Image - Full Screen */}
+                  <div className="absolute inset-0 flex items-center justify-center">
                     <img
                       src={discovery.photo_url}
                       alt={discovery.classification}
-                      className="max-h-full max-w-full object-contain rounded-xl shadow-2xl"
+                      className="w-full h-full object-cover"
                     />
                   </div>
 
-                  {/* Info Overlay */}
-                  <div className="space-y-4">
-                    {/* User Info */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="w-12 h-12 border-2 border-white">
+                  {/* Right Side Action Buttons */}
+                  <div className="absolute right-4 bottom-24 flex flex-col items-center gap-6 z-20">
+                    {/* User Avatar + Follow */}
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="relative">
+                        <Avatar className="w-12 h-12 border-2 border-white shadow-lg">
                           <AvatarImage src={discoveryUser?.profile_image} />
                           <AvatarFallback className="bg-gradient-to-br from-amber-500 to-orange-600 text-white font-semibold">
                             {discovery.owner_name?.[0] || 'U'}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
-                          <p className="font-semibold text-white">{discovery.owner_name || 'Explorer'}</p>
-                          <p className="text-xs text-white/70">{discoveryUser?.follower_count || 0} followers</p>
-                        </div>
-                      </div>
-                      {discovery.created_by !== currentUser?.email && appSettings?.fosfeed_follow_enabled && (
-                        <Button
-                          size="sm"
-                          onClick={() => toggleFollow(discoveryUser)}
-                          className={isFollowing
-                            ? 'bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm'
-                            : 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white'
-                          }
-                        >
-                          {isFollowing ? <UserMinus className="w-4 h-4 mr-1" /> : <UserPlus className="w-4 h-4 mr-1" />}
-                          {isFollowing ? 'Following' : 'Follow'}
-                        </Button>
-                      )}
-                    </div>
-
-                    {/* Discovery Info */}
-                    <div className="bg-black/40 backdrop-blur-md rounded-xl p-4 space-y-2">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-bold text-white text-lg">{discovery.classification}</h3>
-                        {discovery.significance_level && (
-                          <Badge className="bg-amber-500/80 text-white border-0">
-                            {discovery.significance_level}
-                          </Badge>
+                        {discovery.created_by !== currentUser?.email && appSettings?.fosfeed_follow_enabled && !isFollowing && (
+                          <button
+                            onClick={() => toggleFollow(discoveryUser)}
+                            className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-red-500 flex items-center justify-center shadow-lg"
+                          >
+                            <UserPlus className="w-4 h-4 text-white" />
+                          </button>
                         )}
                       </div>
-                      {discovery.description && (
-                        <p className="text-white/90 text-sm line-clamp-3">{discovery.description}</p>
-                      )}
-                      {discovery.time_period && (
-                        <p className="text-white/70 text-xs">📅 {discovery.time_period}</p>
-                      )}
-                      {discovery.location && (
-                        <p className="text-white/70 text-xs">📍 {discovery.location}</p>
-                      )}
+                      <span className="text-xs text-white font-medium drop-shadow-lg">{discovery.owner_name || 'Explorer'}</span>
                     </div>
-                  </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center justify-around py-4">
+                    {/* Like Button */}
                     <button
                       onClick={() => toggleLike(discovery)}
                       disabled={!appSettings?.likes_enabled}
                       className="flex flex-col items-center gap-1 disabled:opacity-50"
                     >
-                      <div className={`w-14 h-14 rounded-full flex items-center justify-center ${isLiked ? 'bg-red-500' : 'bg-white/20 backdrop-blur-sm'}`}>
-                        <Heart className={`w-6 h-6 ${isLiked ? 'text-white fill-white' : 'text-white'}`} />
+                      <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg ${isLiked ? 'bg-red-500' : 'bg-black/40 backdrop-blur-md'}`}>
+                        <Heart className={`w-7 h-7 ${isLiked ? 'text-white fill-white' : 'text-white'}`} />
                       </div>
-                      <span className="text-white text-sm font-medium">{discovery.likes || 0}</span>
+                      <span className="text-white text-sm font-bold drop-shadow-lg">{discovery.likes || 0}</span>
                     </button>
 
+                    {/* Comment Button */}
                     <button className="flex flex-col items-center gap-1">
-                      <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <MessageCircle className="w-6 h-6 text-white" />
+                      <div className="w-14 h-14 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center shadow-lg">
+                        <MessageCircle className="w-7 h-7 text-white" />
                       </div>
-                      <span className="text-white text-sm font-medium">{discovery.comment_count || 0}</span>
+                      <span className="text-white text-sm font-bold drop-shadow-lg">{discovery.comment_count || 0}</span>
                     </button>
 
+                    {/* Share Button */}
+                    {appSettings?.sharing_enabled && (
+                      <button className="flex flex-col items-center gap-1">
+                        <div className="w-14 h-14 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center shadow-lg">
+                          <Share2 className="w-7 h-7 text-white" />
+                        </div>
+                        <span className="text-white text-xs font-medium drop-shadow-lg">Share</span>
+                      </button>
+                    )}
+
+                    {/* Report Button */}
                     {appSettings?.fosfeed_reporting_enabled && (
                       <button
                         onClick={() => setReportingDiscovery(discovery)}
                         className="flex flex-col items-center gap-1"
                       >
-                        <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center shadow-lg">
                           <Flag className="w-6 h-6 text-white" />
                         </div>
-                        <span className="text-white text-xs">Report</span>
                       </button>
                     )}
+                  </div>
 
-                    {appSettings?.sharing_enabled && (
-                      <button className="flex flex-col items-center gap-1">
-                        <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                          <Share2 className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="text-white text-xs">Share</span>
-                      </button>
-                    )}
+                  {/* Bottom Info Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 pb-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                    <div className="max-w-md space-y-2">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-bold text-white text-xl drop-shadow-lg">{discovery.classification}</h3>
+                        {discovery.significance_level && (
+                          <Badge className="bg-amber-500 text-white border-0 shadow-lg">
+                            {discovery.significance_level}
+                          </Badge>
+                        )}
+                      </div>
+                      {discovery.description && (
+                        <p className="text-white text-sm drop-shadow-lg line-clamp-2">{discovery.description}</p>
+                      )}
+                      <div className="flex items-center gap-3 text-xs text-white/90 drop-shadow-lg">
+                        {discovery.time_period && <span>📅 {discovery.time_period}</span>}
+                        {discovery.location && <span>📍 {discovery.location}</span>}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Scroll Indicator */}
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-2">
-                  {filteredDiscoveries.map((_, i) => (
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 z-10">
+                  {filteredDiscoveries.slice(0, 5).map((_, i) => (
                     <div
                       key={i}
-                      className={`w-1.5 h-1.5 rounded-full transition-all ${
-                        i === index ? 'bg-white h-6' : 'bg-white/40'
+                      className={`w-1 rounded-full transition-all ${
+                        i === index ? 'bg-white h-8' : 'bg-white/50 h-1'
                       }`}
                     />
                   ))}
