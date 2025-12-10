@@ -13,7 +13,8 @@ import { Separator } from "@/components/ui/separator";
 import { 
   Megaphone, Settings as SettingsIcon, Ban, Save, AlertTriangle, UserCheck, 
   MessageCircle, Heart, Share2, Shield, Map, BookOpen, ScanLine, Trophy,
-  MessageSquare, Upload, MapPin, Bot, Wrench, ToggleLeft, Loader2, RefreshCw, Trash2
+  MessageSquare, Upload, MapPin, Bot, Wrench, ToggleLeft, Loader2, RefreshCw, Trash2,
+  TrendingUp
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -46,6 +47,10 @@ export default function SiteSettings() {
           expert_matching_enabled: true,
           forum_enabled: true,
           forum_posting_enabled: true,
+          fosfeed_enabled: true,
+          fosfeed_posting_enabled: true,
+          fosfeed_follow_enabled: true,
+          fosfeed_reporting_enabled: true,
           community_showcase_enabled: true,
           multi_scan_enabled: true,
           discovery_map_enabled: true,
@@ -286,6 +291,16 @@ export default function SiteSettings() {
           <SettingToggle icon={Trophy} iconColor="text-amber-400" title="Community Showcase" description="Enable the community showcase page" settingKey="community_showcase_enabled" />
           <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Access" description="Allow users to view the forum" settingKey="forum_enabled" />
           <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Posting" description="Allow users to create new forum posts" settingKey="forum_posting_enabled" />
+          <Separator className="my-4 bg-slate-700" />
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-cyan-400 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              FosFeed Social Platform
+            </h4>
+            <SettingToggle icon={TrendingUp} iconColor="text-cyan-400" title="FosFeed Platform" description="Enable the TikTok-style FosFeed social feed" settingKey="fosfeed_enabled" />
+            <SettingToggle icon={UserCheck} iconColor="text-purple-400" title="Follow System" description="Allow users to follow/unfollow each other" settingKey="fosfeed_follow_enabled" />
+            <SettingToggle icon={Shield} iconColor="text-red-400" title="Content Reporting" description="Enable report button with AI moderation" settingKey="fosfeed_reporting_enabled" />
+          </div>
           <Separator className="my-4 bg-slate-700" />
           <SettingToggle icon={MessageCircle} iconColor="text-blue-400" title="Comments" description="Allow users to comment on discoveries" settingKey="comments_enabled" />
           <SettingToggle icon={Heart} iconColor="text-red-400" title="Likes" description="Allow users to like discoveries and comments" settingKey="likes_enabled" />

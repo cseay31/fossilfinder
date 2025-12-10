@@ -4,7 +4,7 @@ import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
 import LoadingScreen from "./components/layout/LoadingScreen";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -200,11 +200,16 @@ export default function Layout({ children, currentPageName }) {
                     url: createPageUrl("Forum"),
                     icon: MessageCircle,
                   },
-        {
-          title: "Discovery Map",
-          url: createPageUrl("DiscoveryMap"),
-          icon: Map,
-        },
+                  {
+                    title: "FosFeed",
+                    url: createPageUrl("FosFeed"),
+                    icon: TrendingUp,
+                  },
+                  {
+                    title: "Discovery Map",
+                    url: createPageUrl("DiscoveryMap"),
+                    icon: Map,
+                  },
   ];
 
   // Add admin navigation for admin users
@@ -299,9 +304,11 @@ export default function Layout({ children, currentPageName }) {
                                         ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
                                         : item.title === "Forum"
                                           ? 'text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800'
-                                          : item.title === "Discovery Map"
-                                            ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
-                                            : 'text-stone-700'
+                                          : item.title === "FosFeed"
+                                            ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
+                                            : item.title === "Discovery Map"
+                                              ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
+                                              : 'text-stone-700'
                           }`}
                         >
                         <Link to={item.url} className="flex items-center gap-3 px-3 py-3">
