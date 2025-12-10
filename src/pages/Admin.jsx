@@ -9,7 +9,7 @@ import {
   Shield, Users, Search, TrendingUp, AlertTriangle, MessageSquare, 
   Gavel, Megaphone, SlidersHorizontal, LayoutDashboard, Settings, 
   Award, FileText, Trophy, Eye, Clock, CheckCircle, Star, Activity,
-  Loader2, RefreshCw, Filter, ChevronRight, Zap, Globe, Heart
+  Loader2, RefreshCw, Filter, ChevronRight, Zap, Globe, Heart, Flag
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format, subDays, isAfter } from "date-fns";
@@ -22,6 +22,7 @@ import ModerationPanel from "../components/admin/ModerationPanel";
 import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
 import LiveUserActivity from "../components/admin/LiveUserActivity";
+import ContentReports from "../components/admin/ContentReports";
 
 export default function AdminPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -258,6 +259,9 @@ export default function AdminPage({ isDarkMode }) {
             </TabsTrigger>
             <TabsTrigger value="live-activity" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-emerald-600">
               <Activity className="w-4 h-4 mr-2" /> Live Activity
+            </TabsTrigger>
+            <TabsTrigger value="reports" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-600 data-[state=active]:to-orange-600">
+              <Flag className="w-4 h-4 mr-2" /> Reports
             </TabsTrigger>
           </TabsList>
 
@@ -518,6 +522,7 @@ export default function AdminPage({ isDarkMode }) {
           <TabsContent value="settings"><SiteSettings /></TabsContent>
           <TabsContent value="analytics"><AnalyticsDashboard discoveries={discoveries} /></TabsContent>
           <TabsContent value="live-activity"><LiveUserActivity isDarkMode={isDarkMode} /></TabsContent>
+          <TabsContent value="reports"><ContentReports /></TabsContent>
           
           {/* Full System Discoveries Tab */}
           <TabsContent value="full-system" className="space-y-6">
