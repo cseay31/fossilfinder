@@ -27,7 +27,6 @@ import ContentReports from "../components/admin/ContentReports";
 export default function AdminPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
   const [users, setUsers] = useState([]);
-  const [forumPosts, setForumPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [contactMessages, setContactMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,17 +60,15 @@ export default function AdminPage({ isDarkMode }) {
   const loadAllData = async () => {
     setIsLoading(true);
     try {
-      const [discoveriesData, usersData, postsData, commentsData, messagesData] = await Promise.all([
+      const [discoveriesData, usersData, commentsData, messagesData] = await Promise.all([
         base44.entities.Discovery.list("-created_date"),
         base44.entities.User.list(),
-        base44.entities.ForumPost.list('-created_date', 100),
         base44.entities.DiscoveryComment.list('-created_date', 100),
         base44.entities.ContactMessage.filter({ status: 'new' })
       ]);
       
       setDiscoveries(discoveriesData);
       setUsers(usersData);
-      setForumPosts(postsData);
       setComments(commentsData);
       setContactMessages(messagesData);
     } catch (error) {
@@ -96,7 +93,6 @@ export default function AdminPage({ isDarkMode }) {
     featured: discoveries.filter(d => d.is_featured).length,
     newThisWeek: discoveries.filter(d => isAfter(new Date(d.created_date), last7Days)).length,
     newToday: discoveries.filter(d => isAfter(new Date(d.created_date), last24Hours)).length,
-    forumPosts: forumPosts.length,
     totalComments: comments.length,
     pendingMessages: contactMessages.length,
     totalLikes: discoveries.reduce((sum, d) => sum + (d.likes || 0), 0),
@@ -273,7 +269,7 @@ export default function AdminPage({ isDarkMode }) {
               <StatCard icon={Search} label="Discoveries" value={stats.totalDiscoveries} subValue={`+${stats.newToday} today`} color="text-amber-400" bgColor="bg-amber-500/20" />
               <StatCard icon={Clock} label="Analyzing" value={stats.analyzingCount} color="text-cyan-400" bgColor="bg-cyan-500/20" />
               <StatCard icon={Star} label="Exceptional" value={stats.exceptionalCount} color="text-purple-400" bgColor="bg-purple-500/20" />
-              <StatCard icon={MessageSquare} label="Forum Posts" value={stats.forumPosts} color="text-indigo-400" bgColor="bg-indigo-500/20" />
+              <StatCard icon={MessageSquare} label="Comments" value={stats.totalComments} color="text-indigo-400" bgColor="bg-indigo-500/20" />
               <StatCard icon={Heart} label="Total Likes" value={stats.totalLikes} color="text-red-400" bgColor="bg-red-500/20" />
             </div>
 
