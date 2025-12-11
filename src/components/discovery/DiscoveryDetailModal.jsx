@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   X, Heart, MessageCircle, Share2, Calendar, MapPin, 
-  TrendingUp, Send, Loader2, Globe, Lock, Users, User
+  TrendingUp, Send, Loader2, Globe, Lock, Users, User, ExternalLink
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 
@@ -266,7 +266,7 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center gap-4 pt-2">
+                <div className="flex items-center gap-2 pt-2 flex-wrap">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -280,6 +280,19 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
                     <MessageCircle className="w-5 h-5 mr-1" />
                     {localDiscovery.comment_count || 0}
                   </Button>
+                  {isOwner && localDiscovery.analysis_status === 'completed' && (
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        const url = `/Experts?discoveryId=${localDiscovery.id}`;
+                        window.location.href = url;
+                      }}
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
+                    >
+                      <ExternalLink className="w-4 h-4 mr-1" />
+                      Send to Expert
+                    </Button>
+                  )}
                 </div>
               </div>
 
