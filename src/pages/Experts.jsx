@@ -12,6 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ExpertsPage({ isDarkMode }) {
   const [filteredExperts, setFilteredExperts] = useState([]);
   const [discovery, setDiscovery] = useState(null);
+  const [discoveries, setDiscoveries] = useState([]);
+  const [showDiscoveryPicker, setShowDiscoveryPicker] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [appSettings, setAppSettings] = useState(null);
@@ -44,16 +46,31 @@ export default function ExpertsPage({ isDarkMode }) {
   };
 
   useEffect(() => {
-    checkSettings();
+    loadInitialData();
+  }, []);
+
+  const loadInitialData = async () => {
+    await checkSettings();
     const params = new URLSearchParams(window.location.search);
     const discoveryId = params.get('discoveryId');
 
+    // Load user's discoveries
+    try {
+      const userDiscoveries = await base44.entities.Discovery.filter(
+        { analysis_status: 'completed' },
+        '-created_date'
+      );
+      setDiscoveries(userDiscoveries);
+    } catch (error) {
+      console.error("Failed to load discoveries:", error);
+    }
+
     if (discoveryId) {
-      loadDiscoveryAndFindExperts(discoveryId);
+      await loadDiscoveryAndFindExperts(discoveryId);
     } else {
       setIsLoading(false);
     }
-  }, []);
+  };
 
   const checkSettings = async () => {
     try {
@@ -291,30 +308,71 @@ Focus on finding experts who are actively publishing and well-regarded in their 
           </p>
         </motion.div>
 
-        {discovery && (
-          <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-xl text-stone-800">
-                <FileText className="w-6 h-6 text-amber-600" />
-                Reviewing Discovery
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center gap-6">
-              <img src={discovery.photo_url} alt="Discovery" className="w-24 h-24 rounded-lg object-cover shadow-md" />
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-stone-800">{discovery.classification}</h3>
-                <div className="flex items-center gap-2 text-sm text-stone-600">
-                  <Calendar className="w-4 h-4" />
-                  <span>{discovery.time_period}</span>
+        {/* Discovery Selector */}
+        <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
+          <CardHeader>
+            <CardTitle className={`flex items-center gap-3 text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>
+              <FileText className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
+              {discovery ? 'Selected Discovery' : 'Select a Discovery'}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {discovery ? (
+              <div className="flex items-center justify-between gap-6">
+                <div className="flex items-center gap-4">
+                  <img src={discovery.photo_url} alt="Discovery" className="w-24 h-24 rounded-lg object-cover shadow-md" />
+                  <div className="space-y-2">
+                    <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>{discovery.classification}</h3>
+                    <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
+                      <Calendar className="w-4 h-4" />
+                      <span>{discovery.time_period}</span>
+                    </div>
+                    <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
+                      <MapPin className="w-4 h-4" />
+                      <span>{discovery.location}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-stone-600">
-                  <MapPin className="w-4 h-4" />
-                  <span>{discovery.location}</span>
-                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setDiscovery(null);
+                    setFilteredExperts([]);
+                  }}
+                  className={isDarkMode ? 'border-white/10 text-slate-300' : ''}
+                >
+                  Change Discovery
+                </Button>
               </div>
-            </CardContent>
-          </Card>
-        )}
+            ) : (
+              <div className="space-y-4">
+                <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
+                  Choose a discovery from your completed analyses to research matching experts
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {discoveries.slice(0, 6).map((disc) => (
+                    <div
+                      key={disc.id}
+                      onClick={() => loadDiscoveryAndFindExperts(disc.id)}
+                      className={`cursor-pointer rounded-lg overflow-hidden ${isDarkMode ? 'bg-slate-800/50 hover:bg-slate-700/50' : 'bg-stone-50 hover:bg-stone-100'} transition-colors border ${isDarkMode ? 'border-white/10' : 'border-stone-200'}`}
+                    >
+                      <img src={disc.photo_url} alt={disc.classification} className="w-full h-32 object-cover" />
+                      <div className="p-3">
+                        <p className={`font-medium text-sm truncate ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>{disc.classification}</p>
+                        <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-500'} truncate mt-1`}>{disc.location}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {discoveries.length === 0 && (
+                  <p className={`text-center py-8 ${isDarkMode ? 'text-slate-500' : 'text-stone-500'}`}>
+                    No completed discoveries yet. Upload and analyze a discovery first!
+                  </p>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Research Parameters Form */}
         <Card className={`mb-8 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
