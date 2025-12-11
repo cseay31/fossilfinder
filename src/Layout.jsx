@@ -181,30 +181,15 @@ export default function Layout({ children, currentPageName }) {
       icon: FileText,
     },
     {
-          title: "Multi-Scan",
-          url: createPageUrl("MultiScan"),
-          icon: ScanLine,
-        },
-        {
-                    title: "Scan Results",
-                    url: createPageUrl("MultiScanDiscoveries"),
-                    icon: Target,
-                  },
-                  {
-                              title: "Community",
-                              url: createPageUrl("CommunityShowcase"),
-                              icon: Trophy,
-                            },
-                  {
-                    title: "Forum",
-                    url: createPageUrl("Forum"),
-                    icon: MessageCircle,
-                  },
-                  {
-                    title: "FosFeed",
-                    url: createPageUrl("FosFeed"),
-                    icon: TrendingUp,
-                  },
+      title: "Multi-Scan",
+      url: createPageUrl("MultiScan"),
+      icon: ScanLine,
+    },
+    {
+      title: "FosFeed",
+      url: createPageUrl("FosFeed"),
+      icon: TrendingUp,
+    },
                   {
                     title: "Discovery Map",
                     url: createPageUrl("DiscoveryMap"),
@@ -300,15 +285,13 @@ export default function Layout({ children, currentPageName }) {
                                 ? 'text-slate-300 hover:text-cyan-300'
                                 : item.title === "Admin Panel" 
                                   ? 'text-blue-700 hover:bg-blue-50 hover:text-blue-800'
-                                  : item.title === "Multi-Scan" || item.title === "Scan Results"
-                                        ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
-                                        : item.title === "Forum"
-                                          ? 'text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800'
-                                          : item.title === "FosFeed"
-                                            ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
-                                            : item.title === "Discovery Map"
-                                              ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
-                                              : 'text-stone-700'
+                                  : item.title === "Multi-Scan"
+                                    ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
+                                    : item.title === "FosFeed"
+                                      ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
+                                      : item.title === "Discovery Map"
+                                        ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
+                                        : 'text-stone-700'
                           }`}
                         >
                         <Link to={item.url} className="flex items-center gap-3 px-3 py-3">

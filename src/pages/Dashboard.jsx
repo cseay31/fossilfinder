@@ -43,6 +43,9 @@ export default function Dashboard({ isDarkMode }) {
       case "completed":
         filtered = discoveries.filter(d => d.analysis_status === "completed");
         break;
+      case "multi-scan":
+        filtered = discoveries.filter(d => d.scan_results);
+        break;
       case "high-confidence":
         filtered = discoveries.filter(d => d.confidence_score && d.confidence_score >= 80);
         break;
