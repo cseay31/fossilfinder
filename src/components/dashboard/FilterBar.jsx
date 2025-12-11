@@ -7,6 +7,7 @@ export default function FilterBar({ activeFilter, onFilterChange }) {
     { key: "all", label: "All Discoveries", icon: null },
     { key: "analyzing", label: "Under Analysis", color: "bg-blue-100 text-blue-800" },
     { key: "completed", label: "Completed", color: "bg-green-100 text-green-800" },
+    { key: "multi-scan", label: "Multi-Scan", color: "bg-cyan-100 text-cyan-800" },
     { key: "high-confidence", label: "High Confidence", color: "bg-emerald-100 text-emerald-800" },
     { key: "significant", label: "Significant", color: "bg-purple-100 text-purple-800" }
   ];
