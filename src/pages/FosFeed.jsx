@@ -157,14 +157,26 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
     }
   };
 
-  const filteredDiscoveries = discoveries.filter(d => {
-    if (!searchQuery) return true;
-    return (
-      d.classification?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      d.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      d.owner_name?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+  const filteredDiscoveries = discoveries
+    .filter(d => {
+      if (!searchQuery) return d.visibility === 'public' && d.analysis_status === 'completed';
+      const searchLower = searchQuery.toLowerCase();
+      return (
+        d.visibility === 'public' &&
+        d.analysis_status === 'completed' &&
+        (d.classification?.toLowerCase().includes(searchLower) ||
+         d.location?.toLowerCase().includes(searchLower) ||
+         d.owner_name?.toLowerCase().includes(searchLower))
+      );
+    })
+    .sort((a, b) => {
+      // Prioritize staff picks and featured
+      const aScore = (a.is_staff_pick ? 100 : 0) + (a.is_featured ? 50 : 0);
+      const bScore = (b.is_staff_pick ? 100 : 0) + (b.is_featured ? 50 : 0);
+      if (aScore !== bScore) return bScore - aScore;
+      // Then by likes
+      return (b.likes || 0) - (a.likes || 0);
+    });
 
   // Check if FosFeed is disabled
   if (!isLoading && appSettings && !appSettings.fosfeed_enabled) {
@@ -322,6 +334,16 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
                     <div className="max-w-md space-y-2">
                       <div className="flex items-center gap-2 flex-wrap">
                         <h3 className="font-bold text-white text-xl drop-shadow-lg">{discovery.classification}</h3>
+                        {discovery.is_staff_pick && (
+                          <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg">
+                            ⭐ Staff Pick
+                          </Badge>
+                        )}
+                        {discovery.is_featured && (
+                          <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg">
+                            ✨ Featured
+                          </Badge>
+                        )}
                         {discovery.significance_level && (
                           <Badge className="bg-amber-500 text-white border-0 shadow-lg">
                             {discovery.significance_level}
