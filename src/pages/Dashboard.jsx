@@ -91,11 +91,21 @@ export default function Dashboard({ isDarkMode }) {
           <PersonalizedInsights discoveries={discoveries} user={currentUser} isDarkMode={isDarkMode} />
 
           {/* Recent Activity */}
-          <RecentActivity discoveries={discoveries} isDarkMode={isDarkMode} />
-          
+          <RecentActivity 
+            discoveries={discoveries} 
+            isDarkMode={isDarkMode} 
+            currentUser={currentUser}
+            onUpdate={(updated) => {
+              setDiscoveries(discoveries.map(d => d.id === updated.id ? updated : d));
+            }}
+          />
+
           <StatsOverview discoveries={discoveries} isDarkMode={isDarkMode} />
-          
-          <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
+
+          <Card 
+            data-discoveries-section
+            className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
+          >
             <CardHeader>
               <CardTitle className={`text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'} flex items-center gap-3`}>
                 <Search className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />

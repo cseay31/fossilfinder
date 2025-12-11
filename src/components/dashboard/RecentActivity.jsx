@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,9 +6,12 @@ import { Clock, MapPin, ChevronRight, Camera, Target, CheckCircle, Loader2 } fro
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { format, formatDistanceToNow } from "date-fns";
+import { AnimatePresence } from "framer-motion";
+import DiscoveryDetailModal from "../discovery/DiscoveryDetailModal";
 
-export default function RecentActivity({ discoveries, isDarkMode }) {
+export default function RecentActivity({ discoveries, isDarkMode, currentUser, onUpdate }) {
   const recentItems = discoveries.slice(0, 5);
+  const [selectedDiscovery, setSelectedDiscovery] = useState(null);
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -61,10 +64,18 @@ export default function RecentActivity({ discoveries, isDarkMode }) {
             <Clock className={`w-5 h-5 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
             Recent Activity
           </CardTitle>
-          <Button asChild variant="ghost" size="sm" className={isDarkMode ? 'text-cyan-400' : 'text-amber-600'}>
-            <Link to={createPageUrl("Dashboard")}>
-              View All <ChevronRight className="w-4 h-4 ml-1" />
-            </Link>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className={isDarkMode ? 'text-cyan-400' : 'text-amber-600'}
+            onClick={() => {
+              const dashElement = document.querySelector('[data-discoveries-section]');
+              if (dashElement) {
+                dashElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+          >
+            View All <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
       </CardHeader>
@@ -76,6 +87,7 @@ export default function RecentActivity({ discoveries, isDarkMode }) {
             return (
               <div 
                 key={discovery.id}
+                onClick={() => setSelectedDiscovery(discovery)}
                 className={`flex items-center gap-3 p-3 rounded-lg ${isDarkMode ? 'bg-slate-800/50 hover:bg-slate-800/70' : 'bg-stone-50 hover:bg-stone-100'} transition-colors cursor-pointer`}
               >
                 {/* Thumbnail */}
@@ -139,6 +151,21 @@ export default function RecentActivity({ discoveries, isDarkMode }) {
           })}
         </div>
       </CardContent>
+
+      {/* Discovery Detail Modal */}
+      <AnimatePresence>
+        {selectedDiscovery && (
+          <DiscoveryDetailModal
+            discovery={selectedDiscovery}
+            currentUser={currentUser}
+            onClose={() => setSelectedDiscovery(null)}
+            onUpdate={(updated) => {
+              setSelectedDiscovery(updated);
+              if (onUpdate) onUpdate(updated);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </Card>
   );
 }
