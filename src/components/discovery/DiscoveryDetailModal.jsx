@@ -223,50 +223,59 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
             {/* Details & Comments */}
             <div className="flex flex-col h-full">
               {/* Discovery Info */}
-              <div className="p-4 border-b space-y-3">
-                <h2 className="text-xl font-bold text-stone-800">
-                  {localDiscovery.classification || 'Analyzing...'}
-                </h2>
-                
-                <div className="flex flex-wrap gap-2">
-                  {localDiscovery.significance_level && (
-                    <Badge className={getSignificanceColor(localDiscovery.significance_level)}>
-                      <TrendingUp className="w-3 h-3 mr-1" />
-                      {localDiscovery.significance_level}
-                    </Badge>
-                  )}
-                  {localDiscovery.confidence_score && (
-                    <Badge variant="outline">
-                      {localDiscovery.confidence_score}% confidence
-                    </Badge>
-                  )}
-                  {localDiscovery.is_featured && (
-                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
-                      ⭐ Featured
-                    </Badge>
-                  )}
+              <div className="p-6 border-b space-y-4">
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-bold text-stone-800">
+                    {localDiscovery.classification || 'Analyzing...'}
+                  </h2>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {localDiscovery.significance_level && (
+                      <Badge className={getSignificanceColor(localDiscovery.significance_level)}>
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        {localDiscovery.significance_level}
+                      </Badge>
+                    )}
+                    {localDiscovery.confidence_score && (
+                      <Badge variant="outline" className="border-2">
+                        {localDiscovery.confidence_score}% confidence
+                      </Badge>
+                    )}
+                    {localDiscovery.is_featured && (
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+                        ⭐ Featured
+                      </Badge>
+                    )}
+                    {localDiscovery.is_staff_pick && (
+                      <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                        🏆 Staff Pick
+                      </Badge>
+                    )}
+                  </div>
                 </div>
 
                 {localDiscovery.time_period && (
                   <div className="flex items-center gap-2 text-sm text-stone-600">
                     <Calendar className="w-4 h-4" />
-                    {localDiscovery.time_period}
+                    <span className="font-medium">{localDiscovery.time_period}</span>
                   </div>
                 )}
 
                 {localDiscovery.location && (
                   <div className="flex items-center gap-2 text-sm text-stone-600">
                     <MapPin className="w-4 h-4" />
-                    {localDiscovery.location}
+                    <span className="font-medium">{localDiscovery.location}</span>
                   </div>
                 )}
 
                 {localDiscovery.description && (
-                  <p className="text-sm text-stone-600">{localDiscovery.description}</p>
+                  <div className="bg-stone-50 rounded-lg p-3">
+                    <p className="text-sm text-stone-700 leading-relaxed">{localDiscovery.description}</p>
+                  </div>
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 pt-2 flex-wrap">
+                <div className="flex items-center gap-2 pt-2 flex-wrap border-t pt-4">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -287,7 +296,7 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
                         const url = `/Experts?discoveryId=${localDiscovery.id}`;
                         window.location.href = url;
                       }}
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white ml-auto"
                     >
                       <ExternalLink className="w-4 h-4 mr-1" />
                       Send to Expert
