@@ -566,6 +566,10 @@ export default function AdminPage({ isDarkMode }) {
                           discovery={discovery} 
                           index={index}
                           onUpdate={loadAllData}
+                          onReview={(disc) => {
+                            setDiscoveries(discoveries.map(d => d.id === disc.id ? disc : d));
+                            setShowSlideshowReview(true);
+                          }}
                         />
                       ))}
                   </div>
