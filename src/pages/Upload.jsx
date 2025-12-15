@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +14,7 @@ import AnalysisResults from "../components/upload/AnalysisResults";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { trackAction } from "../components/tracking/ActivityTracker";
+import TypeIt from "typeit";
 
 export default function UploadPage({ isDarkMode }) {
   const [currentStep, setCurrentStep] = useState("upload");
@@ -30,9 +31,24 @@ export default function UploadPage({ isDarkMode }) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+  const titleRef = useRef(null);
 
   useEffect(() => {
     loadSettings();
+  }, []);
+
+  useEffect(() => {
+    if (titleRef.current) {
+      new TypeIt(titleRef.current, {
+        strings: ["Fossils", "Artifacts", "Rocks"],
+        speed: 100,
+        deleteSpeed: 50,
+        breakLines: false,
+        waitUntilVisible: true,
+        loop: true,
+        loopDelay: 2000,
+      }).go();
+    }
   }, []);
 
   const loadSettings = async () => {
@@ -325,7 +341,7 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
           className="text-center mb-8"
         >
           <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
-            Archaeological Analysis
+            Analyze <span ref={titleRef}></span>
           </h1>
           <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
             Upload a photo of your archaeological finding for AI-powered identification and analysis
