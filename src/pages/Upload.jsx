@@ -40,9 +40,9 @@ export default function UploadPage({ isDarkMode }) {
   useEffect(() => {
     if (titleRef.current) {
       new TypeIt(titleRef.current, {
-        strings: ["Fossils", "Artifacts", "Rocks"],
-        speed: 100,
-        deleteSpeed: 50,
+        strings: ["Fossils", "Artifacts", "Rocks", "Anything"],
+        speed: 150,
+        deleteSpeed: 75,
         breakLines: false,
         waitUntilVisible: true,
         loop: true,
