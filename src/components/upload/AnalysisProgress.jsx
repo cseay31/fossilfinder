@@ -19,18 +19,8 @@ export default function AnalysisProgress() {
       <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
         <CardContent className="p-8">
           <div className="text-center mb-8">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 mx-auto mb-4"
-            >
-              <div className="w-full h-full bg-gradient-to-r from-amber-500 to-stone-600 rounded-full flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-white" />
-              </div>
-            </motion.div>
-            
             <h2 className="text-2xl font-bold text-stone-800 mb-2">
-              Analyzing Your Discovery
+              Analysis Steps
             </h2>
             <p className="text-stone-600">
               Our AI is examining the archaeological features in your photo

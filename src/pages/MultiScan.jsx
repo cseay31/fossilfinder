@@ -475,11 +475,8 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
             )}
 
             <Button onClick={analyzeImages} disabled={images.length === 0 || isAnalyzing || (appSettings?.require_location !== false && (!latitude || !longitude))} className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800">
-              {isAnalyzing ? (
-                <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Scanning...</>
-              ) : (
-                <><Target className="w-5 h-5 mr-2" /> Scan {images.length} {images.length === 1 ? 'Image' : 'Images'}</>
-              )}
+              <Target className="w-5 h-5 mr-2" /> 
+              {isAnalyzing ? 'Scanning...' : `Scan ${images.length} ${images.length === 1 ? 'Image' : 'Images'}`}
             </Button>
           </CardContent>
         </Card>
