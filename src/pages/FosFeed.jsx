@@ -9,6 +9,7 @@ import { Heart, MessageCircle, Share2, Search, UserPlus, UserMinus, AlertCircle,
 import { motion, AnimatePresence } from "framer-motion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ReportModal from "../components/fosfeed/ReportModal";
+import ShellLoader from "../components/admin/ShellLoader";
 
 export default function FosFeedPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -222,7 +223,7 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
 
         {isLoading ? (
           <div className="h-screen flex items-center justify-center">
-            <Loader2 className={`w-12 h-12 ${isDarkMode ? 'text-cyan-400' : 'text-amber-500'} animate-spin`} />
+            <ShellLoader isLoading={isLoading} message="Loading FosFeed..." />
           </div>
         ) : filteredDiscoveries.length === 0 ? (
           <div className="h-screen flex items-center justify-center p-8">

@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { Map, MapPin, Calendar, TrendingUp, Loader2, Eye, Filter } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import ShellLoader from "../components/admin/ShellLoader";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -258,7 +259,7 @@ export default function DiscoveryMapPage({ isDarkMode }) {
           <CardContent className="p-0">
             {isLoading ? (
               <div className="h-[600px] flex items-center justify-center bg-slate-100">
-                <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+                <ShellLoader isLoading={isLoading} message="Loading discovery map..." />
               </div>
             ) : discoveriesWithLocation.length === 0 ? (
               <div className="h-[600px] flex flex-col items-center justify-center bg-slate-50">

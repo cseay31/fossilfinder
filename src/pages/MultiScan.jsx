@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Camera, Upload, Loader2, Target, X, ChevronLeft, ChevronRight, Navigation, Save, CheckCircle, ScanLine } from 'lucide-react';
 import { motion } from 'framer-motion';
+import ShellLoader from "../components/admin/ShellLoader";
 
 export default function MultiScanPage({ isDarkMode }) {
   const [images, setImages] = useState([]);
@@ -468,6 +469,10 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
                 <p className="text-xs text-slate-500 mt-1">GPS location optional</p>
               )}
             </div>
+
+            {isAnalyzing && (
+              <ShellLoader isLoading={isAnalyzing} message="Analyzing rock images..." />
+            )}
 
             <Button onClick={analyzeImages} disabled={images.length === 0 || isAnalyzing || (appSettings?.require_location !== false && (!latitude || !longitude))} className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800">
               {isAnalyzing ? (

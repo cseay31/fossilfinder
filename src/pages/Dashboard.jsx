@@ -11,6 +11,7 @@ import StatsOverview from "../components/dashboard/StatsOverview";
 import FilterBar from "../components/dashboard/FilterBar";
 import PersonalizedInsights from "../components/dashboard/PersonalizedInsights";
 import RecentActivity from "../components/dashboard/RecentActivity";
+import ShellLoader from "../components/admin/ShellLoader";
 
 export default function Dashboard({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -116,11 +117,7 @@ export default function Dashboard({ isDarkMode }) {
               <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
               
               {isLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {Array(6).fill(0).map((_, i) => (
-                    <div key={i} className={`h-64 ${isDarkMode ? 'bg-slate-800/50' : 'bg-stone-100'} rounded-xl animate-pulse`} />
-                  ))}
-                </div>
+                <ShellLoader isLoading={isLoading} message="Loading your discoveries..." />
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredDiscoveries.map((discovery, index) => (
