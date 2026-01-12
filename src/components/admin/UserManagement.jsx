@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,6 +45,16 @@ export default function UserManagement() {
     setShowModerationModal(false);
     setSelectedUser(null);
     loadUsers();
+  };
+
+  const toggleAdminRole = async (user) => {
+    try {
+      const newRole = user.role === 'admin' ? 'user' : 'admin';
+      await base44.entities.User.update(user.id, { role: newRole });
+      loadUsers();
+    } catch (error) {
+      console.error("Failed to update user role:", error);
+    }
   };
 
   return (
@@ -152,6 +161,16 @@ export default function UserManagement() {
                           <Shield className="w-3 h-3 mr-1" />
                           {user.role?.charAt(0).toUpperCase() + user.role?.slice(1) || 'User'}
                         </Badge>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => toggleAdminRole(user)}
+                          className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                        >
+                          <Shield className="w-4 h-4 mr-2" />
+                          {user.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
+                        </Button>
 
                         <Button
                           size="sm"
