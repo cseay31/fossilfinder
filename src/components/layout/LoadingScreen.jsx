@@ -42,18 +42,26 @@ export default function LoadingScreen({ isDarkMode }) {
         {/* Shell loader with fill animation */}
         <div className="relative w-32 h-32 mb-4">
           <svg viewBox="0 0 100 100" className="w-full h-full">
-            {/* Background shell */}
+            {/* Background shell - spiral shape */}
             <path
-              d="M50 10 L80 90 L20 90 Z"
+              d="M50 15 Q65 20 72 35 Q75 50 70 65 Q60 80 45 85 Q25 88 18 70 Q15 55 22 40 Q30 28 45 25 Q55 23 60 30 Q63 38 58 45 Q52 50 45 48"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               className={isDarkMode ? 'text-slate-600' : 'text-stone-300'}
             />
             
-            {/* Spiral lines */}
+            {/* Inner spiral ridges */}
             <path
-              d="M50 20 Q60 40 50 60"
+              d="M50 20 Q60 25 64 35 Q66 45 60 52"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className={isDarkMode ? 'text-slate-600' : 'text-stone-300'}
+              opacity="0.4"
+            />
+            <path
+              d="M48 30 Q54 33 56 40 Q57 45 53 48"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
@@ -70,15 +78,15 @@ export default function LoadingScreen({ isDarkMode }) {
               <clipPath id="loadingFillClip">
                 <rect
                   x="0"
-                  y={90 - (progress * 0.8)}
+                  y={90 - (progress * 0.75)}
                   width="100"
-                  height={progress * 0.8}
+                  height={progress * 0.75}
                 />
               </clipPath>
             </defs>
             
             <motion.path
-              d="M50 10 L80 90 L20 90 Z"
+              d="M50 15 Q65 20 72 35 Q75 50 70 65 Q60 80 45 85 Q25 88 18 70 Q15 55 22 40 Q30 28 45 25 Q55 23 60 30 Q63 38 58 45 Q52 50 45 48"
               fill="url(#loadingShellGradient)"
               clipPath="url(#loadingFillClip)"
               initial={{ opacity: 0 }}
@@ -87,14 +95,14 @@ export default function LoadingScreen({ isDarkMode }) {
 
             {/* Shimmer effect */}
             <motion.rect
-              x="15"
-              y={90 - (progress * 0.8) - 5}
-              width="70"
+              x="10"
+              y={90 - (progress * 0.75) - 5}
+              width="80"
               height="10"
               fill="white"
               opacity="0.3"
               animate={{
-                y: [90 - (progress * 0.8) - 5, 90 - (progress * 0.8) + 5, 90 - (progress * 0.8) - 5],
+                y: [90 - (progress * 0.75) - 5, 90 - (progress * 0.75) + 5, 90 - (progress * 0.75) - 5],
               }}
               transition={{
                 duration: 1.5,
@@ -106,7 +114,7 @@ export default function LoadingScreen({ isDarkMode }) {
 
             {/* Glowing outline */}
             <motion.path
-              d="M50 10 L80 90 L20 90 Z"
+              d="M50 15 Q65 20 72 35 Q75 50 70 65 Q60 80 45 85 Q25 88 18 70 Q15 55 22 40 Q30 28 45 25 Q55 23 60 30 Q63 38 58 45 Q52 50 45 48"
               fill="none"
               stroke="currentColor"
               strokeWidth="3"
