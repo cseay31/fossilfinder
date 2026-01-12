@@ -23,6 +23,7 @@ import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
 import LiveUserActivity from "../components/admin/LiveUserActivity";
 import ContentReports from "../components/admin/ContentReports";
+import ShellLoader from "../components/admin/ShellLoader";
 
 export default function AdminPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -429,9 +430,7 @@ export default function AdminPage({ isDarkMode }) {
 
                 {/* Grid */}
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-                  </div>
+                  <ShellLoader isLoading={isLoading} message="Loading discoveries..." />
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {getFilteredDiscoveries().slice(0, 30).map((discovery, index) => (
@@ -548,9 +547,7 @@ export default function AdminPage({ isDarkMode }) {
 
                 {/* Grid */}
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-                  </div>
+                  <ShellLoader isLoading={isLoading} message="Loading all discoveries..." />
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {discoveries

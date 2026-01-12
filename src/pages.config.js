@@ -1,33 +1,35 @@
-import Upload from './pages/Upload';
-import Dashboard from './pages/Dashboard';
-import Experts from './pages/Experts';
 import Admin from './pages/Admin';
+import CommunityShowcase from './pages/CommunityShowcase';
 import Contact from './pages/Contact';
-import Education from './pages/Education';
-import Wiki from './pages/Wiki';
-import Forum from './pages/Forum';
+import Dashboard from './pages/Dashboard';
 import DiscoveryMap from './pages/DiscoveryMap';
+import Education from './pages/Education';
+import Experts from './pages/Experts';
+import Forum from './pages/Forum';
+import FosFeed from './pages/FosFeed';
+import Home from './pages/Home';
 import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
-import CommunityShowcase from './pages/CommunityShowcase';
-import FosFeed from './pages/FosFeed';
+import Upload from './pages/Upload';
+import Wiki from './pages/Wiki';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Upload": Upload,
-    "Dashboard": Dashboard,
-    "Experts": Experts,
     "Admin": Admin,
+    "CommunityShowcase": CommunityShowcase,
     "Contact": Contact,
-    "Education": Education,
-    "Wiki": Wiki,
-    "Forum": Forum,
+    "Dashboard": Dashboard,
     "DiscoveryMap": DiscoveryMap,
+    "Education": Education,
+    "Experts": Experts,
+    "Forum": Forum,
+    "FosFeed": FosFeed,
+    "Home": Home,
     "MultiScan": MultiScan,
     "MultiScanDiscoveries": MultiScanDiscoveries,
-    "CommunityShowcase": CommunityShowcase,
-    "FosFeed": FosFeed,
+    "Upload": Upload,
+    "Wiki": Wiki,
 }
 
 export const pagesConfig = {
