@@ -25,6 +25,7 @@ import ModuleViewer from "../components/education/ModuleViewer";
 import LessonPlanViewer from "../components/education/LessonPlanViewer";
 import ProjectGuideViewer from "../components/education/ProjectGuideViewer";
 import VirtualTourViewer from "../components/education/VirtualTourViewer";
+import jsPDF from "jspdf";
 
 export default function EducationPage({ isDarkMode }) {
   const [completedLessons, setCompletedLessons] = useState(new Set());
@@ -34,10 +35,21 @@ export default function EducationPage({ isDarkMode }) {
   const [selectedVirtualTour, setSelectedVirtualTour] = useState(null);
   const [appSettings, setAppSettings] = useState(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     checkSettings();
+    loadUser();
   }, []);
+
+  const loadUser = async () => {
+    try {
+      const user = await base44.auth.me();
+      setCurrentUser(user);
+    } catch (error) {
+      console.error("Failed to load user:", error);
+    }
+  };
 
   const checkSettings = async () => {
     try {
@@ -223,6 +235,83 @@ export default function EducationPage({ isDarkMode }) {
     return colors[difficulty] || colors.Easy;
   };
 
+  const downloadCertificate = () => {
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    // Border
+    doc.setLineWidth(2);
+    doc.setDrawColor(59, 130, 246);
+    doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+    
+    doc.setLineWidth(0.5);
+    doc.setDrawColor(147, 51, 234);
+    doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
+
+    // Title
+    doc.setFontSize(40);
+    doc.setTextColor(30, 41, 59);
+    doc.text('Certificate of Completion', pageWidth / 2, 40, { align: 'center' });
+
+    // Subtitle
+    doc.setFontSize(16);
+    doc.setTextColor(71, 85, 105);
+    doc.text('FossilFinder Education Center', pageWidth / 2, 55, { align: 'center' });
+
+    // Recipient
+    doc.setFontSize(14);
+    doc.setTextColor(100, 116, 139);
+    doc.text('This certifies that', pageWidth / 2, 75, { align: 'center' });
+
+    doc.setFontSize(28);
+    doc.setTextColor(59, 130, 246);
+    doc.setFont(undefined, 'bold');
+    doc.text(currentUser?.full_name || 'Student', pageWidth / 2, 90, { align: 'center' });
+
+    // Achievement text
+    doc.setFontSize(14);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(71, 85, 105);
+    doc.text('has successfully completed all learning modules in', pageWidth / 2, 105, { align: 'center' });
+    
+    doc.setFontSize(18);
+    doc.setTextColor(147, 51, 234);
+    doc.setFont(undefined, 'bold');
+    doc.text('Archaeological Science & Paleontology', pageWidth / 2, 120, { align: 'center' });
+
+    // Completion details
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(100, 116, 139);
+    const completionDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    doc.text(`Completed on: ${completionDate}`, pageWidth / 2, 140, { align: 'center' });
+
+    // Modules completed list
+    doc.setFontSize(10);
+    doc.text('Modules Completed:', pageWidth / 2, 155, { align: 'center' });
+    learningModules.forEach((module, index) => {
+      doc.text(`• ${module.title}`, pageWidth / 2, 162 + (index * 6), { align: 'center' });
+    });
+
+    // Footer
+    doc.setDrawColor(59, 130, 246);
+    doc.setLineWidth(0.5);
+    doc.line(60, pageHeight - 30, pageWidth - 60, pageHeight - 30);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 116, 139);
+    doc.text('FossilFinder Platform', pageWidth / 2, pageHeight - 22, { align: 'center' });
+
+    // Save
+    doc.save(`FossilFinder_Certificate_${currentUser?.full_name?.replace(/\s+/g, '_') || 'Student'}.pdf`);
+  };
+
   // Check if education is disabled
   if (!isLoadingSettings && appSettings && !appSettings.education_enabled) {
     return (
@@ -365,7 +454,7 @@ export default function EducationPage({ isDarkMode }) {
                     <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
                       <Award className="w-6 h-6 text-white" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <h3 className="text-lg font-semibold text-slate-800 mb-2">
                         Earn Certificates!
                       </h3>
@@ -373,7 +462,7 @@ export default function EducationPage({ isDarkMode }) {
                         Complete all learning modules to earn a FossilFinder Education Certificate. 
                         Show your knowledge of archaeological science and add it to your portfolio!
                       </p>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3 mb-4">
                         <div className="flex-1 bg-white rounded-full h-3 overflow-hidden">
                           <div 
                             className="bg-gradient-to-r from-blue-600 to-purple-700 h-full rounded-full transition-all duration-500"
@@ -384,6 +473,15 @@ export default function EducationPage({ isDarkMode }) {
                           {completedLessons.size} / {learningModules.length}
                         </span>
                       </div>
+                      {completedLessons.size === learningModules.length && (
+                        <Button 
+                          onClick={downloadCertificate}
+                          className="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800"
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          Download Certificate
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>
