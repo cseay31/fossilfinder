@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import PhotoUpload from "../components/upload/PhotoUpload";
 import AnalysisProgress from "../components/upload/AnalysisProgress";
 import AnalysisResults from "../components/upload/AnalysisResults";
+import ShellLoader from "../components/admin/ShellLoader";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { trackAction } from "../components/tracking/ActivityTracker";
@@ -499,7 +500,10 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
           )}
 
           {currentStep === "analyzing" && (
-            <AnalysisProgress />
+            <>
+              <ShellLoader isLoading={true} message="Analyzing your discovery..." />
+              <AnalysisProgress />
+            </>
           )}
 
           {currentStep === "results" && analysisResults && (
