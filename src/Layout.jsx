@@ -195,7 +195,12 @@ export default function Layout({ children, currentPageName }) {
                     url: createPageUrl("DiscoveryMap"),
                     icon: Map,
                   },
-  ];
+    {
+      title: "Wiki",
+      url: createPageUrl("Wiki"),
+      icon: FileText,
+    },
+    ];
 
   // Add admin navigation for admin users
   if (currentUser?.role === 'admin') {
