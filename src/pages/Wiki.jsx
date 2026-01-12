@@ -20,7 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import WikiArticleViewer from "../components/wiki/WikiArticleViewer";
 import WikiArticleEditor from "../components/wiki/WikiArticleEditor";
 
-export default function WikiPage() {
+export default function WikiPage({ isDarkMode }) {
   const [articles, setArticles] = useState([]);
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -573,7 +573,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 md:p-8">
+    <div className={`min-h-screen p-4 md:p-8 ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50'}`}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -596,7 +596,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
             </div>
             <Button
               onClick={handleCreateNew}
-              className="bg-gradient-to-r from-indigo-600 to-purple-700 hover:from-indigo-700 hover:to-purple-800">
+              className={isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 hover:to-emerald-500' : 'bg-gradient-to-r from-indigo-600 to-purple-700 hover:from-indigo-700 hover:to-purple-800'}>
 
               <Plus className="w-4 h-4 mr-2" />
               New Article
@@ -605,16 +605,16 @@ If you're unsure about editing, contact an administrator or check this guide aga
         </motion.div>
 
         {/* Search and Filters */}
-        <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 mb-6">
+        <Card className={`backdrop-blur-sm shadow-lg border-0 mb-6 ${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'}`}>
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`} />
                 <Input
                   placeholder="Search articles, tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10" />
+                  className={`pl-10 ${isDarkMode ? 'bg-slate-800 border-white/10 text-white' : ''}`} />
 
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -624,7 +624,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
                   variant={selectedCategory === cat.value ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedCategory(cat.value)}
-                  className={selectedCategory === cat.value ? "bg-indigo-600" : ""}>
+                  className={selectedCategory === cat.value ? (isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600' : 'bg-indigo-600') : (isDarkMode ? 'bg-slate-800 border-white/10 text-slate-300 hover:bg-slate-700' : '')}>
 
                     {cat.label}
                     <Badge variant="secondary" className="ml-2">{cat.count}</Badge>
@@ -643,14 +643,14 @@ If you're unsure about editing, contact an administrator or check this guide aga
           ) :
           filteredArticles.length === 0 ?
           <div className="col-span-full text-center py-12">
-              <BookOpen className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-slate-600 mb-2">
+              <BookOpen className={`w-16 h-16 mx-auto mb-4 ${isDarkMode ? 'text-slate-600' : 'text-slate-300'}`} />
+              <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                 No articles found
               </h3>
-              <p className="text-slate-500 mb-4">
+              <p className={`mb-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                 {searchTerm ? "Try adjusting your search terms." : "Be the first to create an article!"}
               </p>
-              <Button onClick={handleCreateNew} className="bg-indigo-600 hover:bg-indigo-700">
+              <Button onClick={handleCreateNew} className={isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 hover:to-emerald-500' : 'bg-indigo-600 hover:bg-indigo-700'}>
                 <Plus className="w-4 h-4 mr-2" />
                 Create Article
               </Button>
@@ -663,23 +663,23 @@ If you're unsure about editing, contact an administrator or check this guide aga
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}>
 
-                <Card className="bg-white border-2 border-slate-100 hover:border-indigo-200 hover:shadow-xl transition-all duration-200 h-full flex flex-col">
+                <Card className={`border-2 hover:shadow-xl transition-all duration-200 h-full flex flex-col ${isDarkMode ? 'bg-slate-900/60 border-white/10 hover:border-cyan-500/30' : 'bg-white border-slate-100 hover:border-indigo-200'}`}>
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between mb-2">
-                      <Badge className="bg-indigo-100 text-indigo-800 border-indigo-200">
+                      <Badge className={isDarkMode ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' : 'bg-indigo-100 text-indigo-800 border-indigo-200'}>
                         {article.category?.replace(/-/g, ' ')}
                       </Badge>
-                      <div className="flex items-center gap-1 text-xs text-slate-500">
+                      <div className={`flex items-center gap-1 text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                         <Eye className="w-3 h-3" />
                         {article.views || 0}
                       </div>
                     </div>
-                    <CardTitle className="text-lg text-slate-800">
+                    <CardTitle className={`text-lg ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
                       {article.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex-1 flex flex-col space-y-4">
-                    <p className="text-sm text-slate-600 line-clamp-3 flex-1">
+                    <p className={`text-sm line-clamp-3 flex-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                       {article.content.substring(0, 150)}...
                     </p>
                     
@@ -694,7 +694,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
                       </div>
                 }
 
-                    <div className="flex items-center gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                    <div className={`flex items-center gap-2 text-xs pt-2 border-t ${isDarkMode ? 'text-slate-400 border-white/10' : 'text-slate-500 border-slate-100'}`}>
                       <Clock className="w-3 h-3" />
                       <span>v{article.version || 1}</span>
                       {article.last_edited_by &&
@@ -708,7 +708,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
                     <div className="flex gap-2 pt-2">
                       <Button
                     onClick={() => handleViewArticle(article)}
-                    className="flex-1 bg-indigo-600 hover:bg-indigo-700"
+                    className={`flex-1 ${isDarkMode ? 'bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 hover:to-emerald-500' : 'bg-indigo-600 hover:bg-indigo-700'}`}
                     size="sm">
 
                         <Eye className="w-4 h-4 mr-2" />
@@ -718,7 +718,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
                     onClick={() => handleEditArticle(article)}
                     variant="outline"
                     size="sm"
-                    className="border-indigo-200 hover:bg-indigo-50">
+                    className={isDarkMode ? 'border-cyan-500/30 hover:bg-cyan-500/10 text-cyan-300' : 'border-indigo-200 hover:bg-indigo-50'}>
 
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -740,7 +740,8 @@ If you're unsure about editing, contact an administrator or check this guide aga
           onEdit={() => {
             handleCloseViewer();
             handleEditArticle(selectedArticle);
-          }} />
+          }}
+          isDarkMode={isDarkMode} />
 
         }
       </AnimatePresence>
@@ -751,7 +752,8 @@ If you're unsure about editing, contact an administrator or check this guide aga
         <WikiArticleEditor
           article={editingArticle}
           onSave={handleSaveArticle}
-          onClose={handleCloseEditor} />
+          onClose={handleCloseEditor}
+          isDarkMode={isDarkMode} />
 
         }
       </AnimatePresence>
