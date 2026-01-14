@@ -141,30 +141,82 @@ Creating detailed 3D models from multiple photographs. Preserves sites digitally
 The key to archaeology is combining all these methods with careful, methodical work. Every item's location and context provides crucial information about the past. Technology helps us see and preserve more, but human interpretation remains essential.`
       },
       {
-        title: "Career Paths",
-        content: `Archaeology offers diverse career opportunities:
+        title: "Career Paths (Part 1: Academic & Research)",
+        content: `Archaeology offers diverse and exciting career opportunities across many sectors:
 
 **Academic Archaeology:**
-• University professors and researchers
-• Museum curators and educators
-• Laboratory specialists
 
-**Field Archaeology:**
-• Cultural Resource Management (CRM)
-• Excavation directors and technicians
-• Site supervisors
+**University Professors:**
+Teach courses, conduct research, publish findings, and supervise graduate students. Usually requires PhD and ongoing research. Combines teaching with fieldwork and analysis.
 
-**Specialized Areas:**
-• Underwater archaeology
-• Forensic archaeology
-• Heritage conservation
-• Archaeological consulting
+**Museum Curators:**
+Manage collections, design exhibits, conduct research, and educate the public. May specialize in specific periods or types of artifacts. Work ranges from collections care to public programming.
 
-**Required Education:**
-• Bachelor's degree for entry-level positions
-• Master's degree for most professional roles
-• PhD for academic and research positions
-• Field schools and hands-on experience are essential
+**Museum Educators:**
+Develop educational programs, lead tours, and create learning materials. Make archaeology accessible to diverse audiences. Often work with schools and community groups.
+
+**Laboratory Specialists:**
+Focus on specific analyses: ceramics, bones (zooarchaeology or bioarchaeology), ancient DNA, residue analysis, dating methods. Highly specialized scientific work.
+
+**Research Archaeologists:**
+Work for universities, museums, or research institutes. Design and conduct studies, publish in academic journals, present at conferences. May focus on theoretical development or specific research questions.
+
+**Required Education for Academic Paths:**
+• PhD usually required for university positions
+• Master's degree minimum for most museum work
+• Bachelor's degree with experience for some lab positions
+• Ongoing research and publication essential
+• Multiple field schools and specialized training
+
+**Skills Needed:**
+• Strong writing and communication
+• Grant writing and fundraising
+• Statistical and analytical thinking
+• Patience and attention to detail
+• Teaching ability
+• Foreign language skills often helpful`
+      },
+      {
+        title: "Career Paths (Part 2: Field & Applied)",
+        content: `**Field Archaeology Careers:**
+
+**Cultural Resource Management (CRM):**
+The largest employer of archaeologists! CRM firms are hired before construction projects to survey for archaeological sites and excavate any that are found. Required by law in many countries.
+
+Positions include:
+• Field Technicians (entry-level, do the digging)
+• Crew Chiefs (supervise small teams)
+• Project Managers (oversee entire projects)
+• Principal Investigators (senior archaeologists who write reports and run companies)
+
+Work is often seasonal and involves travel. Physical demands but great hands-on experience.
+
+**Government Archaeology:**
+Federal, state, and local agencies employ archaeologists to:
+• Manage archaeological resources on public lands
+• Review development projects
+• Maintain site databases
+• Enforce protection laws
+• Educate the public
+
+More stable employment than CRM, often with benefits and regular hours.
+
+**Specialized Archaeological Careers:**
+
+**Underwater Archaeology:**
+Requires diving certification plus archaeological training. Work on shipwrecks, submerged prehistoric sites, or harbor archaeology. Physically demanding but unique opportunities.
+
+**Forensic Archaeology:**
+Apply archaeological methods to crime scenes and mass disaster sites. Work with police, FBI, or international human rights organizations. Requires strong stomach and emotional resilience.
+
+**Heritage Conservation:**
+Preserve and stabilize archaeological sites and historic buildings. Combine archaeology with architecture and materials science. Work to prevent deterioration and damage.
+
+**Archaeological Consulting:**
+Independent contractors hired for specific expertise. May work internationally or specialize in particular periods or regions. Requires experience and established reputation.
+
+**GIS and Remote Sensing Specialists:**
+Focus on mapping and technological analysis. Highly sought after as technology becomes more important in archaeology.
 
 The field combines outdoor fieldwork, laboratory analysis, and scholarly research, making it perfect for those who love history, science, and discovery!`
       }
