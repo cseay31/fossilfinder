@@ -1045,8 +1045,284 @@ A diagram showing the stratigraphic sequence - which layers formed when and thei
 Remember: Excavation destroys context, so documentation must be perfect. You can't go back!`
       },
       {
-        title: "Documentation",
-        content: `Proper documentation is the archaeologist's most important task:
+        title: "Documentation & Post-Excavation (Part 1)",
+        content: `Proper documentation is the archaeologist's most important task. The excavation destroys the site, but the documentation preserves it forever for future research.
+
+**Why Documentation is Sacred in Archaeology:**
+
+Once excavated, a site can never be restored. The only thing that remains is the documentation. This is why archaeologists spend 3-4 hours documenting for every 1 hour of digging. The records ARE the site now.
+
+Future archaeologists may:
+• Reinterpret findings with new theories
+• Apply new scientific techniques to samples
+• Integrate data with other sites
+• Discover patterns you missed
+
+Your documentation must be complete enough for someone who never visited the site to understand everything about it.
+
+**The Recording System:**
+
+**Context Sheets (The Foundation):**
+One sheet for each stratigraphic unit (layer, pit, wall, floor):
+• Unique context number
+• Description (soil color, texture, composition)
+• Dimensions and shape
+• Stratigraphic relationships (what it's above/below/cut by)
+• Interpretation (what it represents)
+• Associated finds
+• Soil sample numbers
+• Photo numbers
+• Plan/section drawing references
+
+**Feature Forms:**
+For structures and special deposits:
+• Construction technique
+• Materials used
+• State of preservation
+• Dimensions and orientation
+• Function (if determinable)
+• Photographs and drawings
+
+**Find Sheets/Artifact Logs:**
+For every artifact or artifact group:
+• Find number
+• Context number (where found)
+• 3D coordinates
+• Material (ceramic, stone, metal, bone, etc.)
+• Description
+• Quantity
+• Condition
+• Photo numbers
+
+**Sample Logs:**
+Recording all collected samples:
+• Soil samples (for later analysis)
+• Flotation samples
+• Pollen samples
+• Charcoal (for dating)
+• Metalworking slag
+• Bone/shell
+• Each with context, location, purpose
+
+**Photography - Visual Record:**
+
+**Essential Photographs:**
+
+**Site Overview Shots:**
+• Wide views showing landscape context
+• Before, during, after excavation
+• All four cardinal directions
+• Aerial views if possible (drone)
+
+**Context Photography:**
+Every layer and feature needs:
+• Overall view with scale
+• Close-ups of details
+• North arrow and information board
+• Scale bar (often 2m ranging pole and 1m scale)
+• Oblique (angled) and vertical (overhead) views
+
+**Information Boards:**
+Include on every photo:
+• Site name and code
+• Context number
+• Date
+• Direction of view
+• Photographer initials
+
+**Artifact Photography:**
+• In situ (original position) before removal
+• With scale and north arrow
+• Special finds get detailed photo documentation
+
+**Working Shots:**
+• Team at work (shows excavation process)
+• Techniques being employed
+• Important moments (discovery of special finds)
+
+**Digital Photography Best Practices:**
+• RAW format when possible (max quality)
+• Multiple shots of everything (insurance)
+• Consistent lighting (avoid harsh shadows)
+• Clean before photographing
+• Backup immediately (multiple copies)
+• Organize by date and context
+• Photo log database
+
+**Plans and Sections - Technical Drawings:**
+
+**Plan Drawings (Top-Down View):**
+• Show features as seen from above
+• Drawn at regular intervals (every 5-10cm depth)
+• Show relationships between contexts
+• Include grid coordinates
+• Usually scale 1:10 or 1:20
+
+Features shown:
+• Walls (hatched)
+• Floors (dotted)
+• Pits (outlined with fill pattern)
+• Postholes (small circles)
+• Artifact distributions
+• Burnt areas (red/orange)
+
+**Section Drawings (Side View):**
+• Show stratigraphy in profile
+• Multiple sections across features
+• Clear layer boundaries
+• Different fill patterns for different soils
+• Labels for each context
+• Scale and orientation
+
+**Elevation Drawings:**
+• Vertical surfaces (walls, standing stones)
+• Show construction details
+• Stone-by-stone if masonry
+• Surface texture and weathering`
+      },
+      {
+        title: "Documentation & Post-Excavation (Part 2)",
+        content: `**Modern Digital Recording:**
+
+**GIS (Geographic Information Systems):**
+Computer mapping that integrates:
+• All spatial data from excavation
+• Topographic information
+• Artifact distributions
+• Stratigraphic relationships
+• Environmental data
+• Historical maps overlay
+
+Benefits:
+• Powerful spatial analysis
+• Pattern recognition
+• 3D visualization
+• Easy data sharing
+• Constant updates as excavation proceeds
+
+**3D Photogrammetry:**
+Creating detailed 3D models from photos:
+• Hundreds of overlapping photographs
+• Software constructs 3D model
+• Precise measurements possible
+• Can revisit "digitally" after excavation
+• Shares site with people worldwide
+
+Equipment needed:
+• Digital camera (modern phone works!)
+• Photogrammetry software (free and paid options)
+• Computer for processing
+
+**Total Station / Electronic Distance Measurement:**
+• Instant 3D coordinate recording
+• Links to computer database
+• Creates precise site maps
+• Tracks thousands of points per day
+
+**Drone Photography & Mapping:**
+• Daily overhead documentation
+• Creates orthophotos (corrected aerial views)
+• Tracks excavation progress
+• Produces 3D models of entire site
+• Relatively affordable technology
+
+**Database Systems:**
+Digital recording of all data:
+• Links contexts, photos, finds, samples
+• Searchable and sortable
+• Generates reports automatically
+• Reduces paperwork
+• Easier sharing and archiving
+
+**Laboratory Processing:**
+
+After excavation, artifacts undergo processing:
+
+**Washing:**
+• Removes soil (only stable materials!)
+• Don't wash: bone, metal, organic materials, painted surfaces
+• Dry completely before storage
+• Sort by material type
+
+**Marking:**
+Each artifact labeled with:
+• Site code
+• Context number
+• Find number
+• Written with archival ink
+• Often on base or inside
+
+**Cataloging:**
+Complete database entry:
+• Full description
+• Measurements
+• Weight
+• Material
+• Condition
+• Photograph
+• Location in storage
+
+**Conservation:**
+Specialized treatment for fragile items:
+• Desalination of corroded metals
+• Stabilization of bone
+• Cleaning and mending pottery
+• Preventive conservation for all materials
+
+**Analysis:**
+Specialists study different materials:
+• Ceramics (dating, function, trade)
+• Lithics (stone tools - manufacturing techniques)
+• Bones (species, age, butchery marks)
+• Botanical remains (diet, environment)
+• Soil chemistry (activities in different areas)
+
+**Storage:**
+Proper curation in controlled conditions:
+• Stable temperature and humidity
+• Dark storage (prevents light damage)
+• Inert materials (acid-free boxes)
+• Organized by context and material
+• Accessible for future research
+
+**Publication and Reporting:**
+
+**Site Report (Required):**
+• Methodology
+• Stratigraphic sequence
+• Feature descriptions
+• Artifact analysis
+• Specialist reports
+• Interpretation
+• Archive location
+
+**Academic Publication:**
+• Journal articles on significant findings
+• Books for major excavations
+• Presentations at conferences
+• Public archaeology outreach
+
+**Public Engagement:**
+• Site tours during excavation
+• Public lectures
+• Museum exhibits
+• Educational materials
+• Digital reconstructions
+• Social media updates
+
+**Archive Deposition:**
+Permanent repository for all records:
+• Original paperwork
+• Digital data
+• Photographs
+• Drawings
+• Artifacts
+• Samples
+
+Ensures future researchers can access everything.
+
+The goal is to create a comprehensive archive that tells the complete story of the site - enabling future discoveries from your hard work!`
+      }
 
 **Why Documentation Matters:**
 Once excavated, a site can never be restored. Documentation is the permanent record that allows future researchers to understand what was found and where.
@@ -1128,8 +1404,272 @@ The goal is to create a comprehensive archive that tells the complete story of t
   "ancient-civilizations": {
     sections: [
       {
-        title: "Ancient Egypt",
-        content: `Ancient Egypt thrived along the Nile River from ~3100 BCE to 30 BCE:
+        title: "Ancient Egypt (Part 1: History & Society)",
+        content: `Ancient Egypt thrived along the Nile River from ~3100 BCE to 30 BCE - one of the longest-lasting civilizations in human history, spanning over 3,000 years!
+
+**Geography & the Nile:**
+
+"Egypt is the gift of the Nile" - Herodotus
+
+The Nile River made Egyptian civilization possible:
+• Annual flooding deposited fertile silt
+• Predictable agriculture (unlike Mesopotamia's unpredictable floods)
+• Natural highway for transportation
+• Natural barriers (deserts) protected from invasion
+
+**Upper Egypt** (south) - narrow valley
+**Lower Egypt** (north) - broad delta
+United around 3100 BCE by legendary King Narmer/Menes
+
+**Major Historical Periods:**
+
+**Early Dynastic Period (3100-2686 BCE):**
+• Unification of Upper and Lower Egypt
+• Development of hieroglyphic writing
+• First monumental architecture
+• Establishment of royal ideology
+
+**Old Kingdom (2686-2181 BCE) - "Age of the Pyramids":**
+• Strong centralized government
+• Divine kingship established
+• Pyramids of Giza constructed
+• Sphinx carved
+• Trade networks to Nubia, Sinai, Punt
+
+**First Intermediate Period (2181-2055 BCE):**
+• Breakdown of central authority
+• Regional rulers compete
+• Art and literature flourish locally
+• Period of change and innovation
+
+**Middle Kingdom (2055-1650 BCE) - "Classical Period":**
+• Reunification under Theban rulers
+• Golden age of art and literature
+• Expansion into Nubia
+• Improved irrigation systems
+• Development of Middle Egyptian language (used for 1000+ years)
+
+**Second Intermediate Period (1650-1550 BCE):**
+• Hyksos rule in Delta
+• Egyptian rulers in Thebes
+• Introduction of horse and chariot
+• Bronze weapons
+
+**New Kingdom (1550-1077 BCE) - "Imperial Period":**
+Egypt's greatest power and wealth:
+• Ahmose I expels Hyksos
+• Empire extends from Nubia to Syria
+• Famous pharaohs: Hatshepsut, Thutmose III, Akhenaten, Tutankhamun, Ramesses II
+• Valley of the Kings - royal tombs
+• Massive temple building
+• Battle of Kadesh (1274 BCE) - famous chariot battle
+• Decline after invasions by "Sea Peoples"
+
+**Third Intermediate Period (1077-664 BCE):**
+• Egypt divided again
+• Libyan and Nubian rulers
+• 25th Dynasty - Nubian pharaohs reunify Egypt
+
+**Late Period (664-332 BCE):**
+• Persian conquest (525 BCE)
+• Brief independence restored
+• Alexander the Great conquers (332 BCE)
+
+**Ptolemaic Period (332-30 BCE):**
+• Greek-speaking rulers
+• Alexandria founded - great library
+• Cleopatra VII - last pharaoh
+• Egypt becomes Roman province (30 BCE)
+
+**Egyptian Society:**
+
+**Social Hierarchy:**
+1. **Pharaoh** - divine ruler, living god
+2. **Nobles and Priests** - wealthy elite, temple administrators
+3. **Scribes** - educated, highly valued
+4. **Craftspeople** - skilled workers, artists
+5. **Farmers** - majority of population
+6. **Slaves** - prisoners of war, debt
+
+**Women in Ancient Egypt:**
+Unusually high status compared to other ancient cultures:
+• Could own property
+• Initiate divorce
+• Conduct business
+• Some became pharaohs (Hatshepsut, Cleopatra)
+• Priestesses served in temples
+
+**Religion:**
+Polytheistic with thousands of gods:
+• **Ra** - sun god, creator
+• **Osiris** - god of afterlife
+• **Isis** - goddess of magic, motherhood
+• **Horus** - sky god, divine pharaoh
+• **Anubis** - god of mummification
+• **Thoth** - god of wisdom, writing
+
+Pharaoh as intermediary between gods and humans
+Temples as "houses of gods"
+Daily rituals to maintain cosmic order (Ma'at)`
+      },
+      {
+        title: "Ancient Egypt (Part 2: Achievements & Archaeology)",
+        content: `**Major Egyptian Achievements:**
+
+**Writing - Hieroglyphs:**
+• Developed around 3200 BCE
+• Over 700 different signs
+• Used for religious texts, monuments
+• Hieratic (cursive) for daily writing
+• Demotic (even more simplified) in later periods
+• Coptic (final phase, using Greek alphabet)
+
+**Lost and Found:**
+• Language forgotten after temples closed (4th century CE)
+• Rosetta Stone (196 BCE) discovered 1799
+• Same text in hieroglyphs, Demotic, and Greek
+• Jean-François Champollion deciphered 1822
+• Unlocked 3,000 years of history!
+
+**Mathematics & Science:**
+
+**Mathematics:**
+• Decimal system
+• Fractions
+• Geometry for surveying fields and building
+• Calculated pyramid angles precisely
+• Volume calculations for grain storage
+
+**Astronomy:**
+• 365-day calendar (basis for our calendar)
+• Tracked star movements
+• Aligned pyramids to stars
+• Predicted Nile floods
+
+**Medicine:**
+• Surgical procedures described
+• Anatomical knowledge from mummification
+• Pharmaceuticals (honey, herbs, minerals)
+• Specialized doctors (eye doctors, dentists)
+• Medical papyri preserve knowledge
+
+**Engineering & Architecture:**
+
+**Pyramids:**
+• Khufu's Great Pyramid: 2.3 million stone blocks
+• Each block weighs 2.5 tons average
+• Originally 481 feet tall
+• Built with copper tools, rope, wood sledges
+• Internal passages and chambers
+• Precision alignment to cardinal directions
+
+**How were they built?**
+• Ramps (straight, spiral, or combination)
+• Limestone quarried locally
+• Granite from Aswan (500 miles away!)
+• Transported by Nile during flood season
+• Thousands of skilled workers (not slaves!)
+• Year-round construction crews
+• Seasonal agricultural workers during flood
+
+**Temples:**
+• Massive stone construction
+• Hypostyle halls with columns
+• Relief carvings covering walls
+• Original bright paint (mostly lost now)
+• Karnak - largest religious complex ever built
+• Took 2,000 years to complete
+• Multiple pharaohs contributed
+
+**Mummification:**
+
+**Process (70 days):**
+1. Remove internal organs (except heart)
+2. Pack body with natron salt (desiccant)
+3. Wrap in linen bandages
+4. Place in nested coffins
+5. Seal in tomb with goods for afterlife
+
+**Why?**
+• Preserve body for afterlife
+• Soul (ka) needs physical form
+• Wealthier individuals got better treatment
+• Even animals mummified (cats, crocodiles, birds)
+
+**Archaeological Sites:**
+
+**Valley of the Kings:**
+• 63 tombs discovered
+• Pharaohs of New Kingdom
+• Decorated with religious texts
+• Most robbed in antiquity
+• Tutankhamun's tomb - only one found nearly intact!
+
+**Giza Plateau:**
+• Three main pyramids (Khufu, Khafre, Menkaure)
+• Great Sphinx (limestone, 240 feet long)
+• Queens' pyramids
+• Workers' village excavated
+• Boat pits (solar barques for afterlife journey)
+
+**Karnak Temple Complex:**
+• Cult center of Amun-Ra
+• Avenue of sphinxes
+• Hypostyle Hall - 134 massive columns
+• Sacred lake for ritual purification
+• Multiple temples and chapels
+
+**Abu Simbel:**
+• Rock-cut temples of Ramesses II
+• Four colossal statues (67 feet tall)
+• Twice yearly, sun illuminates inner sanctuary
+• Relocated in 1960s to save from dam flooding!
+
+**Deir el-Medina:**
+• Workers' village for tomb builders
+• Well-preserved houses
+• Ostraca (inscribed pottery shards) - daily life documents
+• Strikes recorded! (first labor strike in history)
+
+**Tell el-Amarna:**
+• Akhenaten's short-lived capital
+• Monotheistic revolution (worship of Aten)
+• Amarna art style - realistic, informal
+• Abandoned after his death
+• Preserved city plan
+
+**Famous Discoveries:**
+
+**Tutankhamun's Tomb (1922):**
+• Howard Carter's discovery
+• Over 5,000 artifacts
+• Golden mask weighing 24 pounds
+• Revealed royal burial practices
+• "Curse" was media invention!
+
+**Rosetta Stone (1799):**
+• Found by Napoleon's soldiers
+• Key to deciphering hieroglyphs
+• Now in British Museum
+
+**Royal Mummies:**
+• Cache of royal mummies found 1881
+• Including Ramesses II, Seti I
+• Hidden by priests to protect from tomb robbers
+• DNA studies reveal family relationships
+
+**Modern Egyptian Archaeology:**
+
+Current discoveries:
+• Saqqara - animal mummies by thousands
+• Lost golden city near Luxor (2021)
+• Scanning pyramids with cosmic rays
+• DNA analysis of mummies
+• Climate data from ancient records
+• Underwater archaeology in Alexandria
+
+Egyptian archaeology continues to amaze - new discoveries happen every year!`
+      },
 
 **Key Periods:**
 • Old Kingdom (2686-2181 BCE) - Age of the Pyramids
