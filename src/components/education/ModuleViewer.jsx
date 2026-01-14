@@ -464,8 +464,95 @@ Counting and matching tree ring patterns. Incredibly precise - can date to the e
 Combining multiple dating methods provides the most accurate age estimates. Context is crucial - knowing the geological layer and associated materials helps confirm dates.`
       },
       {
-        title: "Preservation",
+        title: "Fossilization Process & Preservation (Part 1)",
+        content: `**The Fossilization Process:**
+
+Fossilization is incredibly rare! It's estimated that less than 0.1% of all organisms that ever lived became fossils. Here's why and how it happens:
+
+**Steps to Fossilization:**
+
+**1. Death and Deposition:**
+The organism must die in or be transported to an environment where burial is likely. Quick burial is essential - every moment exposed increases chances of destruction by scavengers, weathering, or decay.
+
+**2. Decay Resistance:**
+Hard parts (shells, bones, teeth) resist decay better than soft tissue. Bacteria and decomposers quickly break down organic matter unless:
+• Oxygen is excluded (underwater, rapid burial)
+• Temperature is extreme (frozen, very hot)
+• Chemical conditions prevent decay (high acidity or alkalinity)
+
+**3. Burial:**
+Sediment must cover the remains. Best environments:
+• River deltas and floodplains (rapid sand/mud deposition)
+• Lake bottoms (fine sediment, low oxygen)
+• Ocean floors (constant sediment rain)
+• Volcanic ash falls (sudden, complete burial)
+• Tar pits (bones sink and are sealed)
+• Amber (tree resin traps insects)
+• Peat bogs (acidic, oxygen-free water)
+
+**4. Mineralization:**
+Over thousands to millions of years:
+
+**Permineralization:**
+Mineral-rich groundwater seeps through buried bones/wood. Minerals (usually silica, calcite, or pyrite) precipitate into the tiny spaces in the organic tissue. The original structure is preserved in mineral form.
+
+**Replacement:**
+The original material dissolves away and is replaced by minerals, molecule by molecule. The shape is preserved but the original material is gone. Can preserve incredibly fine details.
+
+**Recrystallization:**
+Original minerals (like calcium carbonate in shells) reorganize into larger, more stable crystals. The shell is still there but has changed form.
+
+**Carbonization:**
+Heat and pressure drive off other elements, leaving only a thin carbon film. Common for plants, leaves, and soft-bodied animals. Creates beautiful impressions but loses 3D structure.`
+      },
+      {
+        title: "Fossilization Process & Preservation (Part 2)",
         content: `Fossil preservation requires specific conditions:
+
+**Key Factors for Fossilization:**
+
+• **Rapid burial** - The faster burial occurs, the better. Prevents scavenging, decay, and physical destruction. Catastrophic events (landslides, floods, volcanic eruptions) create ideal conditions.
+
+• **Low oxygen environment** - Oxygen enables aerobic bacteria that decompose organic matter. Anoxic (oxygen-free) environments like deep ocean floors or lake bottoms slow decomposition dramatically.
+
+• **Presence of minerals** - Groundwater must carry dissolved minerals for permineralization. Different minerals create different fossil types - silica makes beautiful agate and jasper fossils.
+
+• **Stable conditions over millions of years** - The rocks containing fossils must avoid being melted, crushed, or eroded away. This is why most fossils are in sedimentary rocks, not igneous or highly metamorphic rocks.
+
+• **Lack of disturbance** - Burrowing animals, plant roots, and geological activity can destroy fossils. Stable burial environments are crucial.
+
+**Best Preservation Environments:**
+
+**Lake beds and ocean floors:**
+Fine sediment, low oxygen, stable conditions. Excellent for preserving delicate features and mass death assemblages.
+
+**River deltas and floodplains:**
+Rapid burial during floods. Good for large vertebrates and plants. Can create bonebeds with hundreds of specimens.
+
+**Volcanic ash deposits:**
+Sudden burial, fine particles preserve incredible detail. Famous examples: Pompeii (humans), Ashfall Fossil Beds (rhinos).
+
+**Tar pits:**
+Natural asphalt seeps trap animals. La Brea Tar Pits in California has thousands of ice age mammals including saber-toothed cats and dire wolves.
+
+**Amber:**
+Tree resin traps and perfectly preserves insects, spiders, small vertebrates, and plant material. Can preserve DNA and soft tissue. Oldest is 320 million years old!
+
+**Ice and permafrost:**
+Freezing prevents all decay. Can preserve DNA, soft tissue, hair, even stomach contents. Woolly mammoths, saber-toothed cats, and ancient humans found frozen.
+
+**Peat bogs:**
+Acidic, oxygen-free water tans skin like leather. "Bog bodies" preserve with skin, hair, and organs intact. Some over 2,000 years old with identifiable last meals!
+
+**What Gets Preserved:**
+
+Hard parts preserve best: bones, teeth, shells, wood. However, exceptional preservation (Lagerstätten) can capture:
+• Skin impressions and color patterns
+• Feathers, fur, and scales
+• Internal organs and blood vessels
+• Embryos inside eggs
+• Last meals in digestive systems
+• Soft-bodied organisms (jellyfish, worms)
 
 **Key Factors:**
 • Rapid burial (prevents decay and scavenging)
