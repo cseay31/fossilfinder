@@ -620,8 +620,172 @@ Remember: In many places, fossil collection requires permits, and significant di
   "excavation-techniques": {
     sections: [
       {
-        title: "Site Survey",
-        content: `Before excavation begins, archaeologists conduct thorough site surveys:
+        title: "Site Survey (Part 1: Planning & Research)",
+        content: `Before excavation begins, archaeologists conduct thorough site surveys. This crucial phase can take months or even years:
+
+**Desktop Research (Pre-Field Investigation):**
+
+**Historical Records:**
+• Old maps and land deeds
+• Photographs and postcards
+• Newspapers and local histories
+• Church records and cemetery records
+• Tax records and property documents
+• Previous archaeological reports
+
+This research can reveal:
+- When areas were inhabited
+- What activities took place
+- Previous disturbances to the land
+- Potential location of structures
+- Cultural and historical context
+
+**Aerial Photography & Satellite Imagery:**
+Historical aerial photos (often available from 1940s-present) can show:
+• Crop marks - plants grow differently over buried features
+• Soil marks - color differences from disturbed ground
+• Shadow marks - slight depressions or mounds
+• Modern disturbances - what's been destroyed
+
+Modern satellite imagery can reveal:
+• Changes in landscape over time
+• Potential site locations
+• Access routes and logistics planning
+
+**LiDAR Data Analysis:**
+Laser scanning from aircraft that "sees through" forest canopy to reveal:
+• Ancient earthworks
+• Building foundations
+• Agricultural terraces
+• Road systems
+• Settlement patterns
+
+Famous discoveries: Thousands of Maya structures in Guatemala, previously unknown earthworks in the Amazon
+
+**Geophysical Survey (Remote Sensing):**
+
+**Magnetometry:**
+Detects magnetic variations in soil caused by:
+• Ancient fires (kilns, hearths)
+• Iron objects
+• Ditches and pits (filled soil has different magnetic properties)
+• Buried walls
+
+Can survey large areas quickly (several hectares per day)
+
+**Ground-Penetrating Radar (GPR):**
+Sends radar pulses into ground to detect:
+• Buried walls and structures
+• Graves and vaults
+• Voids and tunnels
+• Changes in soil composition
+
+Provides depth information - tells you how deep things are buried
+
+**Resistivity Survey:**
+Measures how easily electricity passes through soil:
+• Stone walls (high resistance)
+• Ditches and pits (low resistance - filled with organic soil)
+• Changes in soil type
+
+Good for mapping building foundations`
+      },
+      {
+        title: "Site Survey (Part 2: Field Methods)",
+        content: `**Field Walking (Pedestrian Survey):**
+
+Systematic surface collection by walking in straight lines across a field:
+• Team walks in parallel lines 10-20 meters apart
+• Records any artifacts visible on surface
+• GPS coordinates of finds
+• Collects or photographs items
+• Notes terrain, vegetation, visibility conditions
+
+What it reveals:
+- Concentration of artifacts indicates activity areas
+- Types of artifacts suggest time period and activities
+- Distribution patterns show site extent
+
+**Limitations:**
+• Only works on plowed fields or eroded surfaces
+• Visibility depends on crops, weather, time of year
+• Buried sites won't be detected
+
+**Test Pits & Shovel Test Units:**
+
+**Shovel Testing:**
+Small holes (usually 50cm x 50cm) dug systematically:
+• Every 10-25 meters across site
+• Dug to sterile soil (natural, undisturbed layer)
+• All soil screened for artifacts
+• Soil color and texture noted
+• Quick way to find buried deposits
+
+**Test Pits:**
+Larger excavation units (1m x 1m or 2m x 2m):
+• Provide better stratigraphic information
+• Allow more detailed recording
+• Can reveal features (walls, floors, pits)
+• Help plan main excavation areas
+
+**Coring:**
+Using hollow tubes to extract soil samples:
+• Minimal disturbance
+• Reveals stratigraphy
+• Good for waterlogged sites
+• Can detect depth of deposits
+
+**Site Mapping & Documentation:**
+
+**Establishing Control Points:**
+• Datum point - permanent benchmark for all measurements
+• Grid system - typically aligned with cardinal directions
+• Total station or GPS for precise coordinates
+• Mapping all visible features
+
+**Topographic Survey:**
+• Recording elevation changes
+• Identifying earthworks and mounds
+• Understanding drainage patterns
+• Planning excavation logistics
+
+**GIS Integration:**
+Creating digital maps that combine:
+• Survey results
+• Topography
+• Historical maps
+• Aerial photos
+• Geophysical data
+• Environmental factors (water sources, soil types)
+
+**Permissions and Legal Requirements:**
+
+**Land Access:**
+• Written permission from landowner
+• Access agreements for duration of project
+• Liability insurance
+• Restoration agreements
+
+**Archaeological Permits:**
+• Government permissions required in most countries
+• Submission of research design
+• Qualified permit holder (usually PhD archaeologist)
+• Regular reporting requirements
+
+**Environmental Assessments:**
+• Impact on endangered species
+• Soil erosion concerns
+• Water quality issues
+• Tree and vegetation protection
+
+**Indigenous/Community Consultation:**
+• Descendant communities have rights to be consulted
+• Traditional knowledge can guide research
+• Cultural sensitivity and respect
+• Repatriation agreements for human remains
+
+A good survey saves time, protects the site, ensures important areas aren't missed, and builds relationships with stakeholders.`
+      },
 
 **Initial Survey Methods:**
 • Desktop research (historical records, maps, aerial photos)
@@ -650,8 +814,205 @@ Remember: In many places, fossil collection requires permits, and significant di
 A good survey saves time, protects the site, and ensures important areas aren't missed.`
       },
       {
-        title: "Digging Methods",
-        content: `Archaeological excavation is precise, methodical work:
+        title: "Excavation Methods (Part 1: Basic Principles)",
+        content: `Archaeological excavation is precise, methodical work that destroys context as it proceeds - you can never re-excavate! This is why documentation is paramount.
+
+**Fundamental Excavation Principles:**
+
+**1. Stratigraphic Excavation:**
+Remove layers in reverse order of deposition:
+• Most recent deposits first
+• Oldest at the bottom
+• Each layer is a separate "context"
+• Never dig arbitrary levels (like "10cm at a time")
+
+Think of it like a book - you must remove pages from back to front to read the story correctly.
+
+**2. The Law of Superposition:**
+In undisturbed deposits:
+• Lower layers are older
+• Upper layers are younger
+• Simple but powerful principle
+
+Complications:
+• Pits dug into earlier layers (inverted stratigraphy)
+• Collapsed structures
+• Erosion and disturbance
+• Animal burrows
+
+**3. Context is Everything:**
+The 3D position of every artifact and feature must be recorded:
+• Horizontal location (X, Y coordinates in grid)
+• Vertical location (depth/elevation)
+• Stratigraphic layer (which context)
+• Association with other finds and features
+
+**Why Context Matters:**
+A pot sherd found:
+• In a cooking hearth = cooking vessel
+• In a burial = grave good
+• In a trash pit = broken pottery disposal
+• On a floor = in-use vessel
+
+Same sherd, completely different interpretations!
+
+**Setting Up the Excavation:**
+
+**The Grid System:**
+Site divided into squares for precise location recording:
+• Typically 5m x 5m or 2m x 2m squares
+• Each square has alphanumeric code (e.g., "Square 12B")
+• Permanent markers at corners
+• Strings mark edges during digging
+
+**Recording Systems:**
+• Context sheets for each stratigraphic unit
+• Feature forms for structures, pits, postholes
+• Find sheets for artifacts
+• Photo logs with scales
+• Plan and section drawings
+• Elevation measurements
+
+**Excavation Sequence:**
+
+**1. Clean and Expose:**
+Remove modern grass/topsoil to expose archaeological layers. Scrape surface clean to see soil color changes that indicate features.
+
+**2. Identify Features:**
+Look for:
+• Color changes (pits appear darker)
+• Texture differences (clay vs sand)
+• Inclusions (stones, charcoal, artifacts)
+• Straight edges (walls)
+• Circular stains (postholes)
+
+**3. Section Features:**
+Cut through features to see stratigraphy:
+• Half-section method (dig half, leave half for profile)
+• Reveals layers within the feature
+• Shows construction and fill sequence
+
+**4. Excavate and Record:**
+• Remove fill layer by layer
+• Screen all soil
+• Collect artifacts with precise locations
+• Photograph at each stage
+• Draw plans and sections
+
+**5. Sample Collection:**
+• Soil samples for later analysis
+• Flotation samples for tiny plant/animal remains
+• Charcoal for radiocarbon dating
+• Pollen samples for environmental reconstruction`
+      },
+      {
+        title: "Excavation Methods (Part 2: Tools & Techniques)",
+        content: `**Essential Excavation Tools:**
+
+**Hand Tools:**
+• **Trowels** (pointing trowels) - The archaeologist's primary tool
+  - 4-inch blade ideal for most work
+  - Used for scraping, not scooping
+  - Blade kept sharp for clean cuts
+
+• **Brushes** (various sizes) - Delicate cleaning
+  - Soft paintbrushes for fragile items
+  - Harder brushes for stone
+  - Never brush wet artifacts (can damage)
+
+• **Dental picks and bamboo tools** - Ultra-fine work
+  - Cleaning around delicate bones
+  - Exposing small artifacts
+  - Removing matrix from objects
+
+**Soil Removal:**
+• Buckets and wheelbarrows - Transporting excavated soil
+• Shovels - Removing backfill and topsoil only
+• Mattocks - Breaking hard ground (used carefully!)
+
+**Measuring & Recording:**
+• Line levels and string - Maintaining straight edges
+• Measuring tapes - Recording dimensions
+• Plumb bobs - Transferring points vertically
+• Total station/GPS - Precise 3D coordinates
+• Digital photography - Constant documentation
+
+**Screening Equipment:**
+• 1/4 inch mesh screens - Standard artifact recovery
+• 1/8 inch screens - Fine recovery
+• Water screening - For wet sites
+• Systematic screening of all excavated soil
+
+**Special Excavation Techniques:**
+
+**Flotation:**
+Recovering tiny plant and animal remains:
+• Water poured through soil sample
+• Organic material floats to surface
+• Captured on fine mesh
+• Reveals ancient diet, environment, and plant use
+• Can recover seeds, tiny bones, charred plant material
+
+**Block Lifting:**
+Removing fragile items with surrounding soil:
+• Pedestal the object (dig around it)
+• Apply consolidant if needed
+• Wrap in plaster or foam
+• Lift entire block
+• Excavate in controlled lab conditions
+
+Examples: Delicate burials, wooden objects, complex artifact clusters
+
+**Plaster Jacketing:**
+Used for large, fragile fossils or artifacts:
+• Expose top surface
+• Cover with tissue paper (protective layer)
+• Apply plaster-soaked burlap strips
+• Let harden
+• Undercut and flip
+• Apply plaster to bottom
+• Transport to lab for removal
+
+**Wet Sieving:**
+For waterlogged sites:
+• Screens artifacts from water
+• Prevents drying and damage
+• Good for coastal and underwater sites
+
+**Dry Sieving:**
+Standard screening method:
+• Shake soil through mesh
+• Artifacts remain in screen
+• Quick visual check
+• Collect diagnostic pieces
+
+**The Harris Matrix:**
+A diagram showing stratigraphic sequence:
+• Each context is a box
+• Lines show relationships
+• Earlier contexts at bottom
+• Later contexts at top
+• Shows which layers are contemporary
+• Essential for understanding site formation
+
+Example relationships:
+• Layer A below Layer B = A is earlier
+• Pit C cuts through Layer A = C is later than A
+• Layer D same elevation as Layer E = possibly contemporary
+
+**Common Excavation Mistakes to Avoid:**
+
+1. **Digging too fast** - Missing subtle features and contexts
+2. **Not screening soil** - Losing small artifacts
+3. **Poor photography** - Missing scales, information boards
+4. **Inadequate notes** - Can't remember details later
+5. **Mixing contexts** - Contaminating stratigraphic layers
+6. **Not recognizing features** - Digging through walls, floors
+7. **Insufficient sampling** - Missing environmental evidence
+
+**Remember:**
+Excavation destroys context permanently. There are no second chances. Every moment must be documented. Future archaeologists will rely on your records to understand the site.`
+      },
 
 **Basic Principles:**
 • Excavate by stratigraphic layers (not arbitrary depths)
