@@ -344,28 +344,122 @@ Chemical fossils push back evidence of life to over 3.5 billion years ago - long
 Trace and chemical fossils complement body fossils by showing how organisms lived, moved, and interacted with their environment - information that bones alone cannot reveal.`
       },
       {
-        title: "Dating Methods",
-        content: `Scientists use various methods to determine the age of fossils:
+        title: "Dating Methods (Part 1: Relative Dating)",
+        content: `Scientists use various methods to determine the age of fossils. Dating is crucial for understanding evolution, extinction events, and Earth's history.
 
-**Relative Dating:**
-• Stratigraphy (law of superposition - older layers below)
-• Index fossils (known age markers)
-• Cross-dating with geological events
+**Relative Dating - Determining Age Order:**
 
-**Absolute Dating:**
-• Radiocarbon dating (up to ~50,000 years)
-  - Measures decay of Carbon-14
-  - Best for organic materials
-• Potassium-Argon dating (millions of years)
-  - Used for volcanic rocks
-  - Dates surrounding geological layers
-• Uranium-Lead dating (billions of years)
-  - Most accurate for very old rocks
+Relative dating tells us which fossils are older or younger relative to each other, but not their exact age in years.
 
-**Other Methods:**
-• Thermoluminescence
-• Electron spin resonance
-• Amino acid racemization
+**Stratigraphy (Law of Superposition):**
+In undisturbed sedimentary rock layers, older layers are below younger ones - like pages in a book. This fundamental principle allows us to build sequences of time.
+
+Key concepts:
+• Original horizontality - layers form horizontally
+• Lateral continuity - layers extend in all directions
+• Cross-cutting relationships - features that cut through layers are younger
+• Unconformities - gaps in the rock record where erosion occurred
+
+**Index Fossils:**
+Certain organisms make excellent time markers because they:
+• Lived for a relatively short geological time period
+• Were widespread geographically
+• Were abundant and easy to identify
+• Had distinctive features
+
+Examples:
+• Trilobites for the Paleozoic Era
+• Ammonites for the Mesozoic Era
+• Specific foraminifera for dating ocean sediments
+
+If you find the same index fossil in rocks from different locations, those rocks are likely the same age!
+
+**Biostratigraphy:**
+Using fossil assemblages (groups of fossils found together) to determine relative age. The combination of species present can pinpoint geological periods precisely.
+
+**Correlation:**
+Matching rock layers across different locations using:
+• Index fossils
+• Distinctive rock types
+• Volcanic ash layers (can be dated absolutely)
+• Magnetic reversals in rocks
+
+**Faunal Succession:**
+The principle that fossil organisms succeed each other in a definite, recognizable order. Once a species goes extinct, it never reappears - evolution doesn't run backward.
+
+**Limitations:**
+• Can't give absolute ages
+• Requires good exposure of rock layers
+• Can be complicated by faulting, folding, or erosion
+• Some environments don't preserve fossils well`
+      },
+      {
+        title: "Dating Methods (Part 2: Absolute Dating)",
+        content: `**Absolute Dating - Determining Numerical Ages:**
+
+Absolute dating provides actual ages in years (with error margins) using radioactive decay and other measurable processes.
+
+**Radiocarbon Dating (C-14):**
+
+**How it works:**
+• Living organisms absorb Carbon-14 from the atmosphere
+• When they die, C-14 starts to decay at a known rate
+• Half-life of 5,730 years (half the C-14 is gone)
+• Measuring remaining C-14 tells us how long since death
+
+**Best for:**
+• Organic materials (bone, wood, charcoal, shells)
+• Ages up to about 50,000 years
+• Archaeological sites and recent fossils
+
+**Limitations:**
+• Requires organic material
+• Can be contaminated by modern carbon
+• Plateaus in the calibration curve create uncertainty
+• Cannot date older materials
+
+**Potassium-Argon (K-Ar) Dating:**
+
+**How it works:**
+• Potassium-40 decays to Argon-40
+• Half-life of 1.3 billion years
+• Used on volcanic rocks
+• Dates when the rock cooled and formed
+
+**Best for:**
+• Dating volcanic layers above/below fossils
+• Hominid evolution sites (like in East Africa)
+• Ages from 100,000 years to billions of years
+
+**Example:**
+The famous "Lucy" skeleton (Australopithecus) was dated by K-Ar dating of volcanic ash layers above and below the bones - 3.2 million years old.
+
+**Uranium-Lead (U-Pb) Dating:**
+
+**How it works:**
+• Uranium-238 decays through multiple steps to Lead-206
+• Half-life of 4.5 billion years
+• Extremely accurate and reliable
+• Can cross-check using different uranium isotopes
+
+**Best for:**
+• Very old rocks
+• Zircon crystals (resist weathering, great for dating)
+• Determining age of Earth (4.54 billion years)
+
+**Other Absolute Dating Methods:**
+
+**Thermoluminescence (TL):**
+Measures trapped electrons in crystals. Used for pottery, burned flint, and sediments. Particularly useful when organic material is absent.
+
+**Electron Spin Resonance (ESR):**
+Similar to TL but doesn't destroy the sample. Good for tooth enamel and coral. Can date from thousands to millions of years.
+
+**Amino Acid Racemization:**
+Measures changes in amino acids after death. Temperature-dependent, so needs calibration. Used for bone and shell.
+
+**Dendrochronology (Tree Rings):**
+Counting and matching tree ring patterns. Incredibly precise - can date to the exact year! Useful for calibrating radiocarbon dates. Works back about 12,000 years.
 
 Combining multiple dating methods provides the most accurate age estimates. Context is crucial - knowing the geological layer and associated materials helps confirm dates.`
       },
