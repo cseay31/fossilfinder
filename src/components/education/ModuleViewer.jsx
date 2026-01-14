@@ -1699,9 +1699,267 @@ Egyptian archaeology continues to amaze - new discoveries happen every year!`
 Egyptian archaeology continues to reveal new discoveries, including recently found tombs and lost cities.`
       },
       {
-        title: "Mesopotamia & Rome",
+        title: "Mesopotamia (Part 1: The Cradle of Civilization)",
         content: `**MESOPOTAMIA (3500-539 BCE):**
-"The Cradle of Civilization" between the Tigris and Euphrates rivers.
+"The Cradle of Civilization" between the Tigris and Euphrates rivers (modern Iraq, Syria, Turkey).
+
+**Geography & Challenges:**
+
+Unlike Egypt's predictable Nile, Mesopotamian rivers were unpredictable:
+• Irregular flooding (sometimes devastating)
+• Required sophisticated irrigation
+• Hot, dry climate
+• Few natural barriers (frequent invasions)
+• Scarce resources (timber, stone imported)
+
+These challenges led to innovations:
+• Complex irrigation systems
+• City walls and fortifications
+• Written record-keeping
+• Organized bureaucracy
+
+**Major Civilizations:**
+
+**Sumerians (4500-1900 BCE) - The First Civilization:**
+
+Achievements:
+• **Invention of Writing** (cuneiform, ~3200 BCE)
+  - Wedge-shaped marks in clay
+  - Originally for accounting
+  - Evolved to literature, law, science
+  - Over 500,000 clay tablets survive!
+
+• **The Wheel** (~3500 BCE)
+  - Potter's wheel first
+  - Wheeled vehicles for transport
+  - Revolutionary for trade and warfare
+
+• **The Plow** - Agricultural revolution
+  - Increased food production
+  - Supported larger populations
+  - Freed people for specialized crafts
+
+• **Advanced Mathematics**
+  - Base-60 number system
+  - Still used today: 60 seconds, 60 minutes, 360 degrees
+  - Geometry and algebra
+  - Astronomical calculations
+
+• **City-States**
+  - Independent cities with own rulers
+  - Ur, Uruk, Lagash, Eridu
+  - Competition and cooperation
+  - Constant warfare over resources
+
+**Ziggurats:**
+• Massive stepped pyramids
+• Temple platforms to gods
+• Built of mud brick
+• Ur ziggurat - best preserved
+• Biblical "Tower of Babel" possibly inspired by ziggurat
+
+**Sumerian Religion:**
+Polytheistic with human-like gods:
+• Anu (sky god)
+• Enlil (air/storm god)
+• Enki (water/wisdom god)
+• Inanna (love/war goddess)
+
+Kings ruled as gods' representatives
+Temples were economic centers
+
+**Epic of Gilgamesh:**
+• Oldest known epic literature
+• Story of Gilgamesh, king of Uruk
+• Quest for immortality
+• Flood story (predates Biblical Noah)
+• Reveals Mesopotamian values and beliefs
+
+**Akkadian Empire (2334-2154 BCE):**
+
+• Sargon of Akkad - first empire builder
+• Unified Sumerian city-states
+• Akkadian language replaced Sumerian
+• Trade from Mediterranean to India
+• Collapsed due to drought and invasion
+
+**Babylonian Empire (1894-539 BCE):**
+
+**Old Babylonian Period:**
+• Hammurabi (1792-1750 BCE) - famous law-giver
+• **Code of Hammurabi** - 282 laws carved in stone
+  - "Eye for an eye" principle
+  - Different punishments by social class
+  - Addressed property, trade, family, labor
+  - Not oldest law code, but most complete
+
+• Babylon - great city with Ishtar Gate
+• Mathematics and astronomy flourished
+• Cuneiform literature preserved
+
+**Neo-Babylonian Period (626-539 BCE):**
+• Nebuchadnezzar II rebuilt Babylon
+• **Hanging Gardens** (one of Seven Wonders)
+  - May have been in Nineveh instead
+  - Or may be legendary
+• Conquered Jerusalem (586 BCE)
+• Babylonian Captivity of Jews
+
+**Assyrian Empire (2500-609 BCE):**
+
+Known for military might:
+• Iron weapons and armor
+• Siege warfare expertise
+• Chariot and cavalry units
+• Psychological warfare (brutal reputation)
+• Conquered vast territory
+
+**Cultural Achievements:**
+• Library of Ashurbanipal at Nineveh
+  - 30,000 clay tablets preserved
+  - Epic of Gilgamesh found here
+  - Medical, scientific, literary texts
+
+• Magnificent palaces with:
+  - Lamassu (winged bulls) guarding gates
+  - Wall reliefs of battles and hunts
+  - Glazed brick decorations
+
+• Advanced engineering:
+  - Aqueducts for water supply
+  - Road networks
+  - Planned cities
+
+Capital cities:
+• Ashur (religious center)
+• Nineveh (largest city, 120,000 people)
+• Nimrud
+• Khorsabad`
+      },
+      {
+        title: "Mesopotamia (Part 2) & Persian Empire",
+        content: `**Archaeological Discoveries in Mesopotamia:**
+
+**Royal Tombs of Ur (excavated 1920s-30s):**
+• 16 royal graves discovered
+• Elaborate burial goods:
+  - Gold and lapis lazuli jewelry
+  - Musical instruments (lyres with bull heads)
+  - Board games
+  - Elaborate headdresses
+
+• Evidence of human sacrifice:
+  - Servants buried with rulers
+  - Soldiers, musicians, attendants
+  - Apparently went willingly (poison cup)
+
+• Reveals:
+  - Belief in afterlife
+  - Social hierarchy
+  - Trade networks (lapis from Afghanistan)
+  - Sophisticated craftsmanship
+
+**Babylon:**
+• Ishtar Gate reconstructed in Berlin museum
+  - Brilliant blue glazed bricks
+  - Yellow and white animals (lions, dragons, bulls)
+  - Processional Way
+
+• City walls - one of ancient world's wonders
+• Tower of Babel - possibly ziggurat Etemenanki
+
+**Nineveh:**
+• Layard's excavations (1840s-50s)
+• Library of Ashurbanipal discovered
+• Palace reliefs showing:
+  - Lion hunts
+  - Siege warfare
+  - Tribute processions
+  - Daily life scenes
+
+**Cuneiform Tablets:**
+Reveal everything about Mesopotamian life:
+• Business contracts
+• Letters between rulers
+• School exercises
+• Medical texts
+• Mathematical problems
+• Astronomical observations
+• Epic poetry
+• Personal complaints!
+
+Famous example: "Complaint Tablet to Ea-nasir" (1750 BCE) - customer complaining about poor quality copper delivered. Oldest customer complaint!
+
+**Persian Empire (550-330 BCE):**
+
+The largest empire of the ancient world until Rome:
+
+**Achaemenid Dynasty:**
+
+**Cyrus the Great (559-530 BCE):**
+• Founded Persian Empire
+• Conquered Babylon peacefully (539 BCE)
+• Freed Jewish captives (returned to Jerusalem)
+• Tolerant of local religions and customs
+• **Cyrus Cylinder** - declaration of human rights
+  - Return of displaced peoples
+  - Freedom of worship
+  - Restoration of temples
+
+**Darius I (522-486 BCE):**
+• Expanded empire from India to Greece
+• Built Persepolis - magnificent capital
+• Royal Road - 1,600 miles of highway
+  - Postal system (inspiration for "neither snow nor rain...")
+• Standardized coinage
+• Legal code for whole empire
+
+**Empire Organization:**
+• Satrapies (provinces) with governors
+• Standardized laws and taxes
+• Aramaic as administrative language
+• Respect for local customs
+• Professional army
+
+**Xerxes I (486-465 BCE):**
+• Invaded Greece (Battle of Thermopagasse, Battle of Salamis)
+• Continued building at Persepolis
+• Empire at greatest extent
+
+**Persepolis:**
+• Built on massive platform
+• Apadana (audience hall) - could hold 10,000
+• Hall of 100 Columns
+• Relief carvings showing tribute bearers from all nations
+• Burned by Alexander the Great (330 BCE)
+
+**Zoroastrianism:**
+Persian religion:
+• Founded by prophet Zoroaster
+• Dualistic - good god (Ahura Mazda) vs evil (Ahriman)
+• Free will and moral choice
+• Influenced Judaism, Christianity, Islam
+• Fire temples (sacred fire continuously burning)
+• Still practiced today (Parsis)
+
+**Alexander the Great's Conquest:**
+• Defeated Persians (331 BCE at Gaugamela)
+• Ended Achaemenid dynasty
+• Spread Greek culture (Hellenization)
+• But Persian influence continued
+
+**Legacy of Mesopotamia:**
+• Writing (foundation of civilization)
+• Law codes (justice systems)
+• Mathematics (base-60, geometry)
+• Astronomy (star catalogs, calendars)
+• Literature (epic poetry)
+• Urban planning
+• Irrigation engineering
+• Wheeled transport
+
+These innovations shaped all subsequent civilizations. Mesopotamia truly earned the title "Cradle of Civilization"!`
+      },
 
 Major Civilizations:
 • Sumerians - Invented writing (cuneiform), wheel, plow
