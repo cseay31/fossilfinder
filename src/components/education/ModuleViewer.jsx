@@ -786,33 +786,6 @@ Creating digital maps that combine:
 
 A good survey saves time, protects the site, ensures important areas aren't missed, and builds relationships with stakeholders.`
       },
-
-**Initial Survey Methods:**
-• Desktop research (historical records, maps, aerial photos)
-• Field walking (systematic surface collection)
-• Remote sensing (magnetometry, ground-penetrating radar)
-• Test pits and shovel test units
-
-**Site Mapping:**
-• Establish datum point (reference marker)
-• Create grid system for precise location recording
-• Topographic mapping
-• GPS coordinates for all features
-
-**Assessment:**
-• Determine site boundaries
-• Identify areas of interest
-• Assess preservation state
-• Plan excavation strategy
-
-**Permissions and Permits:**
-• Land owner permission
-• Archaeological permits from authorities
-• Environmental impact assessments
-• Indigenous consultation (when applicable)
-
-A good survey saves time, protects the site, and ensures important areas aren't missed.`
-      },
       {
         title: "Excavation Methods (Part 1: Basic Principles)",
         content: `Archaeological excavation is precise, methodical work that destroys context as it proceeds - you can never re-excavate! This is why documentation is paramount.
@@ -1012,37 +985,6 @@ Example relationships:
 
 **Remember:**
 Excavation destroys context permanently. There are no second chances. Every moment must be documented. Future archaeologists will rely on your records to understand the site.`
-      },
-
-**Basic Principles:**
-• Excavate by stratigraphic layers (not arbitrary depths)
-• Remove most recent layers first
-• Preserve context (3D position of all finds)
-• Screen all excavated soil
-
-**Tools and Techniques:**
-• Trowels for careful scraping
-• Brushes for delicate cleaning
-• Buckets and wheelbarrows for soil removal
-• Screens (1/4 inch mesh) for artifact recovery
-• Dental tools for fine work
-
-**Documentation:**
-• Photographs at every stage
-• Written notes and forms
-• Scale drawings of profiles and plans
-• Level measurements
-• Artifact bags with context information
-
-**Special Techniques:**
-• Flotation (recovering tiny organic remains)
-• Block lifting (removing fragile items with surrounding soil)
-• Plaster jacketing (protecting fossils during removal)
-
-**The Harris Matrix:**
-A diagram showing the stratigraphic sequence - which layers formed when and their relationships. This is crucial for understanding the site's history.
-
-Remember: Excavation destroys context, so documentation must be perfect. You can't go back!`
       },
       {
         title: "Documentation & Post-Excavation (Part 1)",
@@ -1322,50 +1264,6 @@ Permanent repository for all records:
 Ensures future researchers can access everything.
 
 The goal is to create a comprehensive archive that tells the complete story of the site - enabling future discoveries from your hard work!`
-      }
-
-**Why Documentation Matters:**
-Once excavated, a site can never be restored. Documentation is the permanent record that allows future researchers to understand what was found and where.
-
-**Recording System:**
-• Context sheets for each stratigraphic unit
-• Feature forms for structures and deposits
-• Find sheets for artifacts
-• Sample logs for environmental remains
-• Photo logs with scales and north arrows
-
-**Photography:**
-• Overviews and details
-• Before, during, and after excavation
-• Include scales and information boards
-• Multiple angles of features
-• Close-ups of important finds
-
-**Plans and Sections:**
-• Top-down plans at regular intervals
-• Section drawings showing stratigraphy
-• Elevation drawings of features
-• Scale drawings (usually 1:10 or 1:20)
-
-**Digital Records:**
-• GIS mapping
-• 3D photogrammetry models
-• Database entry
-• Cloud backup of all data
-
-**Laboratory Processing:**
-• Washing and marking artifacts
-• Cataloging in database
-• Conservation when needed
-• Storage in stable conditions
-
-Good documentation enables:
-• Future research and reinterpretation
-• Publication and sharing findings
-• Heritage management
-• Public education
-
-The goal is to create a comprehensive archive that tells the complete story of the site.`
       }
     ],
     quiz: [
@@ -1670,34 +1568,6 @@ Current discoveries:
 
 Egyptian archaeology continues to amaze - new discoveries happen every year!`
       },
-
-**Key Periods:**
-• Old Kingdom (2686-2181 BCE) - Age of the Pyramids
-• Middle Kingdom (2055-1650 BCE) - Classical period
-• New Kingdom (1550-1077 BCE) - Imperial expansion
-• Late Period (664-332 BCE) - Foreign rule
-
-**Major Achievements:**
-• Pyramids of Giza (last surviving ancient wonder)
-• Hieroglyphic writing system
-• Advanced mathematics and astronomy
-• Sophisticated medical knowledge
-• Elaborate religious practices and afterlife beliefs
-
-**Archaeological Sites:**
-• Valley of the Kings (royal tombs)
-• Karnak and Luxor Temples
-• Abu Simbel
-• Alexandria (ancient library)
-
-**Famous Discoveries:**
-• Tutankhamun's tomb (Howard Carter, 1922)
-• Rosetta Stone (key to deciphering hieroglyphs)
-• Royal mummies
-• Papyrus scrolls
-
-Egyptian archaeology continues to reveal new discoveries, including recently found tombs and lost cities.`
-      },
       {
         title: "Mesopotamia (Part 1: The Cradle of Civilization)",
         content: `**MESOPOTAMIA (3500-539 BCE):**
@@ -1959,45 +1829,6 @@ Persian religion:
 • Wheeled transport
 
 These innovations shaped all subsequent civilizations. Mesopotamia truly earned the title "Cradle of Civilization"!`
-      },
-
-Major Civilizations:
-• Sumerians - Invented writing (cuneiform), wheel, plow
-• Akkadians - First empire under Sargon
-• Babylonians - Hammurabi's Code of Law
-• Assyrians - Powerful military empire
-• Persians - Vast multicultural empire
-
-Key Sites:
-• Ur - City with ziggurat and royal tombs
-• Babylon - Hanging Gardens (lost wonder)
-• Nineveh - Assyrian capital with vast library
-
----
-
-**ANCIENT ROME (753 BCE - 476 CE):**
-From small city-state to empire spanning three continents.
-
-Major Periods:
-• Kingdom (753-509 BCE)
-• Republic (509-27 BCE) - Expansion across Mediterranean
-• Empire (27 BCE-476 CE) - Peak power and influence
-
-Engineering Marvels:
-• Aqueducts bringing fresh water
-• Roads connecting the empire
-• Colosseum and amphitheaters
-• Concrete construction techniques
-• Public baths and sanitation
-
-Famous Sites:
-• Pompeii and Herculaneum (preserved by Vesuvius eruption)
-• Roman Forum
-• Pantheon (still standing with original dome)
-• Hadrian's Wall
-• Catacombs
-
-Roman archaeology provides insights into daily life, from graffiti in Pompeii to luxury villas.`
       },
       {
         title: "Ancient Rome (Part 1: Rise of Empire)",
