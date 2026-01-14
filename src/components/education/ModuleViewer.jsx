@@ -2000,7 +2000,374 @@ Famous Sites:
 Roman archaeology provides insights into daily life, from graffiti in Pompeii to luxury villas.`
       },
       {
-        title: "Maya Civilization",
+        title: "Ancient Rome (Part 1: Rise of Empire)",
+        content: `**ANCIENT ROME (753 BCE - 476 CE):**
+From small city-state to empire spanning three continents - one of history's most influential civilizations.
+
+**Geographic Advantages:**
+
+**Italy's Natural Benefits:**
+• Central Mediterranean location
+• Fertile agricultural land
+• Tiber River access to sea
+• Defensive mountains (Apennines)
+• Good harbors for trade
+• Mild climate
+
+**The Three Periods of Rome:**
+
+**1. ROMAN KINGDOM (753-509 BCE):**
+
+**Foundation Legend:**
+• Romulus and Remus raised by she-wolf
+• Founded Rome on seven hills (753 BCE)
+• Romulus became first king
+• Probably based on real Etruscan settlement
+
+**Seven Kings:**
+• Last three were Etruscan
+• Built early infrastructure:
+  - Cloaca Maxima (sewer system)
+  - Forum (public space)
+  - Temple of Jupiter
+
+• Overthrew last king (Tarquin the Proud) in 509 BCE
+• Romans hated monarchy ever after
+
+**2. ROMAN REPUBLIC (509-27 BCE):**
+
+**Government Structure:**
+Revolutionary system of checks and balances:
+
+• **Two Consuls** - chief executives (one year term)
+  - Could veto each other
+  - Prevented tyranny
+  
+• **Senate** - advisory council
+  - 300 members (later 600-900)
+  - Former magistrates
+  - Controlled finances and foreign policy
+  
+• **Assemblies** - citizen voting
+  - Different assemblies for different purposes
+  - Elected magistrates
+  - Passed laws
+
+• **Tribunes** - protected common people
+  - Could veto Senate
+  - Sacrosanct (couldn't be harmed)
+
+**Patricians vs Plebeians:**
+• Patricians - noble families, wealthy
+• Plebeians - common people
+• Struggle of the Orders (494-287 BCE)
+• Plebeians gained rights gradually
+• Twelve Tables (450 BCE) - written law code
+
+**Republican Expansion:**
+
+**Italian Unification (509-264 BCE):**
+• Defeated neighboring peoples
+• Latin League alliance
+• Samnite Wars (343-290 BCE)
+• Greek cities of southern Italy
+• All of Italy under Roman control by 264 BCE
+
+**Punic Wars vs Carthage (264-146 BCE):**
+
+**First Punic War (264-241 BCE):**
+• Fight for Sicily
+• Rome builds navy (copied Carthaginian ship)
+• Invented corvus (boarding bridge)
+• Rome wins Sicily (first province)
+
+**Second Punic War (218-201 BCE):**
+• **Hannibal Barca** - Carthaginian genius
+• Crossed Alps with elephants!
+• Defeated Romans repeatedly
+  - Battle of Cannae (216 BCE) - worst Roman defeat ever
+• **Scipio Africanus** defeated Hannibal at Zama (202 BCE)
+• Rome dominates western Mediterranean
+
+**Third Punic War (149-146 BCE):**
+• Rome destroys Carthage completely
+• "Carthago delenda est" - Cato's motto
+• City burned, land salted (supposedly)
+
+**Eastern Expansion:**
+• Conquered Greece (146 BCE)
+• Macedonia, Asia Minor
+• Syria and Judea
+• Egypt (30 BCE)
+
+**Crisis of the Republic:**
+
+**Problems of Success:**
+• Rich got richer (large slave estates)
+• Small farmers driven off land
+• Urban poor (bread and circuses)
+• Generals with loyal armies
+• Political violence
+
+**Key Figures in Republic's Fall:**
+
+• **Marius** - reformed army (107 BCE)
+  - Soldiers loyal to general, not state
+  - Professional army
+  
+• **Sulla** - first civil war (88-82 BCE)
+  - Marched on Rome
+  - Dictator, then resigned
+  
+• **Spartacus** - slave revolt (73-71 BCE)
+  - Former gladiator
+  - Led 70,000 slaves
+  - Defeated multiple Roman armies
+  - Finally crushed by Crassus
+  - 6,000 crucified along Appian Way
+  
+• **First Triumvirate** (60 BCE)
+  - Pompey, Crassus, Caesar
+  - Informal alliance
+  - Dominated politics
+
+• **Julius Caesar** (100-44 BCE)
+  - Conquered Gaul (58-50 BCE)
+  - Crossed Rubicon River (49 BCE) - "the die is cast"
+  - Civil war vs Pompey
+  - Dictator for life
+  - Assassinated Ides of March (March 15, 44 BCE)
+  - "Et tu, Brute?"
+
+• **Second Triumvirate**
+  - Octavian, Mark Antony, Lepidus
+  - Defeated Caesar's assassins
+  - Divided Roman world
+
+• **Octavian vs Mark Antony**
+  - Battle of Actium (31 BCE)
+  - Antony and Cleopatra defeated
+  - Egypt annexed
+  - Octavian sole ruler`
+      },
+      {
+        title: "Ancient Rome (Part 2: Empire & Legacy)",
+        content: `**3. ROMAN EMPIRE (27 BCE - 476 CE):**
+
+**Augustus (27 BCE - 14 CE):**
+• Octavian renamed "Augustus" (revered one)
+• Technically "first citizen" not emperor
+• Maintained republican forms
+• Real power firmly held
+• **Pax Romana** begins (Roman Peace)
+• Rebuilt Rome ("found it brick, left it marble")
+• Established civil service
+• Professional standing army
+
+**Julio-Claudian Dynasty:**
+• Tiberius (14-37) - capable but reclusive
+• Caligula (37-41) - insane, assassinated
+• Claudius (41-54) - conquered Britain
+• Nero (54-68) - blamed Christians for fire, persecuted them
+
+**Year of Four Emperors (69 CE):**
+• Civil war after Nero
+• Vespasian emerged victorious
+
+**Flavian Dynasty:**
+• Vespasian (69-79)
+• Titus (79-81) - destroyed Jerusalem (70 CE)
+• Domitian (81-96) - authoritarian
+
+**Five Good Emperors (96-180 CE):**
+Empire's golden age:
+• Nerva, Trajan, Hadrian, Antoninus Pius, Marcus Aurelius
+• Peaceful succession (adopted heirs)
+• Empire at greatest extent under Trajan
+• Prosperity and stability
+
+**Marcus Aurelius (161-180):**
+• Philosopher-emperor
+• *Meditations* - Stoic philosophy
+• Broke tradition - made son Commodus heir
+• Beginning of decline
+
+**Crisis of Third Century (235-284):**
+• 50+ emperors in 50 years
+• Most assassinated
+• Barbarian invasions
+• Economic collapse
+• Plague
+
+**Diocletian (284-305):**
+• Restored order
+• Divided empire (Tetrarchy - rule of four)
+• Persecuted Christians
+• Economic reforms (price controls - failed)
+
+**Constantine (306-337):**
+• Reunified empire
+• **Converted to Christianity** (313 CE)
+  - Edict of Milan - freedom of worship
+  - Christianity became dominant
+• Founded Constantinople (324)
+• Council of Nicaea (325) - established orthodox Christianity
+
+**Division of Empire:**
+• Permanently split 395 CE
+• Western Empire - Rome
+• Eastern Empire - Constantinople
+• East survived as Byzantine Empire until 1453!
+
+**Fall of Western Rome (476 CE):**
+Causes of decline (historians debate):
+• Barbarian invasions
+• Economic troubles
+• Political instability
+• Overextension
+• Lead poisoning (?)
+• Christianity changed values (?)
+• Climate change
+
+• Romulus Augustulus - last western emperor
+• Deposed by Odoacer (German king)
+• East continued 1,000 more years!
+
+**Roman Engineering & Architecture:**
+
+**Engineering Marvels:**
+
+**Roads:**
+• 50,000+ miles of paved roads
+• "All roads lead to Rome"
+• Enabled trade and army movement
+• Straight, well-drained, durable
+• Many still in use today!
+
+**Aqueducts:**
+• Brought fresh water to cities
+• Gravity-powered (precise slope)
+• Pont du Gard (France) - 160 feet tall
+• Rome had 11 aqueducts
+• Delivered 200+ gallons per person per day!
+
+**Concrete:**
+• Roman invention (pozzolana - volcanic ash)
+• Stronger than anything until 1800s
+• Enabled domes and complex shapes
+• **Pantheon** dome - largest unreinforced concrete dome ever
+  - Still standing 1900 years later!
+
+**Architecture:**
+
+**Colosseum (80 CE):**
+• 50,000+ spectators
+• Gladiator fights, animal hunts, naval battles
+• Retractable awning for shade
+• 80 entrances for crowd control
+• Underground tunnels and elevators
+
+**Public Baths:**
+• Social centers
+• Hot, warm, cold pools
+• Exercise areas
+• Libraries
+• Open to all (small fee)
+
+**Forum:**
+• Public square
+• Political meetings
+• Markets
+• Temples
+• Triumphal arches
+
+**Private Homes:**
+• Insulae (apartment buildings) for poor
+• Domus (townhouses) for rich
+• Villas (country estates)
+• Mosaics, frescoes, central heating!
+
+**Roman Society & Culture:**
+
+**Social Classes:**
+• **Senators** - wealthiest, political elite
+• **Equestrians** - wealthy businessmen
+• **Plebeians** - citizens, farmers, shopkeepers
+• **Slaves** - 20-30% of population
+  - Could buy freedom
+  - Some became wealthy freedmen
+
+**Daily Life:**
+• Public baths
+• Games (chariot races, gladiators)
+• Theater
+• Dining (reclining on couches)
+• Wine with every meal
+• Garum (fermented fish sauce) on everything
+
+**Roman Law:**
+• Twelve Tables (450 BCE) - foundation
+• Developed over centuries
+• "Innocent until proven guilty"
+• Legal representation
+• Written contracts
+• Basis of Western legal systems
+
+**Language & Literature:**
+• Latin - language of empire
+• Romance languages descended from Latin
+• Virgil's *Aeneid* (epic)
+• Ovid's *Metamorphoses* (mythology)
+• Cicero (oratory, philosophy)
+• Caesar's *Gallic Wars*
+
+**Archaeological Sites:**
+
+**Pompeii & Herculaneum:**
+• Destroyed by Vesuvius eruption (79 CE)
+• Perfectly preserved
+• Daily life frozen in time
+• Graffiti, food, furniture
+• Plaster casts of victims
+
+**Roman Forum:**
+• Heart of ancient Rome
+• Ruins of temples, government buildings
+• Arch of Titus, Arch of Septimius Severus
+
+**Pantheon:**
+• Best-preserved Roman building
+• Concrete dome with oculus
+• Became Christian church (saved it)
+
+**Hadrian's Wall (Britain):**
+• 73 miles across northern England
+• Marked empire's limit
+• Forts every mile
+• Signaling stations
+
+**Colosseum:**
+• Partially preserved
+• Symbol of Roman engineering
+• Archaeological excavations ongoing
+
+**Legacy of Rome:**
+
+• Law and government concepts
+• Engineering (roads, aqueducts, concrete)
+• Language (Latin, Romance languages)
+• Christianity spread via Roman Empire
+• Calendar (Julian, then Gregorian)
+• Architecture (domes, arches, columns)
+• Military tactics
+• Urban planning
+• Alphabet
+• Literature and philosophy
+
+Rome fell, but Roman civilization never died - it transformed and shaped all of Western civilization!`
+      },
+      {
+        title: "Maya Civilization (Part 1)",
         content: `The Maya civilization flourished in Mesoamerica from ~2000 BCE to Spanish conquest:
 
 **Geographic Range:**
