@@ -26,6 +26,7 @@ import AnnouncementBanner from "./components/layout/AnnouncementBanner";
 
 import ModerationNotification from "./components/layout/ModerationNotification";
 import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
+import ModerationWatcher from "./components/layout/ModerationWatcher";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -226,6 +227,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <SidebarProvider>
       <ActivityTracker />
+      <ModerationWatcher currentUser={currentUser} />
       {isInitialLoad && <InitialLoadingScreen isDarkMode={isDarkMode} />}
       {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
       <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
