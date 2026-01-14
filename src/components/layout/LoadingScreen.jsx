@@ -3,6 +3,14 @@ import { motion } from 'framer-motion';
 
 export default function LoadingScreen({ isDarkMode }) {
   const [progress, setProgress] = useState(0);
+  const [messageIndex, setMessageIndex] = useState(0);
+  
+  const messages = [
+    "Loading AI model",
+    "Loading discoveries",
+    "Loading posts",
+    "Loading locations"
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -14,6 +22,14 @@ export default function LoadingScreen({ isDarkMode }) {
     }, 150);
 
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const messageInterval = setInterval(() => {
+      setMessageIndex(prev => (prev + 1) % messages.length);
+    }, 750);
+
+    return () => clearInterval(messageInterval);
   }, []);
 
   return (
@@ -51,13 +67,16 @@ export default function LoadingScreen({ isDarkMode }) {
         />
         
         <motion.p
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className={`text-center font-medium ${
+          key={messageIndex}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+          className={`text-center font-medium mt-4 ${
             isDarkMode ? 'text-slate-400' : 'text-stone-600'
           }`}
         >
-          Loading...
+          {messages[messageIndex]}...
         </motion.p>
       </div>
     </motion.div>
