@@ -257,33 +257,91 @@ The field combines outdoor fieldwork, laboratory analysis, and scholarly researc
   "fossil-identification": {
     sections: [
       {
-        title: "Types of Fossils",
-        content: `Fossils are the preserved remains or traces of ancient life. There are several main types:
+        title: "Types of Fossils (Part 1: Body Fossils)",
+        content: `Fossils are the preserved remains or traces of ancient life, providing windows into Earth's biological history spanning over 3.5 billion years.
 
-**Body Fossils:**
-• Bones and teeth (most common)
-• Shells and exoskeletons
-• Petrified wood and plant material
-• Preserved soft tissue (rare)
+**Body Fossils - Preserved Remains:**
 
-**Trace Fossils:**
-• Footprints and trackways
-• Burrows and nests
-• Coprolites (fossilized feces)
-• Bite marks and feeding traces
+**Hard Parts (Most Common):**
 
-**Chemical Fossils:**
-• Biomarkers in rocks
-• Organic molecules preserved in sediment
+**Bones and Teeth:**
+Vertebrate fossils are the most recognizable. Bones are porous and readily absorb minerals during fossilization. Teeth are even more durable due to their enamel coating and are often the only parts of an animal that fossilize. Shark teeth are incredibly common fossils because sharks continuously replace teeth throughout their lives.
 
-**Preservation Types:**
-• Permineralization (minerals fill spaces)
-• Replacement (original material replaced)
-• Carbonization (carbon film remains)
-• Amber preservation (trapped in tree resin)
-• Ice and tar preservation
+**Shells and Exoskeletons:**
+Invertebrates like clams, snails, trilobites, and ammonites have hard outer shells that preserve exceptionally well. Their calcium carbonate or chitin shells can last millions of years. Marine environments are particularly good for shell preservation due to constant sediment deposition.
 
-Understanding the type of fossil helps determine its age, the organism it came from, and the environment in which it formed.`
+**Petrified Wood:**
+Trees buried rapidly by volcanic ash or sediment can have their organic material replaced cell-by-cell with minerals (usually silica), preserving incredible detail. You can often see growth rings and even cellular structure in petrified wood.
+
+**Soft Tissue (Extremely Rare):**
+Under exceptional circumstances, soft tissue can preserve:
+• Mummified dinosaurs with skin impressions
+• Insects in amber with preserved muscle tissue
+• Frozen mammoths with hair and organs
+• Skin and feathers preserved in fine-grained sediment
+• Permafrost preservation of ice age animals
+
+**Conditions for Soft Tissue Preservation:**
+• Rapid burial preventing decay
+• Exclusion of oxygen
+• Stable chemical environment
+• Protection from scavengers
+• Extreme cold or desiccation
+
+Understanding the type of fossil helps determine its age, the organism it came from, and the environment in which it formed. Body fossils give us direct evidence of ancient organisms' anatomy and appearance.`
+      },
+      {
+        title: "Types of Fossils (Part 2: Trace & Chemical)",
+        content: `**Trace Fossils - Evidence of Behavior:**
+
+Trace fossils (ichnofossils) don't preserve the organism itself, but evidence of its activities. These are incredibly valuable because they show behavior, not just anatomy!
+
+**Footprints and Trackways:**
+Preserved in soft sediment that later hardened. Can reveal:
+• How the animal moved (bipedal vs quadrupedal)
+• Speed of movement (stride length)
+• Herding behavior (multiple trackways together)
+• Hunting behavior (predator tracks near prey tracks)
+
+Famous examples: Dinosaur tracks in Texas, ancient human footprints at Laetoli (Tanzania) - 3.6 million years old!
+
+**Burrows and Borings:**
+Tunnels made by worms, clams, or other organisms preserved in rock. Show where creatures lived and fed. Some trace fossils are so distinctive they're used to identify geological periods.
+
+**Coprolites:**
+Fossilized feces! Surprisingly useful - can be analyzed for:
+• Diet (what the animal ate)
+• Digestive system structure
+• Parasites and diseases
+• Climate and environment
+
+**Other Trace Fossils:**
+• Bite marks on bones (showing predation or scavenging)
+• Scratch marks from feeding
+• Egg nests and breeding sites
+• Gastroliths (stomach stones from dinosaurs)
+• Root traces from ancient plants
+
+**Chemical Fossils (Molecular Evidence):**
+
+**Biomarkers:**
+Organic molecules that survive after the organism decays. Can identify:
+• Type of organism that was present
+• Environmental conditions
+• Presence of ancient microbial life
+• Even in rocks billions of years old
+
+**Isotopic Signatures:**
+Chemical fingerprints in rocks and fossils that reveal:
+• Ancient temperatures
+• Diet composition
+• Migration patterns
+• Ocean chemistry
+
+**Oldest Evidence of Life:**
+Chemical fossils push back evidence of life to over 3.5 billion years ago - long before any body fossils exist. These molecular signatures are our only evidence of Earth's earliest lifeforms.
+
+Trace and chemical fossils complement body fossils by showing how organisms lived, moved, and interacted with their environment - information that bones alone cannot reveal.`
       },
       {
         title: "Dating Methods",
