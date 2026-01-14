@@ -4,6 +4,7 @@ import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
 import LoadingScreen from "./components/layout/LoadingScreen";
+import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
 import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp } from "lucide-react";
 import {
   Sidebar,
@@ -40,6 +41,7 @@ export default function Layout({ children, currentPageName }) {
   }, [isDarkMode]);
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [discoveries, setDiscoveries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
@@ -50,6 +52,13 @@ export default function Layout({ children, currentPageName }) {
     loadDiscoveries();
     loadCurrentUser();
     checkMaintenanceMode();
+    
+    // Hide initial loading screen after 3 seconds
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 3000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -217,6 +226,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <SidebarProvider>
       <ActivityTracker />
+      {isInitialLoad && <InitialLoadingScreen isDarkMode={isDarkMode} />}
       {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
       <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
         {/* Northern Lights Background for Dark Mode */}
