@@ -20,40 +20,125 @@ const moduleContent = {
   "intro-archaeology": {
     sections: [
       {
-        title: "What is Archaeology?",
+        title: "What is Archaeology? (Part 1)",
         content: `Archaeology is the scientific study of human history and prehistory through the excavation and analysis of artifacts, structures, and other physical remains. It helps us understand how people lived in the past, from ancient civilizations to more recent history.
 
-Archaeological evidence can include:
-• Artifacts (tools, pottery, jewelry)
-• Ecofacts (environmental remains like seeds, bones)
-• Features (buildings, roads, burial sites)
-• Context (where and how items were found)
+**The Scope of Archaeology:**
+Archaeology covers an enormous time span - from the first stone tools made by our ancestors over 2.5 million years ago to objects from the recent past. Some archaeologists study dinosaurs (paleontology), while others focus on industrial-era factories or even modern garbage dumps!
+
+**Archaeological Evidence Includes:**
+• Artifacts (tools, pottery, jewelry, weapons, art)
+• Ecofacts (environmental remains like seeds, pollen, bones, shells)
+• Features (buildings, roads, burial sites, fire pits, post holes)
+• Context (where and how items were found - this is crucial!)
+
+**Why Context Matters:**
+Finding a Roman coin is interesting. Finding it in a Viking grave tells a completely different story about trade, conquest, or cultural exchange. The location, depth, and surrounding materials of every find provide crucial information.
+
+**The Archaeological Process:**
+1. Survey - Finding sites through research, aerial photography, or walking the land
+2. Excavation - Carefully digging and recording everything
+3. Analysis - Studying artifacts in labs
+4. Interpretation - Forming theories about past peoples
+5. Publication - Sharing findings with the world
 
 Archaeologists use various methods to date and analyze findings, including stratigraphy (study of layers), radiocarbon dating, and comparative analysis with known artifacts.`
       },
       {
-        title: "Tools & Methods",
-        content: `Archaeologists use a variety of tools and techniques in their work:
+        title: "What is Archaeology? (Part 2)",
+        content: `**Subdisciplines of Archaeology:**
 
-**Field Tools:**
-• Trowels and brushes for careful excavation
-• Screens for sifting soil
-• GPS and mapping equipment
-• Photography and documentation tools
+**Prehistoric Archaeology:**
+Studies human societies before written records. This includes the Paleolithic (Old Stone Age), Mesolithic (Middle Stone Age), and Neolithic (New Stone Age) periods. Prehistoric archaeologists might study cave paintings, early tools, or the transition to agriculture.
 
-**Laboratory Analysis:**
-• Microscopes for detailed examination
-• Chemical analysis for dating and composition
-• 3D scanning and digital reconstruction
-• DNA analysis for biological remains
+**Historical Archaeology:**
+Focuses on civilizations with written records, often combining archaeological evidence with historical documents. Examples include Roman forts, medieval castles, or Colonial American settlements.
 
-**Modern Technology:**
-• Ground-penetrating radar
-• LiDAR (Light Detection and Ranging)
-• Drones for aerial surveys
-• Geographic Information Systems (GIS)
+**Underwater Archaeology:**
+Studies submerged sites like shipwrecks, sunken cities, or flooded caves. Requires special diving skills and equipment. Famous discoveries include the Titanic and ancient Mediterranean shipwrecks.
 
-The key to archaeology is careful, methodical work. Every item's location and context provides crucial information about the past.`
+**Bioarchaeology:**
+Analyzes human and animal remains to understand health, diet, disease, and population movements. Can reveal information about violence, nutrition deficiencies, and life expectancy.
+
+**Experimental Archaeology:**
+Recreates ancient techniques to understand how things were made and used. This might involve making stone tools, building Roman roads, or firing ancient pottery designs.
+
+**Cultural Resource Management (CRM):**
+Archaeological work done before construction projects. Required by law in many places to preserve important sites. This is where most professional archaeologists work today!
+
+**The Archaeological Record:**
+Only a tiny fraction of past human activity becomes preserved. Organic materials like wood, leather, and textiles usually decay unless conditions are exceptional (very dry, very wet, frozen, or oxygen-free). This means archaeologists work with an incomplete picture and must be careful about drawing conclusions.`
+      },
+      {
+        title: "Tools & Methods (Part 1: Field Work)",
+        content: `Archaeologists use a variety of specialized tools and cutting-edge technology in their work:
+
+**Basic Field Tools:**
+• Trowels (flat, pointed) - The archaeologist's most important tool
+• Brushes (various sizes) - For delicate cleaning
+• Buckets and wheelbarrows - Moving excavated soil
+• Screens/sieves (different mesh sizes) - Finding small artifacts
+• Line levels and measuring tapes - Precise measurements
+• Photography equipment with scales - Documentation
+• Total Station or GPS - Precise 3D positioning
+• Pencils and waterproof notebooks - Field notes
+
+**Survey Equipment:**
+• Transit or theodolite - Mapping elevations
+• Metal detectors - Finding buried metal objects
+• Soil probes - Testing depth of deposits
+• Ranging poles and line - Marking boundaries
+• Compasses - Orientation and mapping
+
+**Documentation Tools:**
+• Context sheets - Recording stratigraphic units
+• Feature forms - Documenting structures
+• Photo boards - Labeling images
+• Drawing equipment - Plans and sections
+• Bags and tags - Organizing finds
+
+**The Grid System:**
+Archaeologists typically divide sites into squares (often 5x5 meters or 2x2 meters). Each square is excavated separately and all finds are labeled with their grid coordinates. This creates a 3D map of where everything was found.
+
+**Stratigraphic Excavation:**
+Digging by layers (strata) rather than arbitrary depths. Newer layers on top, older below. Each layer represents a period of time - a flood, a building phase, an abandonment, etc. Understanding and recording these layers is fundamental to archaeology.`
+      },
+      {
+        title: "Tools & Methods (Part 2: Lab & Technology)",
+        content: `**Laboratory Analysis Tools:**
+
+• Microscopes (stereoscopic, petrographic, SEM) - Examining tiny details, use-wear on tools, material composition
+• Spectrometers - Identifying chemical composition of materials
+• X-ray fluorescence (XRF) - Non-destructive elemental analysis
+• CT scanners - 3D imaging without unwrapping mummies or opening containers
+• DNA extraction equipment - Genetic analysis of remains
+• Stable isotope analysis - Determining diet and migration patterns
+• Residue analysis - Finding traces of food, drink, or other substances
+
+**Modern Remote Sensing Technology:**
+
+**Ground-Penetrating Radar (GPR):**
+Sends radar pulses into the ground to map buried structures without excavation. Can detect walls, graves, and other features up to several meters deep.
+
+**LiDAR (Light Detection and Ranging):**
+Laser scanning from aircraft that penetrates forest canopy to reveal hidden structures. Revolutionary for finding Maya cities and other sites in dense vegetation.
+
+**Aerial Photography & Satellite Imagery:**
+Reveals crop marks, soil changes, and shadows that indicate buried structures. Historical aerial photos can show sites before modern development.
+
+**Magnetometry:**
+Detects magnetic variations in soil caused by ancient fires, iron objects, or disturbed earth. Can map entire sites quickly.
+
+**Drones:**
+Affordable aerial photography and mapping. Can create detailed 3D models of sites and track excavation progress.
+
+**Geographic Information Systems (GIS):**
+Computer mapping that layers different data types - site locations, terrain, water sources, ancient roads, etc. Helps understand settlement patterns and relationships between sites.
+
+**3D Photogrammetry:**
+Creating detailed 3D models from multiple photographs. Preserves sites digitally and allows remote study.
+
+The key to archaeology is combining all these methods with careful, methodical work. Every item's location and context provides crucial information about the past. Technology helps us see and preserve more, but human interpretation remains essential.`
       },
       {
         title: "Career Paths",
