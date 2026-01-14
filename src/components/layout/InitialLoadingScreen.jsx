@@ -14,7 +14,7 @@ export default function InitialLoadingScreen({ isDarkMode }) {
   useEffect(() => {
     const messageInterval = setInterval(() => {
       setMessageIndex(prev => (prev + 1) % messages.length);
-    }, 750);
+    }, 1250);
 
     return () => clearInterval(messageInterval);
   }, []);
