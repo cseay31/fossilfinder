@@ -8,13 +8,22 @@ export default function InitialLoadingScreen({ isDarkMode }) {
     "Loading AI model",
     "Loading discoveries",
     "Loading posts",
-    "Loading locations"
+    "Loading locations",
+    "Built by Connor Seay with help of the Ensworth FLL team"
   ];
 
   useEffect(() => {
     const messageInterval = setInterval(() => {
-      setMessageIndex(prev => (prev + 1) % messages.length);
-    }, 1250);
+      setMessageIndex(prev => {
+        const next = prev + 1;
+        // Stop cycling at the last message
+        if (next >= messages.length - 1) {
+          clearInterval(messageInterval);
+          return messages.length - 1;
+        }
+        return next;
+      });
+    }, 1000);
 
     return () => clearInterval(messageInterval);
   }, []);

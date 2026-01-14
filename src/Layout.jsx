@@ -54,10 +54,10 @@ export default function Layout({ children, currentPageName }) {
     loadCurrentUser();
     checkMaintenanceMode();
     
-    // Hide initial loading screen after 5 seconds
+    // Hide initial loading screen after 9 seconds
     const timer = setTimeout(() => {
       setIsInitialLoad(false);
-    }, 5000);
+    }, 9000);
     
     return () => clearTimeout(timer);
   }, []);
