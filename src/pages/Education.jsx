@@ -26,6 +26,7 @@ import LessonPlanViewer from "../components/education/LessonPlanViewer";
 import ProjectGuideViewer from "../components/education/ProjectGuideViewer";
 import VirtualTourViewer from "../components/education/VirtualTourViewer";
 import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 export default function EducationPage({ isDarkMode }) {
   const [completedLessons, setCompletedLessons] = useState(new Set());
@@ -233,6 +234,122 @@ export default function EducationPage({ isDarkMode }) {
       "Hard": "bg-red-100 text-red-800 border-red-200"
     };
     return colors[difficulty] || colors.Easy;
+  };
+
+  const generateTeacherResourcePDF = async (resource) => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    let yPos = 20;
+
+    // Header
+    doc.setFontSize(20);
+    doc.setTextColor(147, 51, 234);
+    doc.text(resource.title, pageWidth / 2, yPos, { align: 'center' });
+    
+    yPos += 10;
+    doc.setFontSize(12);
+    doc.setTextColor(100, 116, 139);
+    doc.text(resource.description, pageWidth / 2, yPos, { align: 'center' });
+
+    yPos += 15;
+    doc.setDrawColor(147, 51, 234);
+    doc.setLineWidth(0.5);
+    doc.line(20, yPos, pageWidth - 20, yPos);
+
+    yPos += 10;
+
+    if (resource.level) {
+      // Lesson Plan Content
+      const lessonPlans = {
+        "elementary": {
+          title: "Archaeology for Young Explorers (Grades K-5)",
+          lessons: [
+            { week: 1, title: "What is Archaeology?", activities: ["Introduction to archaeology through storytelling", "Show-and-tell with artifacts", "Drawing activity: 'My artifacts'"] },
+            { week: 2, title: "Dig Like an Archaeologist", activities: ["Sandbox excavation simulation", "Documentation practice", "Present findings to class"] },
+            { week: 3, title: "Ancient Civilizations", activities: ["World map exploration", "Compare ancient and modern life", "Art project: Create ancient art"] }
+          ]
+        },
+        "middle-school": {
+          title: "Archaeological Methods & Science (Grades 6-8)",
+          lessons: [
+            { week: 1, title: "Scientific Methods in Archaeology", activities: ["Apply scientific method to artifacts", "Learn dating techniques", "Complete documentation forms"] },
+            { week: 2, title: "Site Survey & Excavation", activities: ["Set up grid excavation system", "Practice systematic digging", "Record all findings with context"] },
+            { week: 3, title: "Artifact Analysis & Interpretation", activities: ["Classify and analyze artifacts", "Research historical context", "Create museum-style exhibit"] }
+          ]
+        },
+        "high-school": {
+          title: "Advanced Archaeological Science (Grades 9-12)",
+          lessons: [
+            { week: 1, title: "Archaeological Theory & Ethics", activities: ["Review major theoretical frameworks", "Analyze ethical case studies", "Debate cultural heritage issues"] },
+            { week: 2, title: "Advanced Dating Methods", activities: ["Study radiocarbon & other methods", "Practice stratigraphy analysis", "Calculate dates using formulas"] },
+            { week: 3, title: "Independent Research Project", activities: ["Select archaeological topic", "Conduct academic research", "Present findings professionally"] }
+          ]
+        }
+      };
+
+      const plan = lessonPlans[resource.level];
+      doc.setFontSize(16);
+      doc.setTextColor(59, 130, 246);
+      doc.text(plan.title, 20, yPos);
+      yPos += 10;
+
+      plan.lessons.forEach((lesson, index) => {
+        if (yPos > pageHeight - 40) {
+          doc.addPage();
+          yPos = 20;
+        }
+
+        doc.setFontSize(14);
+        doc.setTextColor(30, 41, 59);
+        doc.text(`Week ${lesson.week}: ${lesson.title}`, 20, yPos);
+        yPos += 8;
+
+        doc.setFontSize(10);
+        doc.setTextColor(71, 85, 105);
+        lesson.activities.forEach(activity => {
+          if (yPos > pageHeight - 30) {
+            doc.addPage();
+            yPos = 20;
+          }
+          const lines = doc.splitTextToSize(`• ${activity}`, pageWidth - 50);
+          doc.text(lines, 30, yPos);
+          yPos += lines.length * 5;
+        });
+        yPos += 5;
+      });
+    } else {
+      // Generic resource content
+      doc.setFontSize(12);
+      doc.setTextColor(71, 85, 105);
+      const content = [
+        "This comprehensive resource includes:",
+        "• Detailed lesson plans and activities",
+        "• Assessment tools and rubrics",
+        "• Printable worksheets and materials",
+        "• Extension activities for advanced learners",
+        "• Alignment with educational standards",
+        "",
+        "Perfect for educators teaching archaeology and paleontology!"
+      ];
+      
+      content.forEach(line => {
+        if (yPos > pageHeight - 20) {
+          doc.addPage();
+          yPos = 20;
+        }
+        doc.text(line, 20, yPos);
+        yPos += 7;
+      });
+    }
+
+    // Footer
+    yPos = pageHeight - 15;
+    doc.setFontSize(8);
+    doc.setTextColor(100, 116, 139);
+    doc.text('FossilFinder Education Center', pageWidth / 2, yPos, { align: 'center' });
+
+    doc.save(`${resource.title.replace(/\s+/g, '_')}.pdf`);
   };
 
   const downloadCertificate = () => {
@@ -530,15 +647,27 @@ export default function EducationPage({ isDarkMode }) {
                           </p>
                           <div className="flex items-center justify-between">
                             <span className="text-xs text-slate-500">{resource.size}</span>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className="border-purple-300 text-purple-700 hover:bg-purple-50"
-                              onClick={() => resource.level && setSelectedLessonPlan(resource.level)}
-                            >
-                              <Download className="w-4 h-4 mr-2" />
-                              {resource.level ? "View" : "Download"}
-                            </Button>
+                            {resource.level ? (
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                                onClick={() => setSelectedLessonPlan(resource.level)}
+                              >
+                                <Download className="w-4 h-4 mr-2" />
+                                View
+                              </Button>
+                            ) : (
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                                onClick={() => generateTeacherResourcePDF(resource)}
+                              >
+                                <Download className="w-4 h-4 mr-2" />
+                                Download PDF
+                              </Button>
+                            )}
                           </div>
                         </CardContent>
                       </Card>
