@@ -24,6 +24,7 @@ import SlideshowReview from "../components/admin/SlideshowReview";
 import LiveUserActivity from "../components/admin/LiveUserActivity";
 import ContentReports from "../components/admin/ContentReports";
 import ShellLoader from "../components/admin/ShellLoader";
+import { calculatePoints, checkBadgeEligibility } from "../components/gamification/BadgeSystem";
 
 export default function AdminPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -36,6 +37,7 @@ export default function AdminPage({ isDarkMode }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSlideshowReview, setShowSlideshowReview] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+  const [isCalculatingPoints, setIsCalculatingPoints] = useState(false);
 
   useEffect(() => {
     checkAdminAccess();
@@ -76,6 +78,63 @@ export default function AdminPage({ isDarkMode }) {
       console.error("Failed to load data:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const recalculateAllPoints = async () => {
+    if (!confirm('This will recalculate points for all users based on their activity. Continue?')) return;
+    
+    setIsCalculatingPoints(true);
+    try {
+      const allComments = await base44.entities.DiscoveryComment.list();
+      
+      for (const user of users) {
+        if (user.is_banned) continue;
+        
+        const userDiscoveries = discoveries.filter(d => d.created_by === user.email);
+        const userComments = allComments.filter(c => c.created_by === user.email);
+        
+        // Calculate points
+        let totalPoints = 0;
+        
+        // Discovery points
+        totalPoints += userDiscoveries.length * calculatePoints('discovery');
+        
+        // Like points
+        const totalLikes = userDiscoveries.reduce((sum, d) => sum + (d.likes || 0), 0);
+        totalPoints += totalLikes * calculatePoints('like_received');
+        
+        // Comment points
+        totalPoints += userComments.length * calculatePoints('comment');
+        
+        // Follower points
+        totalPoints += (user.follower_count || 0) * calculatePoints('follow_received');
+        
+        // Featured/Staff pick bonus
+        const featuredCount = userDiscoveries.filter(d => d.is_featured).length;
+        const staffPickCount = userDiscoveries.filter(d => d.is_staff_pick).length;
+        totalPoints += featuredCount * calculatePoints('featured');
+        totalPoints += staffPickCount * calculatePoints('staff_pick');
+        
+        // Check for new badges
+        const newBadges = checkBadgeEligibility(user, discoveries, allComments);
+        const allBadges = [...new Set([...(user.badges || []), ...newBadges])];
+        
+        // Update user
+        await base44.entities.User.update(user.id, {
+          points: totalPoints,
+          badges: allBadges,
+          discovery_count: userDiscoveries.length
+        });
+      }
+      
+      await loadAllData();
+      alert('Points recalculated for all users successfully!');
+    } catch (error) {
+      console.error("Failed to recalculate points:", error);
+      alert('Failed to recalculate points');
+    } finally {
+      setIsCalculatingPoints(false);
     }
   };
 
@@ -288,6 +347,21 @@ export default function AdminPage({ isDarkMode }) {
                   <QuickAction icon={Users} label="User Management" onClick={() => setActiveTab('users')} color="text-blue-400" />
                   <QuickAction icon={Megaphone} label="Post Announcement" onClick={() => setActiveTab('announcements')} color="text-pink-400" />
                   <QuickAction icon={Settings} label="Site Settings" onClick={() => setActiveTab('settings')} color="text-slate-400" />
+                  <Button
+                    onClick={recalculateAllPoints}
+                    disabled={isCalculatingPoints}
+                    variant="ghost"
+                    className="flex flex-col items-center gap-2 h-auto py-4 px-6 bg-slate-800/30 hover:bg-slate-700/50 border-slate-700/50 border rounded-xl"
+                  >
+                    {isCalculatingPoints ? (
+                      <Loader2 className="w-6 h-6 text-cyan-400 animate-spin" />
+                    ) : (
+                      <Zap className="w-6 h-6 text-cyan-400" />
+                    )}
+                    <span className="text-xs text-slate-300">
+                      {isCalculatingPoints ? 'Calculating...' : 'Recalculate Points'}
+                    </span>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
