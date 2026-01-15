@@ -206,9 +206,9 @@ export default function Layout({ children, currentPageName }) {
                     icon: Map,
                   },
     {
-      title: "Wiki",
-      url: createPageUrl("Wiki"),
-      icon: FileText,
+      title: "Forum",
+      url: createPageUrl("Forum"),
+      icon: MessageCircle,
     },
     ];
 
