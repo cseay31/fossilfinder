@@ -5,7 +5,7 @@ import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
 import LoadingScreen from "./components/layout/LoadingScreen";
 import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Trophy, Wrench, TrendingUp, LogOut } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -29,6 +29,17 @@ import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
 import ModerationWatcher from "./components/layout/ModerationWatcher";
 
 export default function Layout({ children, currentPageName }) {
+  const [isDarkMode, setIsDarkMode] = React.useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('fossilfinder-theme');
+      return saved === null ? true : saved === 'dark';
+    }
+    return true;
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem('fossilfinder-theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -217,49 +228,63 @@ export default function Layout({ children, currentPageName }) {
     <SidebarProvider>
       <ActivityTracker />
       <ModerationWatcher currentUser={currentUser} />
-      {isInitialLoad && <InitialLoadingScreen />}
-      {isLoading && <LoadingScreen />}
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-        {/* Animated Background */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
-          <div className="absolute top-0 left-0 w-full h-full opacity-30">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-            <div className="absolute top-20 right-1/4 w-80 h-80 bg-indigo-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
-            <div className="absolute top-10 left-1/2 w-72 h-72 bg-purple-500/15 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+      {isInitialLoad && <InitialLoadingScreen isDarkMode={isDarkMode} />}
+      {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
+      <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
+        {/* Northern Lights Background for Dark Mode */}
+        {isDarkMode && (
+          <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
+            <div className="absolute top-0 left-0 w-full h-full opacity-30">
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+              <div className="absolute top-20 right-1/4 w-80 h-80 bg-cyan-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+              <div className="absolute top-10 left-1/2 w-72 h-72 bg-purple-500/15 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+              <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-teal-400/10 rounded-full blur-[80px] animate-pulse" style={{ animationDuration: '7s', animationDelay: '3s' }} />
+            </div>
           </div>
-        </div>
+        )}
         <style>
-          {`
+          {isDarkMode ? `
             :root {
               --sidebar-background: 15 23 42;
-              --sidebar-foreground: 226 232 240;
-              --sidebar-primary: 99 102 241;
-              --sidebar-primary-foreground: 255 255 255;
+              --sidebar-foreground: 203 213 225;
+              --sidebar-primary: 34 211 238;
+              --sidebar-primary-foreground: 15 23 42;
               --sidebar-accent: 30 41 59;
-              --sidebar-accent-foreground: 226 232 240;
+              --sidebar-accent-foreground: 203 213 225;
               --sidebar-border: 51 65 85;
-              --sidebar-ring: 99 102 241;
+              --sidebar-ring: 34 211 238;
+            }
+          ` : `
+            :root {
+              --sidebar-background: 255 255 255;
+              --sidebar-foreground: 92 73 60;
+              --sidebar-primary: 120 82 54;
+              --sidebar-primary-foreground: 255 255 255;
+              --sidebar-accent: 245 232 213;
+              --sidebar-accent-foreground: 92 73 60;
+              --sidebar-border: 229 216 196;
+              --sidebar-ring: 120 82 54;
             }
           `}
         </style>
         
-        <Sidebar className="border-r border-white/5 bg-slate-900/80 backdrop-blur-3xl z-10 shadow-2xl shadow-black/50">
-          <SidebarHeader className="border-b border-white/5 p-6 bg-slate-950/50">
+        <Sidebar className={`border-r ${isDarkMode ? 'border-white/10 bg-slate-900/60' : 'border-stone-200 bg-white/80'} backdrop-blur-xl z-10`}>
+          <SidebarHeader className={`border-b ${isDarkMode ? 'border-white/10' : 'border-stone-200'} p-6`}>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/50">
+              <div className={`w-10 h-10 ${isDarkMode ? 'bg-gradient-to-br from-cyan-500 to-emerald-600' : 'bg-gradient-to-br from-amber-600 to-stone-700'} rounded-xl flex items-center justify-center shadow-lg`}>
                 <Compass className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-white text-lg drop-shadow-lg">FossilFinder</h2>
-                <p className="text-xs text-cyan-300/70 font-medium">Archaeological AI Analysis</p>
+                <h2 className={`font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} text-lg`}>FossilFinder</h2>
+                <p className={`text-xs ${isDarkMode ? 'text-cyan-300/70' : 'text-stone-500'} font-medium`}>Archaeological AI Analysis</p>
               </div>
             </div>
           </SidebarHeader>
           
           <SidebarContent className="p-3">
             <SidebarGroup>
-              <SidebarGroupLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-3">
+              <SidebarGroupLabel className={`text-xs font-semibold ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} uppercase tracking-wider px-3 py-3`}>
                 Analysis Tools
               </SidebarGroupLabel>
               <SidebarGroupContent>
@@ -268,10 +293,22 @@ export default function Layout({ children, currentPageName }) {
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton 
                           asChild 
-                          className={`hover:bg-white/5 transition-all duration-200 rounded-xl mb-1 font-medium ${
+                          className={`${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-amber-50 hover:text-amber-800'} transition-all duration-200 rounded-xl mb-1 font-medium ${
                             location.pathname === item.url 
-                              ? 'bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 text-white shadow-lg shadow-cyan-500/10 border border-cyan-500/20' 
-                              : 'text-slate-300 hover:text-white'
+                              ? isDarkMode 
+                                ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 shadow-sm border border-cyan-500/30' 
+                                : 'bg-gradient-to-r from-amber-100 to-stone-100 text-amber-800 shadow-sm'
+                              : isDarkMode
+                                ? 'text-slate-300 hover:text-cyan-300'
+                                : item.title === "Admin Panel" 
+                                  ? 'text-blue-700 hover:bg-blue-50 hover:text-blue-800'
+                                  : item.title === "Multi-Scan"
+                                    ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
+                                    : item.title === "FosFeed"
+                                      ? 'text-cyan-700 hover:bg-cyan-50 hover:text-cyan-800'
+                                      : item.title === "Discovery Map"
+                                        ? 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
+                                        : 'text-stone-700'
                           }`}
                         >
                         <Link to={item.url} className="flex items-center gap-3 px-3 py-3">
@@ -286,34 +323,58 @@ export default function Layout({ children, currentPageName }) {
             </SidebarGroup>
 
             <SidebarGroup className="mt-8">
-              <SidebarGroupLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-3">
+              <SidebarGroupLabel className={`text-xs font-semibold ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} uppercase tracking-wider px-3 py-3`}>
                 Quick Stats
               </SidebarGroupLabel>
               <SidebarGroupContent>
-                <div className="px-3 py-2 space-y-3 bg-slate-950/40 rounded-lg mx-2 border border-white/5">
+                <div className={`px-3 py-2 space-y-3 ${isDarkMode ? 'bg-white/5 rounded-lg mx-2' : ''}`}>
                   <div className="flex items-center gap-3 text-sm">
-                    <FileText className="w-4 h-4 text-cyan-400" />
-                    <span className="text-slate-300">Total Discoveries</span>
-                    <span className="ml-auto font-bold text-white">{totalDiscoveries}</span>
+                    <FileText className={`w-4 h-4 ${isDarkMode ? 'text-cyan-400/60' : 'text-stone-400'}`} />
+                    <span className={isDarkMode ? 'text-slate-400' : 'text-stone-600'}>Total Discoveries</span>
+                    <span className={`ml-auto font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>{totalDiscoveries}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <Search className="w-4 h-4 text-indigo-400" />
-                    <span className="text-slate-300">Under Analysis</span>
-                    <span className="ml-auto font-bold text-cyan-400">{analyzingCount}</span>
+                    <Search className={`w-4 h-4 ${isDarkMode ? 'text-emerald-400/60' : 'text-stone-400'}`} />
+                    <span className={isDarkMode ? 'text-slate-400' : 'text-stone-600'}>Under Analysis</span>
+                    <span className={`ml-auto font-bold ${isDarkMode ? 'text-emerald-400' : 'text-amber-600'}`}>{analyzingCount}</span>
                   </div>
                 </div>
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
 
-          <SidebarFooter className="border-t border-white/5 p-4 space-y-3 bg-slate-950/50">
+          <SidebarFooter className={`border-t ${isDarkMode ? 'border-white/10' : 'border-stone-200'} p-4 space-y-3`}>
+            {/* Theme Toggle */}
+            <div className="flex items-center justify-between px-2">
+              <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-400' : 'text-stone-500'}`}>
+                {isDarkMode ? 'Northern Lights' : 'Light Mode'}
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`rounded-full w-9 h-9 p-0 ${
+                  isDarkMode 
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 hover:from-cyan-500/30 hover:to-emerald-500/30 text-cyan-300' 
+                    : 'bg-stone-100 hover:bg-stone-200 text-amber-600'
+                }`}
+              >
+                {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </Button>
+            </div>
+
+            {/* Copyright */}
+            <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Connor Seay 2025, All rights reserved</p>
+
             {/* Contact Admin Button */}
             <SidebarMenuButton 
               asChild 
-              className={`hover:bg-white/5 transition-all duration-200 rounded-xl font-medium ${
+              className={`${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-blue-50 hover:text-blue-800'} transition-all duration-200 rounded-xl font-medium ${
                 location.pathname === createPageUrl("Contact")
-                  ? 'bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 text-white shadow-lg border border-cyan-500/20'
-                  : 'text-slate-300 hover:text-white'
+                  ? isDarkMode
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 shadow-sm border border-cyan-500/30'
+                    : 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 shadow-sm'
+                  : isDarkMode ? 'text-slate-300' : 'text-stone-700'
               }`}
             >
               <Link to={createPageUrl("Contact")} className="flex items-center gap-3 px-3 py-3">
@@ -323,11 +384,11 @@ export default function Layout({ children, currentPageName }) {
             </SidebarMenuButton>
 
             {/* User Profile */}
-            <div className="flex items-center gap-3 bg-slate-950/60 rounded-xl p-2 border border-white/5">
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center shadow-lg ${
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'bg-white/5 rounded-xl p-2' : ''}`}>
+              <div className={`w-9 h-9 rounded-full flex items-center justify-center ${
                 currentUser?.role === 'admin' 
-                  ? 'bg-gradient-to-br from-cyan-500 to-indigo-600 shadow-cyan-500/50'
-                  : 'bg-gradient-to-br from-slate-500 to-slate-700'
+                  ? isDarkMode ? 'bg-gradient-to-br from-cyan-500 to-emerald-600' : 'bg-gradient-to-br from-blue-500 to-indigo-600'
+                  : isDarkMode ? 'bg-gradient-to-br from-slate-500 to-slate-600' : 'bg-gradient-to-br from-stone-400 to-stone-500'
               }`}>
                 {currentUser?.role === 'admin' ? (
                   <Shield className="w-5 h-5 text-white" />
@@ -338,31 +399,18 @@ export default function Layout({ children, currentPageName }) {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-white text-sm truncate drop-shadow-lg">
+                <p className={`font-semibold ${isDarkMode ? 'text-white' : 'text-stone-800'} text-sm truncate`}>
                   {currentUser?.full_name || 'User'}
                   {currentUser?.role === 'admin' && (
-                    <span className="text-xs ml-1 text-cyan-300">(Admin)</span>
+                    <span className={`text-xs ml-1 ${isDarkMode ? 'text-cyan-400' : 'text-blue-600'}`}>(Admin)</span>
                   )}
                 </p>
-                <p className="text-xs text-slate-400 truncate">
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-stone-500'} truncate`}>
                   {currentUser?.role === 'admin' ? 'System Administrator' : 'Field Analyst'}
                 </p>
-                </div>
-                </div>
-
-                {/* Logout Button */}
-                <Button
-                onClick={() => base44.auth.logout()}
-                variant="outline"
-                className="w-full bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400 hover:text-red-300"
-                >
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-                </Button>
-
-                {/* Copyright */}
-                <p className="text-xs text-slate-500 text-center font-bold">© Connor Seay 2025, All rights reserved</p>
-                </SidebarFooter>
+              </div>
+            </div>
+          </SidebarFooter>
         </Sidebar>
 
         <main className="flex-1 flex flex-col relative z-10">
@@ -372,7 +420,11 @@ export default function Layout({ children, currentPageName }) {
 
           {/* Floating Mobile Menu Button */}
           <div className="md:hidden fixed bottom-6 right-6 z-50">
-            <SidebarTrigger className="w-14 h-14 rounded-full shadow-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 backdrop-blur-xl border border-white/20">
+            <SidebarTrigger className={`w-14 h-14 rounded-full shadow-2xl ${
+              isDarkMode 
+                ? 'bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 hover:to-emerald-500' 
+                : 'bg-gradient-to-r from-amber-600 to-stone-700 hover:from-amber-700 hover:to-stone-800'
+            } text-white flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -381,15 +433,15 @@ export default function Layout({ children, currentPageName }) {
             </SidebarTrigger>
           </div>
 
-          <header className="bg-slate-900/90 backdrop-blur-xl border-b border-white/5 px-6 py-4 md:hidden">
+          <header className={`${isDarkMode ? 'bg-slate-900/70 border-white/10' : 'bg-white/70 border-stone-200'} backdrop-blur-sm border-b px-6 py-4 md:hidden`}>
             <div className="flex items-center gap-4">
-              <SidebarTrigger className="hover:bg-white/10 p-2 rounded-lg transition-colors duration-200" />
-              <h1 className="text-xl font-bold text-white drop-shadow-lg">FossilFinder</h1>
+              <SidebarTrigger className={`${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-stone-100'} p-2 rounded-lg transition-colors duration-200`} />
+              <h1 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>FossilFinder</h1>
             </div>
           </header>
 
           <div className="flex-1 overflow-auto">
-            {children}
+            {React.cloneElement(children, { isDarkMode })}
           </div>
         </main>
       </div>
