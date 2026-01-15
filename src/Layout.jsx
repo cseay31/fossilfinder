@@ -55,7 +55,7 @@ export default function Layout({ children, currentPageName }) {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [maintenanceMessage, setMaintenanceMessage] = useState('');
   const [showDisplayNamePrompt, setShowDisplayNamePrompt] = useState(false);
-  const [isFooterOpen, setIsFooterOpen] = useState(true);
+  const [isFooterOpen, setIsFooterOpen] = useState(false);
 
   useEffect(() => {
     loadDiscoveries();
