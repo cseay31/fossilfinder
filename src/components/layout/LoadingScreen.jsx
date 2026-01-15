@@ -50,10 +50,20 @@ export default function LoadingScreen({ isDarkMode }) {
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
         
+        {/* Logo */}
+        <motion.img
+          src="https://cvws.icloud-content.com/B/AVqzhfKpHxBLW63BSc5GtaCESLFNAbrr_AVUUPzJxpfxsp3K3kXzpt5A/dfgafsgfsdgsdfgsdfgsdfgsd+copy.png?o=As6iKJ79gMueGhroGtlOXaa9EJ3_9pUUXADaWPb70jMb&v=1&x=3&a=CAog9PPAsVQcCIJ2-VYR_rHpP4yDtv6TtOoxoN0R4zCgAuUSbxD45c6SvDMY-MKqlLwzIgEAUgSESLFNWgTzpt5Aaid6HwzYZgiBta28SmvEWz536aK5_kGSY9B5NkV_RuwBjkrGJLo9YLRyJx8gg9AO4kU3yVFZ0D-7QTuY4dNp1lZll8WHTjFW9uWEZRfE0kJWaw&e=1768495423&fl=&r=f54a6a79-e0d0-489b-97d0-16a90d1df3b5-1&k=THtfwBsnj6ckIPtk82cGuA&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=30&s=gVilsHYby1_c-XfXTRvMjx0J-BA&cd=i"
+          alt="FossilFinder Logo"
+          className="w-28 h-28 object-contain mt-4"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        />
+        
         <motion.p
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className={`text-center font-medium ${
+          className={`text-center font-medium mt-2 ${
             isDarkMode ? 'text-slate-400' : 'text-stone-600'
           }`}
         >
