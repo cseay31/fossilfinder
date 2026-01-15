@@ -5,7 +5,7 @@ import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
 import LoadingScreen from "./components/layout/LoadingScreen";
 import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Trophy, Wrench, TrendingUp } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Trophy, Wrench, TrendingUp, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -219,40 +219,40 @@ export default function Layout({ children, currentPageName }) {
       <ModerationWatcher currentUser={currentUser} />
       {isInitialLoad && <InitialLoadingScreen />}
       {isLoading && <LoadingScreen />}
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         {/* Animated Background */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-indigo-950/30 to-slate-950/50" />
-          <div className="absolute top-0 left-0 w-full h-full opacity-20">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-400/30 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-            <div className="absolute top-20 right-1/4 w-80 h-80 bg-purple-400/30 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
-            <div className="absolute top-10 left-1/2 w-72 h-72 bg-indigo-400/20 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
+          <div className="absolute top-0 left-0 w-full h-full opacity-30">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+            <div className="absolute top-20 right-1/4 w-80 h-80 bg-indigo-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+            <div className="absolute top-10 left-1/2 w-72 h-72 bg-purple-500/15 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
           </div>
         </div>
         <style>
           {`
             :root {
-              --sidebar-background: 255 255 255;
-              --sidebar-foreground: 51 65 85;
+              --sidebar-background: 15 23 42;
+              --sidebar-foreground: 226 232 240;
               --sidebar-primary: 99 102 241;
               --sidebar-primary-foreground: 255 255 255;
-              --sidebar-accent: 241 245 249;
-              --sidebar-accent-foreground: 51 65 85;
-              --sidebar-border: 226 232 240;
+              --sidebar-accent: 30 41 59;
+              --sidebar-accent-foreground: 226 232 240;
+              --sidebar-border: 51 65 85;
               --sidebar-ring: 99 102 241;
             }
           `}
         </style>
         
-        <Sidebar className="border-r border-white/10 bg-white/5 backdrop-blur-2xl z-10 shadow-2xl shadow-indigo-500/10">
-          <SidebarHeader className="border-b border-white/10 p-6">
+        <Sidebar className="border-r border-white/5 bg-slate-900/80 backdrop-blur-3xl z-10 shadow-2xl shadow-black/50">
+          <SidebarHeader className="border-b border-white/5 p-6 bg-slate-950/50">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
+              <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/50">
                 <Compass className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h2 className="font-bold text-white text-lg drop-shadow-lg">FossilFinder</h2>
-                <p className="text-xs text-cyan-200/80 font-medium">Archaeological AI Analysis</p>
+                <p className="text-xs text-cyan-300/70 font-medium">Archaeological AI Analysis</p>
               </div>
             </div>
           </SidebarHeader>
@@ -268,10 +268,10 @@ export default function Layout({ children, currentPageName }) {
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton 
                           asChild 
-                          className={`hover:bg-white/10 transition-all duration-200 rounded-xl mb-1 font-medium ${
+                          className={`hover:bg-white/5 transition-all duration-200 rounded-xl mb-1 font-medium ${
                             location.pathname === item.url 
-                              ? 'bg-gradient-to-r from-cyan-500/30 to-indigo-500/30 text-white shadow-lg shadow-cyan-500/20 border border-cyan-400/30' 
-                              : 'text-white/80 hover:text-white'
+                              ? 'bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 text-white shadow-lg shadow-cyan-500/10 border border-cyan-500/20' 
+                              : 'text-slate-300 hover:text-white'
                           }`}
                         >
                         <Link to={item.url} className="flex items-center gap-3 px-3 py-3">
@@ -286,19 +286,19 @@ export default function Layout({ children, currentPageName }) {
             </SidebarGroup>
 
             <SidebarGroup className="mt-8">
-              <SidebarGroupLabel className="text-xs font-semibold text-white/60 uppercase tracking-wider px-3 py-3">
+              <SidebarGroupLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-3">
                 Quick Stats
               </SidebarGroupLabel>
               <SidebarGroupContent>
-                <div className="px-3 py-2 space-y-3 bg-white/5 rounded-lg mx-2">
+                <div className="px-3 py-2 space-y-3 bg-slate-950/40 rounded-lg mx-2 border border-white/5">
                   <div className="flex items-center gap-3 text-sm">
-                    <FileText className="w-4 h-4 text-cyan-400/70" />
-                    <span className="text-white/70">Total Discoveries</span>
+                    <FileText className="w-4 h-4 text-cyan-400" />
+                    <span className="text-slate-300">Total Discoveries</span>
                     <span className="ml-auto font-bold text-white">{totalDiscoveries}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <Search className="w-4 h-4 text-indigo-400/70" />
-                    <span className="text-white/70">Under Analysis</span>
+                    <Search className="w-4 h-4 text-indigo-400" />
+                    <span className="text-slate-300">Under Analysis</span>
                     <span className="ml-auto font-bold text-cyan-400">{analyzingCount}</span>
                   </div>
                 </div>
@@ -306,17 +306,14 @@ export default function Layout({ children, currentPageName }) {
             </SidebarGroup>
           </SidebarContent>
 
-          <SidebarFooter className="border-t border-white/10 p-4 space-y-3">
-            {/* Copyright */}
-            <p className="text-xs text-white/40 text-center font-bold">© Connor Seay 2025, All rights reserved</p>
-
+          <SidebarFooter className="border-t border-white/5 p-4 space-y-3 bg-slate-950/50">
             {/* Contact Admin Button */}
             <SidebarMenuButton 
               asChild 
-              className={`hover:bg-white/10 transition-all duration-200 rounded-xl font-medium ${
+              className={`hover:bg-white/5 transition-all duration-200 rounded-xl font-medium ${
                 location.pathname === createPageUrl("Contact")
-                  ? 'bg-gradient-to-r from-cyan-500/30 to-indigo-500/30 text-white shadow-lg border border-cyan-400/30'
-                  : 'text-white/80 hover:text-white'
+                  ? 'bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 text-white shadow-lg border border-cyan-500/20'
+                  : 'text-slate-300 hover:text-white'
               }`}
             >
               <Link to={createPageUrl("Contact")} className="flex items-center gap-3 px-3 py-3">
@@ -326,11 +323,11 @@ export default function Layout({ children, currentPageName }) {
             </SidebarMenuButton>
 
             {/* User Profile */}
-            <div className="flex items-center gap-3 bg-white/5 rounded-xl p-2">
+            <div className="flex items-center gap-3 bg-slate-950/60 rounded-xl p-2 border border-white/5">
               <div className={`w-9 h-9 rounded-full flex items-center justify-center shadow-lg ${
                 currentUser?.role === 'admin' 
-                  ? 'bg-gradient-to-br from-cyan-400 to-indigo-600 shadow-cyan-500/30'
-                  : 'bg-gradient-to-br from-slate-400 to-slate-600'
+                  ? 'bg-gradient-to-br from-cyan-500 to-indigo-600 shadow-cyan-500/50'
+                  : 'bg-gradient-to-br from-slate-500 to-slate-700'
               }`}>
                 {currentUser?.role === 'admin' ? (
                   <Shield className="w-5 h-5 text-white" />
@@ -347,12 +344,25 @@ export default function Layout({ children, currentPageName }) {
                     <span className="text-xs ml-1 text-cyan-300">(Admin)</span>
                   )}
                 </p>
-                <p className="text-xs text-white/60 truncate">
+                <p className="text-xs text-slate-400 truncate">
                   {currentUser?.role === 'admin' ? 'System Administrator' : 'Field Analyst'}
                 </p>
-              </div>
-            </div>
-          </SidebarFooter>
+                </div>
+                </div>
+
+                {/* Logout Button */}
+                <Button
+                onClick={() => base44.auth.logout()}
+                variant="outline"
+                className="w-full bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400 hover:text-red-300"
+                >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+                </Button>
+
+                {/* Copyright */}
+                <p className="text-xs text-slate-500 text-center font-bold">© Connor Seay 2025, All rights reserved</p>
+                </SidebarFooter>
         </Sidebar>
 
         <main className="flex-1 flex flex-col relative z-10">
@@ -371,7 +381,7 @@ export default function Layout({ children, currentPageName }) {
             </SidebarTrigger>
           </div>
 
-          <header className="bg-slate-900/70 backdrop-blur-xl border-b border-white/10 px-6 py-4 md:hidden">
+          <header className="bg-slate-900/90 backdrop-blur-xl border-b border-white/5 px-6 py-4 md:hidden">
             <div className="flex items-center gap-4">
               <SidebarTrigger className="hover:bg-white/10 p-2 rounded-lg transition-colors duration-200" />
               <h1 className="text-xl font-bold text-white drop-shadow-lg">FossilFinder</h1>
