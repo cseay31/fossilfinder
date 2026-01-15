@@ -272,6 +272,8 @@ export default function SiteSettings() {
         <CardContent className="space-y-3">
           <SettingToggle icon={Upload} iconColor="text-amber-400" title="Discovery Uploads" description="Allow users to upload new archaeological photos" settingKey="discoveries_enabled" />
           <SettingToggle icon={ScanLine} iconColor="text-cyan-400" title="Multi-Scan Feature" description="Allow users to use the multi-rock scanning tool" settingKey="multi_scan_enabled" />
+          <SettingToggle icon={TrendingUp} iconColor="text-cyan-400" title="FosFeed Platform" description="Enable the TikTok-style FosFeed social feed" settingKey="fosfeed_enabled" />
+          <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Access" description="Allow users to view the forum" settingKey="forum_enabled" />
           <SettingToggle icon={Map} iconColor="text-emerald-400" title="Discovery Map" description="Show the global discovery map page" settingKey="discovery_map_enabled" />
           <SettingToggle icon={BookOpen} iconColor="text-indigo-400" title="Education Hub" description="Enable the education and learning page" settingKey="education_enabled" />
           <SettingToggle icon={UserCheck} iconColor="text-purple-400" title="Expert Matching" description="Allow users to find and connect with experts" settingKey="expert_matching_enabled" />
@@ -289,22 +291,27 @@ export default function SiteSettings() {
         </CardHeader>
         <CardContent className="space-y-3">
           <SettingToggle icon={Trophy} iconColor="text-amber-400" title="Community Showcase" description="Enable the community showcase page" settingKey="community_showcase_enabled" />
-          <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Access" description="Allow users to view the forum" settingKey="forum_enabled" />
-          <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Posting" description="Allow users to create new forum posts" settingKey="forum_posting_enabled" />
+          <SettingToggle icon={MessageCircle} iconColor="text-blue-400" title="Comments" description="Allow users to comment on discoveries" settingKey="comments_enabled" />
+          <SettingToggle icon={Heart} iconColor="text-red-400" title="Likes" description="Allow users to like discoveries and comments" settingKey="likes_enabled" />
+          <SettingToggle icon={Share2} iconColor="text-green-400" title="Sharing" description="Allow users to share discoveries" settingKey="sharing_enabled" />
+          <Separator className="my-4 bg-slate-700" />
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-indigo-400 flex items-center gap-2">
+              <MessageSquare className="w-4 h-4" />
+              Forum Settings
+            </h4>
+            <SettingToggle icon={MessageSquare} iconColor="text-indigo-400" title="Forum Posting" description="Allow users to create new forum posts" settingKey="forum_posting_enabled" />
+          </div>
           <Separator className="my-4 bg-slate-700" />
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-cyan-400 flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
-              FosFeed Social Platform
+              FosFeed Settings
             </h4>
-            <SettingToggle icon={TrendingUp} iconColor="text-cyan-400" title="FosFeed Platform" description="Enable the TikTok-style FosFeed social feed" settingKey="fosfeed_enabled" />
+            <SettingToggle icon={Upload} iconColor="text-amber-400" title="FosFeed Posting" description="Allow users to post new discoveries to FosFeed" settingKey="fosfeed_posting_enabled" />
             <SettingToggle icon={UserCheck} iconColor="text-purple-400" title="Follow System" description="Allow users to follow/unfollow each other" settingKey="fosfeed_follow_enabled" />
             <SettingToggle icon={Shield} iconColor="text-red-400" title="Content Reporting" description="Enable report button with AI moderation" settingKey="fosfeed_reporting_enabled" />
           </div>
-          <Separator className="my-4 bg-slate-700" />
-          <SettingToggle icon={MessageCircle} iconColor="text-blue-400" title="Comments" description="Allow users to comment on discoveries" settingKey="comments_enabled" />
-          <SettingToggle icon={Heart} iconColor="text-red-400" title="Likes" description="Allow users to like discoveries and comments" settingKey="likes_enabled" />
-          <SettingToggle icon={Share2} iconColor="text-green-400" title="Sharing" description="Allow users to share discoveries" settingKey="sharing_enabled" />
         </CardContent>
       </Card>
 
