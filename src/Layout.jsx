@@ -21,6 +21,11 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import AnnouncementBanner from "./components/layout/AnnouncementBanner";
@@ -50,6 +55,7 @@ export default function Layout({ children, currentPageName }) {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [maintenanceMessage, setMaintenanceMessage] = useState('');
   const [showDisplayNamePrompt, setShowDisplayNamePrompt] = useState(false);
+  const [isFooterOpen, setIsFooterOpen] = useState(true);
 
   useEffect(() => {
     loadDiscoveries();
@@ -362,56 +368,83 @@ export default function Layout({ children, currentPageName }) {
           </SidebarContent>
 
           <SidebarFooter className={`border-t ${isDarkMode ? 'border-white/10' : 'border-stone-200'} p-4 space-y-3`}>
-            {/* Theme Toggle */}
-            <div className="flex items-center justify-between px-2">
-              <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-400' : 'text-stone-500'}`}>
-                {isDarkMode ? 'Northern Lights' : 'Light Mode'}
-              </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`rounded-full w-9 h-9 p-0 ${
-                  isDarkMode 
-                    ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 hover:from-cyan-500/30 hover:to-emerald-500/30 text-cyan-300' 
-                    : 'bg-stone-100 hover:bg-stone-200 text-amber-600'
-                }`}
-              >
-                {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </Button>
-            </div>
+            <Collapsible open={isFooterOpen} onOpenChange={setIsFooterOpen}>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-between ${isDarkMode ? 'hover:bg-white/10 text-slate-300' : 'hover:bg-stone-100 text-stone-700'} rounded-xl font-medium`}
+                >
+                  <span className="text-sm">Settings & Actions</span>
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className={`transition-transform ${isFooterOpen ? 'rotate-180' : ''}`}
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </Button>
+              </CollapsibleTrigger>
 
-            {/* Copyright */}
-            <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Connor Seay 2025, All rights reserved</p>
+              <CollapsibleContent className="space-y-3 pt-3">
+                {/* Theme Toggle */}
+                <div className="flex items-center justify-between px-2">
+                  <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-400' : 'text-stone-500'}`}>
+                    {isDarkMode ? 'Northern Lights' : 'Light Mode'}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsDarkMode(!isDarkMode)}
+                    className={`rounded-full w-9 h-9 p-0 ${
+                      isDarkMode 
+                        ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 hover:from-cyan-500/30 hover:to-emerald-500/30 text-cyan-300' 
+                        : 'bg-stone-100 hover:bg-stone-200 text-amber-600'
+                    }`}
+                  >
+                    {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                  </Button>
+                </div>
 
-            {/* Contact Admin Button */}
-            <SidebarMenuButton 
-              asChild 
-              className={`${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-blue-50 hover:text-blue-800'} transition-all duration-200 rounded-xl font-medium ${
-                location.pathname === createPageUrl("Contact")
-                  ? isDarkMode
-                    ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 shadow-sm border border-cyan-500/30'
-                    : 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 shadow-sm'
-                  : isDarkMode ? 'text-slate-300' : 'text-stone-700'
-              }`}
-            >
-              <Link to={createPageUrl("Contact")} className="flex items-center gap-3 px-3 py-3">
-                <MessageSquare className="w-5 h-5" />
-                <span>Contact Admin</span>
-              </Link>
-            </SidebarMenuButton>
+                {/* Copyright */}
+                <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Connor Seay 2025, All rights reserved</p>
 
-            {/* Logout Button */}
-            <Button
-              onClick={() => base44.auth.logout()}
-              variant="ghost"
-              className={`w-full justify-start ${isDarkMode ? 'hover:bg-white/10 text-slate-300 hover:text-red-400' : 'hover:bg-red-50 text-stone-700 hover:text-red-600'} transition-all duration-200 rounded-xl font-medium`}
-            >
-              <LogOut className="w-5 h-5 mr-3" />
-              <span>Logout</span>
-            </Button>
+                {/* Contact Admin Button */}
+                <SidebarMenuButton 
+                  asChild 
+                  className={`${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-blue-50 hover:text-blue-800'} transition-all duration-200 rounded-xl font-medium ${
+                    location.pathname === createPageUrl("Contact")
+                      ? isDarkMode
+                        ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 shadow-sm border border-cyan-500/30'
+                        : 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 shadow-sm'
+                      : isDarkMode ? 'text-slate-300' : 'text-stone-700'
+                  }`}
+                >
+                  <Link to={createPageUrl("Contact")} className="flex items-center gap-3 px-3 py-3">
+                    <MessageSquare className="w-5 h-5" />
+                    <span>Contact Admin</span>
+                  </Link>
+                </SidebarMenuButton>
 
-            {/* User Profile */}
+                {/* Logout Button */}
+                <Button
+                  onClick={() => base44.auth.logout()}
+                  variant="ghost"
+                  className={`w-full justify-start ${isDarkMode ? 'hover:bg-white/10 text-slate-300 hover:text-red-400' : 'hover:bg-red-50 text-stone-700 hover:text-red-600'} transition-all duration-200 rounded-xl font-medium`}
+                >
+                  <LogOut className="w-5 h-5 mr-3" />
+                  <span>Logout</span>
+                </Button>
+              </CollapsibleContent>
+            </Collapsible>
+
+            {/* User Profile - Always Visible */}
             <div className={`flex items-center gap-3 ${isDarkMode ? 'bg-white/5 rounded-xl p-2' : ''}`}>
               <div className={`w-9 h-9 rounded-full flex items-center justify-center ${
                 currentUser?.role === 'admin' 
