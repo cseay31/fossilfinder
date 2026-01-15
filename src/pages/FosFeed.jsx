@@ -160,14 +160,12 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
 
   const filteredDiscoveries = discoveries
     .filter(d => {
-      if (!searchQuery) return d.visibility === 'public' && d.analysis_status === 'completed';
+      if (!searchQuery) return true;
       const searchLower = searchQuery.toLowerCase();
       return (
-        d.visibility === 'public' &&
-        d.analysis_status === 'completed' &&
-        (d.classification?.toLowerCase().includes(searchLower) ||
-         d.location?.toLowerCase().includes(searchLower) ||
-         d.owner_name?.toLowerCase().includes(searchLower))
+        d.classification?.toLowerCase().includes(searchLower) ||
+        d.location?.toLowerCase().includes(searchLower) ||
+        d.owner_name?.toLowerCase().includes(searchLower)
       );
     })
     .sort((a, b) => {
