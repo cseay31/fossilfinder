@@ -219,17 +219,27 @@ export default function Layout({ children, currentPageName }) {
       url: createPageUrl("FosFeed"),
       icon: TrendingUp,
     },
-                  {
-                    title: "Discovery Map",
-                    url: createPageUrl("DiscoveryMap"),
-                    icon: Map,
-                  },
+    {
+      title: "Discovery Map",
+      url: createPageUrl("DiscoveryMap"),
+      icon: Map,
+    },
     {
       title: "Forum",
       url: createPageUrl("Forum"),
       icon: MessageCircle,
     },
-    ];
+    {
+      title: "Leaderboard",
+      url: createPageUrl("Leaderboard"),
+      icon: Trophy,
+    },
+    {
+      title: "Profile",
+      url: createPageUrl("Profile"),
+      icon: Target,
+    },
+  ];
 
   // Add admin navigation for admin users
   if (currentUser?.role === 'admin') {

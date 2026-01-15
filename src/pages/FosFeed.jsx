@@ -52,7 +52,33 @@ export default function FosFeedPage({ isDarkMode }) {
         base44.auth.me()
       ]);
 
-      setDiscoveries(discoveryData);
+      // Filter discoveries based on user preferences
+      let filteredDiscoveries = discoveryData;
+      
+      if (user.followed_classifications && user.followed_classifications.length > 0) {
+        const followedClassifications = user.followed_classifications;
+        const followedLocations = user.followed_locations || [];
+        const following = user.following || [];
+        
+        // Prioritize followed content but show all public discoveries
+        filteredDiscoveries = discoveryData.sort((a, b) => {
+          const aIsFollowed = 
+            followedClassifications.some(c => a.classification?.includes(c)) ||
+            followedLocations.some(l => a.location?.includes(l)) ||
+            following.includes(a.created_by);
+          
+          const bIsFollowed = 
+            followedClassifications.some(c => b.classification?.includes(c)) ||
+            followedLocations.some(l => b.location?.includes(l)) ||
+            following.includes(b.created_by);
+          
+          if (aIsFollowed && !bIsFollowed) return -1;
+          if (!aIsFollowed && bIsFollowed) return 1;
+          return 0;
+        });
+      }
+
+      setDiscoveries(filteredDiscoveries);
       setUsers(userData);
       setAppSettings(settingsData[0] || {});
       setCurrentUser(user);

@@ -6,11 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import { 
   X, Heart, MessageCircle, Share2, Calendar, MapPin, 
-  TrendingUp, Send, Loader2, Globe, Lock, Users, User, ExternalLink
+  TrendingUp, Send, Loader2, Globe, Lock, Users, User, ExternalLink, Mountain, Layers, Tag
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
+import { calculatePoints } from '../gamification/BadgeSystem';
 
 export default function DiscoveryDetailModal({ discovery, onClose, currentUser, onUpdate }) {
   const [comments, setComments] = useState([]);
@@ -102,7 +105,7 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
       const comment = await base44.entities.DiscoveryComment.create({
         discovery_id: discovery.id,
         content: newComment.trim(),
-        author_name: currentUser?.full_name || 'Anonymous',
+        author_name: currentUser?.display_name || currentUser?.full_name || 'Anonymous',
         likes: 0,
         liked_by: []
       });
@@ -110,6 +113,12 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
       // Update comment count
       await base44.entities.Discovery.update(discovery.id, {
         comment_count: (localDiscovery.comment_count || 0) + 1
+      });
+
+      // Award points for commenting
+      const commentPoints = calculatePoints('comment');
+      await base44.auth.updateMe({
+        points: (currentUser.points || 0) + commentPoints
       });
 
       setComments([comment, ...comments]);
@@ -271,6 +280,63 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
                 {localDiscovery.description && (
                   <div className="bg-stone-50 rounded-lg p-3">
                     <p className="text-sm text-stone-700 leading-relaxed">{localDiscovery.description}</p>
+                  </div>
+                )}
+
+                {/* Additional Details */}
+                {(localDiscovery.geological_period || localDiscovery.formation || localDiscovery.common_name) && (
+                  <div className="space-y-2 pt-2 border-t">
+                    {localDiscovery.common_name && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <Tag className="w-4 h-4 text-amber-600" />
+                        <span className="font-medium text-stone-700">Common Name:</span>
+                        <span className="text-stone-600">{localDiscovery.common_name}</span>
+                      </div>
+                    )}
+                    {localDiscovery.geological_period && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <Mountain className="w-4 h-4 text-stone-600" />
+                        <span className="font-medium text-stone-700">Period:</span>
+                        <span className="text-stone-600">{localDiscovery.geological_period}</span>
+                      </div>
+                    )}
+                    {localDiscovery.formation && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <Layers className="w-4 h-4 text-stone-600" />
+                        <span className="font-medium text-stone-700">Formation:</span>
+                        <span className="text-stone-600">{localDiscovery.formation}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Map View */}
+                {localDiscovery.latitude && localDiscovery.longitude && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-semibold text-stone-700 flex items-center gap-2">
+                      <MapPin className="w-4 h-4" />
+                      Discovery Location
+                    </p>
+                    <div className="h-48 rounded-lg overflow-hidden border-2 border-stone-200">
+                      <MapContainer
+                        center={[localDiscovery.latitude, localDiscovery.longitude]}
+                        zoom={13}
+                        style={{ height: '100%', width: '100%' }}
+                      >
+                        <TileLayer
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        <Marker position={[localDiscovery.latitude, localDiscovery.longitude]}>
+                          <Popup>
+                            <div className="text-center">
+                              <p className="font-semibold">{localDiscovery.classification}</p>
+                              <p className="text-xs text-stone-600">{localDiscovery.location}</p>
+                            </div>
+                          </Popup>
+                        </Marker>
+                      </MapContainer>
+                    </div>
                   </div>
                 )}
 

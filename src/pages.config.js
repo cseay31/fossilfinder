@@ -12,6 +12,8 @@ import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
 import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
+import Leaderboard from './pages/Leaderboard';
+import Profile from './pages/Profile';
 import __Layout from './Layout.jsx';
 
 
@@ -30,6 +32,8 @@ export const PAGES = {
     "MultiScanDiscoveries": MultiScanDiscoveries,
     "Upload": Upload,
     "Wiki": Wiki,
+    "Leaderboard": Leaderboard,
+    "Profile": Profile,
 }
 
 export const pagesConfig = {
