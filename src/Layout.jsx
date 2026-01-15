@@ -5,7 +5,8 @@ import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
 import LoadingScreen from "./components/layout/LoadingScreen";
 import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp } from "lucide-react";
+import DisplayNamePrompt from "./components/layout/DisplayNamePrompt";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -48,6 +49,7 @@ export default function Layout({ children, currentPageName }) {
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [maintenanceMessage, setMaintenanceMessage] = useState('');
+  const [showDisplayNamePrompt, setShowDisplayNamePrompt] = useState(false);
 
   useEffect(() => {
     loadDiscoveries();
@@ -87,11 +89,22 @@ export default function Layout({ children, currentPageName }) {
     try {
       const user = await base44.auth.me();
       setCurrentUser(user);
+      
+      // Check if user needs to set display name
+      if (!user.display_name || user.display_name.trim() === '') {
+        setShowDisplayNamePrompt(true);
+      }
     } catch (error) {
       console.error("Failed to load current user:", error);
     } finally {
       setIsLoadingUser(false);
     }
+  };
+
+  const handleDisplayNameComplete = async () => {
+    setShowDisplayNamePrompt(false);
+    // Reload user to get updated display name
+    await loadCurrentUser();
   };
 
   const loadDiscoveries = async () => {
@@ -228,6 +241,11 @@ export default function Layout({ children, currentPageName }) {
     <SidebarProvider>
       <ActivityTracker />
       <ModerationWatcher currentUser={currentUser} />
+      <DisplayNamePrompt 
+        isOpen={showDisplayNamePrompt} 
+        onComplete={handleDisplayNameComplete}
+        isDarkMode={isDarkMode}
+      />
       {isInitialLoad && <InitialLoadingScreen isDarkMode={isDarkMode} />}
       {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
       <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
@@ -383,6 +401,16 @@ export default function Layout({ children, currentPageName }) {
               </Link>
             </SidebarMenuButton>
 
+            {/* Logout Button */}
+            <Button
+              onClick={() => base44.auth.logout()}
+              variant="ghost"
+              className={`w-full justify-start ${isDarkMode ? 'hover:bg-white/10 text-slate-300 hover:text-red-400' : 'hover:bg-red-50 text-stone-700 hover:text-red-600'} transition-all duration-200 rounded-xl font-medium`}
+            >
+              <LogOut className="w-5 h-5 mr-3" />
+              <span>Logout</span>
+            </Button>
+
             {/* User Profile */}
             <div className={`flex items-center gap-3 ${isDarkMode ? 'bg-white/5 rounded-xl p-2' : ''}`}>
               <div className={`w-9 h-9 rounded-full flex items-center justify-center ${
@@ -400,7 +428,7 @@ export default function Layout({ children, currentPageName }) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className={`font-semibold ${isDarkMode ? 'text-white' : 'text-stone-800'} text-sm truncate`}>
-                  {currentUser?.full_name || 'User'}
+                  {currentUser?.display_name || currentUser?.full_name || 'User'}
                   {currentUser?.role === 'admin' && (
                     <span className={`text-xs ml-1 ${isDarkMode ? 'text-cyan-400' : 'text-blue-600'}`}>(Admin)</span>
                   )}
