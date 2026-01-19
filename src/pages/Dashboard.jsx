@@ -12,6 +12,8 @@ import FilterBar from "../components/dashboard/FilterBar";
 import PersonalizedInsights from "../components/dashboard/PersonalizedInsights";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import ShellLoader from "../components/admin/ShellLoader";
+import StreakTracker from "../components/engagement/StreakTracker";
+import DailyChallenge from "../components/engagement/DailyChallenge";
 
 export default function Dashboard({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -88,6 +90,12 @@ export default function Dashboard({ isDarkMode }) {
         </motion.div>
 
         <div className="space-y-6">
+          {/* Engagement Features */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <StreakTracker isDarkMode={isDarkMode} />
+            <DailyChallenge isDarkMode={isDarkMode} />
+          </div>
+
           {/* Personalized Insights */}
           <PersonalizedInsights discoveries={discoveries} user={currentUser} isDarkMode={isDarkMode} />
 
