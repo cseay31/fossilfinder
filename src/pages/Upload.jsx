@@ -263,6 +263,16 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
       setCurrentStep("results");
 
       await trackAction("Completed discovery analysis");
+      
+      // Track fossil identification submission
+      base44.analytics.track({
+        eventName: "fossil_identification_submitted",
+        properties: {
+          significance_level: aiResponse.significance_level,
+          confidence_score: aiResponse.confidence_score,
+          has_location: Boolean(latitude && longitude)
+        }
+      });
 
     } catch (error) {
       console.error("Analysis failed:", error);

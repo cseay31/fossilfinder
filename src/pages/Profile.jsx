@@ -58,6 +58,12 @@ export default function ProfilePage({ isDarkMode }) {
       await base44.auth.updateMe(editForm);
       setCurrentUser({ ...currentUser, ...editForm });
       setIsEditing(false);
+      
+      // Track profile update
+      base44.analytics.track({
+        eventName: "profile_updated",
+        properties: { has_bio: Boolean(editForm.bio) }
+      });
     } catch (error) {
       console.error("Failed to save profile:", error);
       alert("Failed to save changes");
@@ -72,6 +78,15 @@ export default function ProfilePage({ isDarkMode }) {
         notification_preferences: notificationPrefs
       });
       alert("Preferences saved successfully!");
+      
+      // Track interest preferences update
+      base44.analytics.track({
+        eventName: "interests_updated",
+        properties: {
+          classification_count: selectedClassifications.length,
+          location_count: selectedLocations.length
+        }
+      });
     } catch (error) {
       console.error("Failed to save preferences:", error);
       alert("Failed to save preferences");

@@ -8,12 +8,12 @@ import Experts from './pages/Experts';
 import Forum from './pages/Forum';
 import FosFeed from './pages/FosFeed';
 import Home from './pages/Home';
+import Leaderboard from './pages/Leaderboard';
 import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
+import Profile from './pages/Profile';
 import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
-import Leaderboard from './pages/Leaderboard';
-import Profile from './pages/Profile';
 import __Layout from './Layout.jsx';
 
 
@@ -28,12 +28,12 @@ export const PAGES = {
     "Forum": Forum,
     "FosFeed": FosFeed,
     "Home": Home,
+    "Leaderboard": Leaderboard,
     "MultiScan": MultiScan,
     "MultiScanDiscoveries": MultiScanDiscoveries,
+    "Profile": Profile,
     "Upload": Upload,
     "Wiki": Wiki,
-    "Leaderboard": Leaderboard,
-    "Profile": Profile,
 }
 
 export const pagesConfig = {

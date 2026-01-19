@@ -109,6 +109,21 @@ export const checkBadgeEligibility = (user, discoveries, comments) => {
     newBadges.push('popular_discoverer');
   }
   
+  // Track badge earned event if new badges were awarded
+  if (typeof window !== 'undefined' && newBadges.length > 0) {
+    import("@/api/base44Client").then(({ base44 }) => {
+      newBadges.forEach(badgeId => {
+        base44.analytics.track({
+          eventName: "badge_earned",
+          properties: { 
+            badge_id: badgeId,
+            badge_name: BADGES[badgeId]?.name || badgeId
+          }
+        });
+      });
+    });
+  }
+  
   return newBadges;
 };
 

@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { base44 } from "@/api/base44Client";
 import LeaderboardComponent from "../components/gamification/Leaderboard";
 
 export default function LeaderboardPage({ isDarkMode }) {
+  useEffect(() => {
+    // Track leaderboard view
+    base44.analytics.track({
+      eventName: "leaderboard_viewed",
+      properties: { source: "leaderboard_page" }
+    });
+  }, []);
+
   return (
     <div className={`min-h-screen p-6 ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
       <div className="max-w-4xl mx-auto space-y-6">
