@@ -12,6 +12,7 @@ import BadgeDisplay, { BADGES } from "../components/gamification/BadgeSystem";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import MobileSelect from "../components/mobile/MobileSelect";
 
 export default function ProfilePage({ isDarkMode }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -127,7 +128,7 @@ export default function ProfilePage({ isDarkMode }) {
   ];
 
   return (
-    <div className={`min-h-screen p-6 ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
+    <div className={`min-h-screen p-6 pb-safe-bottom ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Profile Header */}
         <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white'} backdrop-blur-xl`}>

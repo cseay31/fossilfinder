@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ReportModal from "../components/fosfeed/ReportModal";
 import ShellLoader from "../components/admin/ShellLoader";
+import PullToRefresh from "../components/mobile/PullToRefresh";
+import { trackAction } from "../components/tracking/ActivityTracker";
 
 export default function FosFeedPage({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -217,7 +219,8 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
   }
 
   return (
-    <div className={`h-screen ${isDarkMode ? 'bg-slate-950' : 'bg-stone-900'} relative overflow-hidden`}>
+    <PullToRefresh onRefresh={loadData} isDarkMode={isDarkMode}>
+      <div className={`h-screen pb-safe-bottom ${isDarkMode ? 'bg-slate-950' : 'bg-stone-900'} relative overflow-hidden`}>
       {/* Search Bar */}
       <div className="absolute top-0 left-0 right-0 z-20 p-4">
         <div className={`max-w-md mx-auto ${isDarkMode ? 'bg-slate-900/80' : 'bg-white/90'} backdrop-blur-md rounded-full shadow-lg`}>
@@ -410,6 +413,7 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
         onSubmit={handleReport}
         isDarkMode={isDarkMode}
       />
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

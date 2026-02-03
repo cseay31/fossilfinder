@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/collapsible";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { AnimatePresence, motion } from "framer-motion";
 import AnnouncementBanner from "./components/layout/AnnouncementBanner";
 
 import ModerationNotification from "./components/layout/ModerationNotification";
@@ -39,13 +40,33 @@ export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('fossilfinder-theme');
-      return saved === null ? true : saved === 'dark';
+      if (saved !== null) {
+        return saved === 'dark';
+      }
+      // Use system preference if no saved preference
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return true;
   });
 
   React.useEffect(() => {
     localStorage.setItem('fossilfinder-theme', isDarkMode ? 'dark' : 'light');
+    
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      // Only auto-switch if user hasn't manually set preference
+      const saved = localStorage.getItem('fossilfinder-theme-manual');
+      if (!saved) {
+        setIsDarkMode(e.matches);
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
     
     // Add CSS variables for safe areas
     const style = document.createElement('style');
@@ -456,7 +477,10 @@ export default function Layout({ children, currentPageName }) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setIsDarkMode(!isDarkMode)}
+                    onClick={() => {
+                      setIsDarkMode(!isDarkMode);
+                      localStorage.setItem('fossilfinder-theme-manual', 'true');
+                    }}
                     className={`rounded-full w-9 h-9 p-0 ${
                       isDarkMode 
                         ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 hover:from-cyan-500/30 hover:to-emerald-500/30 text-cyan-300' 
@@ -557,13 +581,23 @@ export default function Layout({ children, currentPageName }) {
           </header>
 
           <div className="flex-1 overflow-auto">
-            {React.cloneElement(children, { isDarkMode })}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                {React.cloneElement(children, { isDarkMode })}
+              </motion.div>
+            </AnimatePresence>
           </div>
-          </main>
+        </main>
 
-          {/* Mobile Bottom Tab Bar */}
-          <BottomTabBar isDarkMode={isDarkMode} />
-          </div>
-          </SidebarProvider>
-          );
-          }
+        {/* Mobile Bottom Tab Bar */}
+        <BottomTabBar isDarkMode={isDarkMode} />
+      </div>
+    </SidebarProvider>
+  );
+}

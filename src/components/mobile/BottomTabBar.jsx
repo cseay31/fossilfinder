@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Camera, Search, TrendingUp, User } from 'lucide-react';
 
 export default function BottomTabBar({ isDarkMode }) {
   const location = useLocation();
+  const navigate = useNavigate();
   
   const tabs = [
     { name: 'Dashboard', icon: Search, path: createPageUrl('Dashboard') },
@@ -14,6 +15,15 @@ export default function BottomTabBar({ isDarkMode }) {
   ];
 
   const isActive = (path) => location.pathname === path;
+  
+  const handleTabClick = (e, tab) => {
+    // If already on this tab, navigate to root
+    if (isActive(tab.path)) {
+      e.preventDefault();
+      navigate(tab.path, { replace: true });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <div 
@@ -31,6 +41,7 @@ export default function BottomTabBar({ isDarkMode }) {
             <Link
               key={tab.name}
               to={tab.path}
+              onClick={(e) => handleTabClick(e, tab)}
               className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all ${
                 active
                   ? isDarkMode
