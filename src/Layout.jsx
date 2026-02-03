@@ -6,6 +6,7 @@ import ActivityTracker from "./components/tracking/ActivityTracker";
 import LoadingScreen from "./components/layout/LoadingScreen";
 import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
 import DisplayNamePrompt from "./components/layout/DisplayNamePrompt";
+import BottomTabBar from "./components/mobile/BottomTabBar";
 import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp, LogOut } from "lucide-react";
 import {
   Sidebar,
@@ -45,6 +46,50 @@ export default function Layout({ children, currentPageName }) {
 
   React.useEffect(() => {
     localStorage.setItem('fossilfinder-theme', isDarkMode ? 'dark' : 'light');
+    
+    // Add CSS variables for safe areas
+    const style = document.createElement('style');
+    style.innerHTML = `
+      :root {
+        --safe-area-inset-top: env(safe-area-inset-top, 0px);
+        --safe-area-inset-right: env(safe-area-inset-right, 0px);
+        --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-area-inset-left: env(safe-area-inset-left, 0px);
+      }
+      
+      .safe-area-top { padding-top: var(--safe-area-inset-top); }
+      .safe-area-bottom { padding-bottom: var(--safe-area-inset-bottom); }
+      .safe-area-left { padding-left: var(--safe-area-inset-left); }
+      .safe-area-right { padding-right: var(--safe-area-inset-right); }
+      
+      .pb-safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4rem); }
+      
+      body {
+        overscroll-behavior-y: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* Hide scrollbars globally */
+      * {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      *::-webkit-scrollbar {
+        display: none;
+      }
+      
+      /* User-select none for buttons and navigation */
+      button, a, [role="button"], [role="link"] {
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
   }, [isDarkMode]);
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
@@ -514,8 +559,11 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex-1 overflow-auto">
             {React.cloneElement(children, { isDarkMode })}
           </div>
-        </main>
-      </div>
-    </SidebarProvider>
-  );
-}
+          </main>
+
+          {/* Mobile Bottom Tab Bar */}
+          <BottomTabBar isDarkMode={isDarkMode} />
+          </div>
+          </SidebarProvider>
+          );
+          }

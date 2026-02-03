@@ -7,10 +7,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Trophy, Settings, Bell, Heart, Users, MapPin, Tag } from "lucide-react";
+import { User, Trophy, Settings, Bell, Heart, Users, MapPin, Tag, AlertTriangle } from "lucide-react";
 import BadgeDisplay, { BADGES } from "../components/gamification/BadgeSystem";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function ProfilePage({ isDarkMode }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -182,7 +183,7 @@ export default function ProfilePage({ isDarkMode }) {
 
         {/* Tabs */}
         <Tabs defaultValue="badges" className="w-full">
-          <TabsList className={`grid w-full grid-cols-4 ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'}`}>
+          <TabsList className={`grid w-full grid-cols-5 ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'}`}>
             <TabsTrigger value="badges">
               <Trophy className="w-4 h-4 mr-2" />
               Badges
@@ -198,6 +199,10 @@ export default function ProfilePage({ isDarkMode }) {
             <TabsTrigger value="notifications">
               <Bell className="w-4 h-4 mr-2" />
               Notifications
+            </TabsTrigger>
+            <TabsTrigger value="account">
+              <Settings className="w-4 h-4 mr-2" />
+              Account
             </TabsTrigger>
           </TabsList>
 
@@ -363,8 +368,85 @@ export default function ProfilePage({ isDarkMode }) {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="account">
+            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white'} backdrop-blur-xl`}>
+              <CardHeader>
+                <CardTitle className={isDarkMode ? 'text-white' : 'text-stone-800'}>Account Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>Danger Zone</h3>
+                  <Alert className="border-red-200 bg-red-50 mb-4">
+                    <AlertTriangle className="h-4 w-4 text-red-600" />
+                    <AlertDescription className="text-red-800">
+                      Deleting your account is permanent and cannot be undone. All your discoveries, comments, and data will be permanently deleted.
+                    </AlertDescription>
+                  </Alert>
+                  <Button
+                    variant="destructive"
+                    onClick={() => {
+                      if (window.confirm('Are you absolutely sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.')) {
+                        if (window.confirm('Final confirmation: Type "DELETE" in the next prompt to proceed')) {
+                          const confirmation = window.prompt('Type "DELETE" to confirm account deletion:');
+                          if (confirmation === 'DELETE') {
+                            handleDeleteAccount();
+                          } else {
+                            alert('Account deletion cancelled');
+                          }
+                        }
+                      }
+                    }}
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    Delete Account
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
   );
+}
+
+async function handleDeleteAccount() {
+  try {
+    const user = await base44.auth.me();
+    
+    // Delete user's discoveries
+    const discoveries = await base44.entities.Discovery.filter({ created_by: user.email });
+    for (const discovery of discoveries) {
+      await base44.entities.Discovery.delete(discovery.id);
+    }
+    
+    // Delete user's comments
+    const comments = await base44.entities.DiscoveryComment.filter({ created_by: user.email });
+    for (const comment of comments) {
+      await base44.entities.DiscoveryComment.delete(comment.id);
+    }
+    
+    // Delete user's forum posts
+    const posts = await base44.entities.ForumPost.filter({ created_by: user.email });
+    for (const post of posts) {
+      await base44.entities.ForumPost.delete(post.id);
+    }
+    
+    // Delete user's forum replies
+    const replies = await base44.entities.ForumReply.filter({ created_by: user.email });
+    for (const reply of replies) {
+      await base44.entities.ForumReply.delete(reply.id);
+    }
+    
+    // Delete user record
+    await base44.entities.User.delete(user.id);
+    
+    // Logout
+    alert('Your account has been permanently deleted.');
+    base44.auth.logout();
+  } catch (error) {
+    console.error("Failed to delete account:", error);
+    alert('Failed to delete account. Please try again or contact support.');
+  }
 }

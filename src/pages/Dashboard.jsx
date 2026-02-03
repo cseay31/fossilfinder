@@ -14,6 +14,7 @@ import RecentActivity from "../components/dashboard/RecentActivity";
 import ShellLoader from "../components/admin/ShellLoader";
 import StreakTracker from "../components/engagement/StreakTracker";
 import DailyChallenge from "../components/engagement/DailyChallenge";
+import PullToRefresh from "../components/mobile/PullToRefresh";
 
 export default function Dashboard({ isDarkMode }) {
   const [discoveries, setDiscoveries] = useState([]);
@@ -74,8 +75,9 @@ export default function Dashboard({ isDarkMode }) {
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
-      <div className="max-w-7xl mx-auto">
+    <PullToRefresh onRefresh={loadDiscoveries} isDarkMode={isDarkMode}>
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8 pb-safe-bottom`}>
+        <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -160,6 +162,6 @@ export default function Dashboard({ isDarkMode }) {
           </Card>
         </div>
       </div>
-    </div>
+    </PullToRefresh>
   );
 }
