@@ -81,19 +81,19 @@ export default function Dashboard({ isDarkMode }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6"
         >
-          <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
-            {currentUser ? `Welcome back, ${currentUser.full_name?.split(' ')[0] || 'Explorer'}!` : 'Discovery Dashboard'}
+          <h1 className={`text-2xl md:text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-2`}>
+            {currentUser ? `Welcome, ${currentUser.full_name?.split(' ')[0] || 'Explorer'}!` : 'Dashboard'}
           </h1>
-          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
-            Track and manage your archaeological findings
+          <p className={`text-sm md:text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'}`}>
+            Track your findings
           </p>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Engagement Features */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
             <StreakTracker isDarkMode={isDarkMode} />
             <DailyChallenge isDarkMode={isDarkMode} />
           </div>
@@ -129,7 +129,7 @@ export default function Dashboard({ isDarkMode }) {
               {isLoading ? (
                 <ShellLoader isLoading={isLoading} message="Loading your discoveries..." />
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {filteredDiscoveries.map((discovery, index) => (
                     <DiscoveryCard 
                       key={discovery.id} 
