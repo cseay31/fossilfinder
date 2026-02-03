@@ -161,6 +161,7 @@ export default function Dashboard({ isDarkMode }) {
             </CardContent>
           </Card>
         </div>
+        </div>
       </div>
     </PullToRefresh>
   );
