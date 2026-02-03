@@ -561,7 +561,7 @@ export default function Layout({ children, currentPageName }) {
           <AdminMessageBanner />
 
           {/* Floating Mobile Menu Button */}
-          <div className="md:hidden fixed bottom-6 right-6 z-50">
+          <div className="md:hidden fixed bottom-24 right-6 z-50">
             <SidebarTrigger className={`w-14 h-14 rounded-full shadow-2xl ${
               isDarkMode 
                 ? 'bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 hover:to-emerald-500' 
