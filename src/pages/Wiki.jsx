@@ -732,6 +732,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
 
         }
       </AnimatePresence>
-    </div>);
-
+      </div>
+    </PullToRefresh>
+  );
 }
