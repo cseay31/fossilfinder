@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, TrendingUp, Loader2, Heart, MessageCircle, Share2, Globe, Lock, Users } from 'lucide-react';
 import { format } from "date-fns";
-import DiscoveryDetailModal from "../discovery/DiscoveryDetailModal";
 import ShareDiscoveryModal from "../discovery/ShareDiscoveryModal";
 
 export default function DiscoveryCard({ discovery, index, currentUser, onUpdate }) {
-  const [showDetail, setShowDetail] = useState(false);
+  const navigate = useNavigate();
   const [showShare, setShowShare] = useState(false);
   const [localDiscovery, setLocalDiscovery] = useState(discovery);
 
@@ -80,7 +81,7 @@ export default function DiscoveryCard({ discovery, index, currentUser, onUpdate 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.1 }}
-        onClick={() => setShowDetail(true)}
+        onClick={() => navigate(createPageUrl(`DiscoveryDetail?id=${localDiscovery.id}`))}
         className="cursor-pointer"
       >
         <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 hover:shadow-xl transition-all duration-200 overflow-hidden group">
@@ -178,19 +179,8 @@ export default function DiscoveryCard({ discovery, index, currentUser, onUpdate 
         </Card>
       </motion.div>
 
-      {/* Modals */}
+      {/* Share Modal */}
       <AnimatePresence>
-        {showDetail && (
-          <DiscoveryDetailModal
-            discovery={localDiscovery}
-            currentUser={currentUser}
-            onClose={() => setShowDetail(false)}
-            onUpdate={(updated) => {
-              setLocalDiscovery(updated);
-              if (onUpdate) onUpdate(updated);
-            }}
-          />
-        )}
         {showShare && (
           <ShareDiscoveryModal
             discovery={localDiscovery}

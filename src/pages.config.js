@@ -51,10 +51,12 @@ import Admin from './pages/Admin';
 import CommunityShowcase from './pages/CommunityShowcase';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
+import DiscoveryDetail from './pages/DiscoveryDetail';
 import DiscoveryMap from './pages/DiscoveryMap';
 import Education from './pages/Education';
 import Experts from './pages/Experts';
 import Forum from './pages/Forum';
+import ForumPost from './pages/ForumPost';
 import FosFeed from './pages/FosFeed';
 import Home from './pages/Home';
 import Leaderboard from './pages/Leaderboard';
@@ -63,9 +65,7 @@ import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
 import Profile from './pages/Profile';
 import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
-import DiscoveryDetail from './pages/DiscoveryDetail';
 import WikiArticle from './pages/WikiArticle';
-import ForumPost from './pages/ForumPost';
 import __Layout from './Layout.jsx';
 
 
@@ -74,10 +74,12 @@ export const PAGES = {
     "CommunityShowcase": CommunityShowcase,
     "Contact": Contact,
     "Dashboard": Dashboard,
+    "DiscoveryDetail": DiscoveryDetail,
     "DiscoveryMap": DiscoveryMap,
     "Education": Education,
     "Experts": Experts,
     "Forum": Forum,
+    "ForumPost": ForumPost,
     "FosFeed": FosFeed,
     "Home": Home,
     "Leaderboard": Leaderboard,
@@ -86,9 +88,7 @@ export const PAGES = {
     "Profile": Profile,
     "Upload": Upload,
     "Wiki": Wiki,
-    "DiscoveryDetail": DiscoveryDetail,
     "WikiArticle": WikiArticle,
-    "ForumPost": ForumPost,
 }
 
 export const pagesConfig = {

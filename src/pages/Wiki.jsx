@@ -17,16 +17,17 @@ import {
   Filter } from
 "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import WikiArticleViewer from "../components/wiki/WikiArticleViewer";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import WikiArticleEditor from "../components/wiki/WikiArticleEditor";
 
 export default function WikiPage({ isDarkMode }) {
+  const navigate = useNavigate();
   const [articles, setArticles] = useState([]);
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedArticle, setSelectedArticle] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
 
@@ -526,16 +527,7 @@ If you're unsure about editing, contact an administrator or check this guide aga
   };
 
   const handleViewArticle = async (article) => {
-    setSelectedArticle(article);
-    // Increment view count
-    try {
-      await base44.entities.WikiArticle.update(article.id, {
-        views: (article.views || 0) + 1
-      });
-      loadArticles();
-    } catch (error) {
-      console.error("Failed to update view count:", error);
-    }
+    navigate(createPageUrl(`WikiArticle?id=${article.id}`));
   };
 
   const handleEditArticle = (article) => {
@@ -557,10 +549,6 @@ If you're unsure about editing, contact an administrator or check this guide aga
   const handleCloseEditor = () => {
     setIsEditing(false);
     setEditingArticle(null);
-  };
-
-  const handleCloseViewer = () => {
-    setSelectedArticle(null);
   };
 
   const categories = [
@@ -730,21 +718,6 @@ If you're unsure about editing, contact an administrator or check this guide aga
           }
         </div>
       </div>
-
-      {/* Article Viewer Modal */}
-      <AnimatePresence>
-        {selectedArticle &&
-        <WikiArticleViewer
-          article={selectedArticle}
-          onClose={handleCloseViewer}
-          onEdit={() => {
-            handleCloseViewer();
-            handleEditArticle(selectedArticle);
-          }}
-          isDarkMode={isDarkMode} />
-
-        }
-      </AnimatePresence>
 
       {/* Article Editor Modal */}
       <AnimatePresence>

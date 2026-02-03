@@ -22,17 +22,18 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
-import ForumPostViewer from "../components/forum/ForumPostViewer";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import ForumPostEditor from "../components/forum/ForumPostEditor";
 
 export default function ForumPage({ isDarkMode }) {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("recent");
-  const [selectedPost, setSelectedPost] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [appSettings, setAppSettings] = useState(null);
@@ -376,15 +377,7 @@ Any questions? Ask below! 👇`,
   };
 
   const handleViewPost = async (post) => {
-    setSelectedPost(post);
-    // Increment view count
-    try {
-      await base44.entities.ForumPost.update(post.id, {
-        views: (post.views || 0) + 1
-      });
-    } catch (error) {
-      console.error("Failed to update view count:", error);
-    }
+    navigate(createPageUrl(`ForumPost?id=${post.id}`));
   };
 
   const handleLikePost = async (post, e) => {
@@ -415,6 +408,10 @@ Any questions? Ask below! 👇`,
   const handleSavePost = async () => {
     setIsCreating(false);
     await loadPosts();
+  };
+
+  const handleCloseEditor = () => {
+    setIsCreating(false);
   };
 
   const categories = [
@@ -666,27 +663,14 @@ Any questions? Ask below! 👇`,
         </div>
       </div>
 
-      {/* Post Viewer Modal */}
-      <AnimatePresence>
-        {selectedPost && (
-          <ForumPostViewer
-            post={selectedPost}
-            currentUser={currentUser}
-            onClose={() => {
-              setSelectedPost(null);
-              loadPosts();
-            }}
-          />
-        )}
-      </AnimatePresence>
-
       {/* Post Editor Modal */}
       <AnimatePresence>
         {isCreating && (
           <ForumPostEditor
             currentUser={currentUser}
             onSave={handleSavePost}
-            onClose={() => setIsCreating(false)}
+            onClose={handleCloseEditor}
+            isDarkMode={isDarkMode}
           />
         )}
       </AnimatePresence>
