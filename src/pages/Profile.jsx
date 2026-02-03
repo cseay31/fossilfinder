@@ -195,26 +195,26 @@ export default function ProfilePage({ isDarkMode }) {
 
         {/* Tabs */}
         <Tabs defaultValue="badges" className="w-full">
-          <TabsList className={`grid w-full grid-cols-5 ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'}`}>
-            <TabsTrigger value="badges">
-              <Trophy className="w-4 h-4 mr-2" />
-              Badges
+          <TabsList className={`grid w-full grid-cols-3 md:grid-cols-5 gap-2 h-auto p-2 ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'}`}>
+            <TabsTrigger value="badges" className="flex-col h-auto py-3 gap-1">
+              <Trophy className="w-5 h-5" />
+              <span className="text-xs">Badges</span>
             </TabsTrigger>
-            <TabsTrigger value="profile">
-              <User className="w-4 h-4 mr-2" />
-              Profile
+            <TabsTrigger value="profile" className="flex-col h-auto py-3 gap-1">
+              <User className="w-5 h-5" />
+              <span className="text-xs">Profile</span>
             </TabsTrigger>
-            <TabsTrigger value="preferences">
-              <Heart className="w-4 h-4 mr-2" />
-              Interests
+            <TabsTrigger value="preferences" className="flex-col h-auto py-3 gap-1">
+              <Heart className="w-5 h-5" />
+              <span className="text-xs">Interests</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications">
-              <Bell className="w-4 h-4 mr-2" />
-              Notifications
+            <TabsTrigger value="notifications" className="flex-col h-auto py-3 gap-1">
+              <Bell className="w-5 h-5" />
+              <span className="text-xs">Notify</span>
             </TabsTrigger>
-            <TabsTrigger value="account">
-              <Settings className="w-4 h-4 mr-2" />
-              Account
+            <TabsTrigger value="account" className="flex-col h-auto py-3 gap-1">
+              <Settings className="w-5 h-5" />
+              <span className="text-xs">Account</span>
             </TabsTrigger>
           </TabsList>
 
