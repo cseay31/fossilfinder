@@ -10,8 +10,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X, Save, Eye, AlertTriangle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReactMarkdown from 'react-markdown';
+import MobileSelect from '../mobile/MobileSelect';
 
-export default function WikiArticleEditor({ article, onSave, onClose }) {
+export default function WikiArticleEditor({ article, onSave, onClose, isDarkMode }) {
   const [title, setTitle] = useState(article?.title || "");
   const [slug, setSlug] = useState(article?.slug || "");
   const [category, setCategory] = useState(article?.category || "getting-started");
@@ -184,18 +185,26 @@ Return your assessment.`,
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="category">Category *</Label>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger className="mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="getting-started">Getting Started</SelectItem>
-                    <SelectItem value="features">Features</SelectItem>
-                    <SelectItem value="archaeology">Archaeology</SelectItem>
-                    <SelectItem value="technical">Technical</SelectItem>
-                    <SelectItem value="faq">FAQ</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="mt-1">
+                  <MobileSelect
+                    value={category}
+                    onValueChange={setCategory}
+                    options={[
+                      { value: 'getting-started', label: 'Getting Started' },
+                      { value: 'features', label: 'Features' },
+                      { value: 'archaeology', label: 'Archaeology' },
+                      { value: 'technical', label: 'Technical' },
+                      { value: 'faq', label: 'FAQ' }
+                    ]}
+                    label="Category"
+                    isDarkMode={isDarkMode}
+                    trigger={
+                      <Button variant="outline" className="w-full justify-start">
+                        {category ? category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Select category'}
+                      </Button>
+                    }
+                  />
+                </div>
               </div>
 
               <div>

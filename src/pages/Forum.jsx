@@ -25,6 +25,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import ForumPostEditor from "../components/forum/ForumPostEditor";
+import PullToRefresh from "../components/mobile/PullToRefresh";
 
 export default function ForumPage({ isDarkMode }) {
   const navigate = useNavigate();
@@ -452,7 +453,8 @@ Any questions? Ask below! 👇`,
   const canPost = !appSettings || appSettings.forum_posting_enabled;
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'} p-4 md:p-8`}>
+    <PullToRefresh onRefresh={loadPosts} isDarkMode={isDarkMode}>
+      <div className={`min-h-screen pb-safe-bottom ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'} p-4 md:p-8`}>
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -674,6 +676,7 @@ Any questions? Ask below! 👇`,
           />
         )}
       </AnimatePresence>
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

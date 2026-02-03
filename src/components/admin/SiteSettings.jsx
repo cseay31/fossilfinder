@@ -17,8 +17,11 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useConfirmDialog } from '../ui/confirmation-dialog';
+import { toast } from 'sonner';
 
 export default function SiteSettings() {
+  const { confirm, ConfirmDialog } = useConfirmDialog();
   const [settings, setSettings] = useState(null);
   const [settingsId, setSettingsId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,7 +107,15 @@ export default function SiteSettings() {
   };
 
   const resetSettings = async () => {
-    if (!confirm('Reset all settings to defaults?')) return;
+    const confirmed = await confirm({
+      title: 'Reset All Settings?',
+      description: 'This will reset all application settings to their default values. This action cannot be undone.',
+      confirmText: 'Reset Settings',
+      cancelText: 'Cancel',
+      variant: 'destructive'
+    });
+    
+    if (!confirmed) return;
     
     setIsSaving(true);
     try {
@@ -159,6 +170,7 @@ export default function SiteSettings() {
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog />
       {message && (
         <Alert className={message.includes('❌') ? 'border-red-500/50 bg-red-900/20' : 'border-green-500/50 bg-green-900/20'}>
           <AlertDescription className={message.includes('❌') ? 'text-red-400' : 'text-green-400'}>

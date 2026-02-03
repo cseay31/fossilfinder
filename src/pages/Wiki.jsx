@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import WikiArticleEditor from "../components/wiki/WikiArticleEditor";
+import PullToRefresh from "../components/mobile/PullToRefresh";
 
 export default function WikiPage({ isDarkMode }) {
   const navigate = useNavigate();
@@ -561,7 +562,8 @@ If you're unsure about editing, contact an administrator or check this guide aga
 
 
   return (
-    <div className={`min-h-screen p-4 md:p-8 ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50'}`}>
+    <PullToRefresh onRefresh={loadArticles} isDarkMode={isDarkMode}>
+      <div className={`min-h-screen p-4 md:p-8 pb-safe-bottom ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50'}`}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

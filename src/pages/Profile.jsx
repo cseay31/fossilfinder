@@ -13,8 +13,14 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import MobileSelect from "../components/mobile/MobileSelect";
+import { useConfirmDialog } from "../components/ui/confirmation-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 export default function ProfilePage({ isDarkMode }) {
+  const { confirm, ConfirmDialog } = useConfirmDialog();
+  const [locationInput, setLocationInput] = useState('');
+  const [showLocationDialog, setShowLocationDialog] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [discoveries, setDiscoveries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,7 +74,7 @@ export default function ProfilePage({ isDarkMode }) {
       });
     } catch (error) {
       console.error("Failed to save profile:", error);
-      alert("Failed to save changes");
+      toast.error("Failed to save changes");
     }
   };
 
@@ -79,7 +85,7 @@ export default function ProfilePage({ isDarkMode }) {
         followed_locations: selectedLocations,
         notification_preferences: notificationPrefs
       });
-      alert("Preferences saved successfully!");
+      toast.success("Preferences saved successfully!");
       
       // Track interest preferences update
       base44.analytics.track({
@@ -91,7 +97,7 @@ export default function ProfilePage({ isDarkMode }) {
       });
     } catch (error) {
       console.error("Failed to save preferences:", error);
-      alert("Failed to save preferences");
+      toast.error("Failed to save preferences");
     }
   };
 
@@ -104,9 +110,14 @@ export default function ProfilePage({ isDarkMode }) {
   };
 
   const addLocation = () => {
-    const location = prompt("Enter a location to follow:");
-    if (location && !selectedLocations.includes(location)) {
-      setSelectedLocations([...selectedLocations, location]);
+    setShowLocationDialog(true);
+  };
+  
+  const handleAddLocation = () => {
+    if (locationInput && !selectedLocations.includes(locationInput)) {
+      setSelectedLocations([...selectedLocations, locationInput]);
+      setLocationInput('');
+      setShowLocationDialog(false);
     }
   };
 
@@ -300,8 +311,8 @@ export default function ProfilePage({ isDarkMode }) {
                       </Badge>
                     ))}
                   </div>
-                  <Button variant="outline" size="sm" onClick={addLocation}>
-                    + Add Location
+                  <Button variant="outline" size="sm" onClick={addLocation} className="min-h-[44px]">
+                   + Add Location
                   </Button>
                 </div>
 
@@ -386,19 +397,30 @@ export default function ProfilePage({ isDarkMode }) {
                   </Alert>
                   <Button
                     variant="destructive"
-                    onClick={() => {
-                      if (window.confirm('Are you absolutely sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.')) {
-                        if (window.confirm('Final confirmation: Type "DELETE" in the next prompt to proceed')) {
-                          const confirmation = window.prompt('Type "DELETE" to confirm account deletion:');
-                          if (confirmation === 'DELETE') {
-                            handleDeleteAccount();
-                          } else {
-                            alert('Account deletion cancelled');
-                          }
+                    onClick={async () => {
+                      const confirmed = await confirm({
+                        title: 'Delete Account?',
+                        description: 'Are you absolutely sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.',
+                        confirmText: 'Yes, Delete My Account',
+                        cancelText: 'Cancel',
+                        variant: 'destructive'
+                      });
+                      
+                      if (confirmed) {
+                        const finalConfirm = await confirm({
+                          title: 'Final Confirmation',
+                          description: 'This is your last chance. All discoveries, comments, and data will be permanently deleted. Are you absolutely certain?',
+                          confirmText: 'Delete Everything',
+                          cancelText: 'Keep My Account',
+                          variant: 'destructive'
+                        });
+                        
+                        if (finalConfirm) {
+                          handleDeleteAccount();
                         }
                       }
                     }}
-                    className="bg-red-600 hover:bg-red-700"
+                    className="bg-red-600 hover:bg-red-700 min-h-[44px]"
                   >
                     Delete Account
                   </Button>
@@ -408,6 +430,16 @@ export default function ProfilePage({ isDarkMode }) {
           </TabsContent>
         </Tabs>
       </div>
+      
+      <ConfirmDialog />
+      <LocationDialog 
+        isOpen={showLocationDialog}
+        onClose={() => setShowLocationDialog(false)}
+        locationInput={locationInput}
+        setLocationInput={setLocationInput}
+        handleAddLocation={handleAddLocation}
+        isDarkMode={isDarkMode}
+      />
     </div>
   );
 }
@@ -444,10 +476,42 @@ async function handleDeleteAccount() {
     await base44.entities.User.delete(user.id);
     
     // Logout
-    alert('Your account has been permanently deleted.');
+    toast.success('Your account has been permanently deleted.');
     base44.auth.logout();
   } catch (error) {
     console.error("Failed to delete account:", error);
-    alert('Failed to delete account. Please try again or contact support.');
+    toast.error('Failed to delete account. Please try again or contact support.');
   }
 }
+
+// Location Input Dialog Component (inside Profile page)
+const LocationDialog = ({ isOpen, onClose, locationInput, setLocationInput, handleAddLocation, isDarkMode }) => (
+  <Dialog open={isOpen} onOpenChange={onClose}>
+    <DialogContent className={isDarkMode ? 'bg-slate-900 border-white/10' : 'bg-white'}>
+      <DialogHeader>
+        <DialogTitle className={isDarkMode ? 'text-white' : 'text-slate-800'}>Add Location</DialogTitle>
+        <DialogDescription className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>
+          Enter a location you'd like to follow
+        </DialogDescription>
+      </DialogHeader>
+      <div className="py-4">
+        <Input
+          value={locationInput}
+          onChange={(e) => setLocationInput(e.target.value)}
+          placeholder="e.g., Utah, Morrison Formation"
+          className={isDarkMode ? 'bg-slate-800/50 border-white/10 text-white' : ''}
+          onKeyPress={(e) => e.key === 'Enter' && handleAddLocation()}
+          autoFocus
+        />
+      </div>
+      <DialogFooter>
+        <Button variant="outline" onClick={onClose} className={isDarkMode ? 'border-white/10' : ''}>
+          Cancel
+        </Button>
+        <Button onClick={handleAddLocation} className="bg-gradient-to-r from-amber-600 to-stone-700">
+          Add Location
+        </Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+);

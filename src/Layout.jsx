@@ -52,22 +52,6 @@ export default function Layout({ children, currentPageName }) {
   React.useEffect(() => {
     localStorage.setItem('fossilfinder-theme', isDarkMode ? 'dark' : 'light');
     
-    // Listen for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => {
-      // Only auto-switch if user hasn't manually set preference
-      const saved = localStorage.getItem('fossilfinder-theme-manual');
-      if (!saved) {
-        setIsDarkMode(e.matches);
-      }
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
-    
     // Add CSS variables for safe areas
     const style = document.createElement('style');
     style.innerHTML = `
@@ -105,10 +89,28 @@ export default function Layout({ children, currentPageName }) {
         -webkit-user-select: none;
         -webkit-tap-highlight-color: transparent;
       }
+      
+      /* Minimum tap target size */
+      button, a, [role="button"] {
+        min-height: 44px;
+      }
     `;
     document.head.appendChild(style);
     
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      // Only auto-switch if user hasn't manually set preference
+      const saved = localStorage.getItem('fossilfinder-theme-manual');
+      if (!saved) {
+        setIsDarkMode(e.matches);
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    
     return () => {
+      mediaQuery.removeEventListener('change', handleChange);
       document.head.removeChild(style);
     };
   }, [isDarkMode]);
