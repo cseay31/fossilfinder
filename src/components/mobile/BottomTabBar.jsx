@@ -86,8 +86,6 @@ export default function BottomTabBar({ isDarkMode }) {
       <div className="flex items-center justify-around px-2 py-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
-          const active = isActive(tab.path);
-          
           const active = isActive(tab.name);
           
           return (
