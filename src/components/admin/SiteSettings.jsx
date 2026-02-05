@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SecurityDashboard from "../security/SecurityDashboard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -171,13 +173,21 @@ export default function SiteSettings() {
   return (
     <div className="space-y-6">
       <ConfirmDialog />
-      {message && (
-        <Alert className={message.includes('❌') ? 'border-red-500/50 bg-red-900/20' : 'border-green-500/50 bg-green-900/20'}>
-          <AlertDescription className={message.includes('❌') ? 'text-red-400' : 'text-green-400'}>
-            {message}
-          </AlertDescription>
-        </Alert>
-      )}
+      
+      <Tabs defaultValue="general" className="w-full">
+        <TabsList className="bg-slate-800 mb-6">
+          <TabsTrigger value="general">General Settings</TabsTrigger>
+          <TabsTrigger value="security">Security & Monitoring</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="general" className="space-y-6">
+          {message && (
+            <Alert className={message.includes('❌') ? 'border-red-500/50 bg-red-900/20' : 'border-green-500/50 bg-green-900/20'}>
+              <AlertDescription className={message.includes('❌') ? 'text-red-400' : 'text-green-400'}>
+                {message}
+              </AlertDescription>
+            </Alert>
+          )}
 
       {/* Maintenance Mode */}
       <Card className="bg-slate-900/50 border-slate-700/50 border-l-4 border-l-red-500">
@@ -404,6 +414,12 @@ export default function SiteSettings() {
           </Button>
         </CardContent>
       </Card>
+        </TabsContent>
+        
+        <TabsContent value="security">
+          <SecurityDashboard isDarkMode={true} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
