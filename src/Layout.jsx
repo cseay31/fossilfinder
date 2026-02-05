@@ -7,6 +7,7 @@ import LoadingScreen from "./components/layout/LoadingScreen";
 import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
 import DisplayNamePrompt from "./components/layout/DisplayNamePrompt";
 import BottomTabBar from "./components/mobile/BottomTabBar";
+import SecurityMonitor from "./components/security/SecurityMonitor";
 import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp, LogOut } from "lucide-react";
 import {
   Sidebar,
