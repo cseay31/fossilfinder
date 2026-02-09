@@ -15,6 +15,8 @@ import ShellLoader from "../components/admin/ShellLoader";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { trackAction } from "../components/tracking/ActivityTracker";
+import TypeIt from "typeit";
+
 export default function UploadPage({ isDarkMode }) {
   const [currentStep, setCurrentStep] = useState("upload");
   const [photo, setPhoto] = useState(null);
@@ -30,20 +32,24 @@ export default function UploadPage({ isDarkMode }) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
-  const [currentWord, setCurrentWord] = useState("Fossils");
+  const titleRef = useRef(null);
 
   useEffect(() => {
     loadSettings();
   }, []);
 
   useEffect(() => {
-    const words = ["Fossils", "Artifacts", "Rocks", "Anything"];
-    let index = 0;
-    const interval = setInterval(() => {
-      index = (index + 1) % words.length;
-      setCurrentWord(words[index]);
-    }, 2000);
-    return () => clearInterval(interval);
+    if (titleRef.current) {
+      new TypeIt(titleRef.current, {
+        strings: ["Fossils", "Artifacts", "Rocks", "Anything"],
+        speed: 150,
+        deleteSpeed: 75,
+        breakLines: false,
+        waitUntilVisible: true,
+        loop: true,
+        loopDelay: 2000,
+      }).go();
+    }
   }, []);
 
   const loadSettings = async () => {
@@ -346,7 +352,7 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
           className="text-center mb-8"
         >
           <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
-            Analyze <span className={`${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`}>{currentWord}</span>
+            Analyze <span ref={titleRef}></span>
           </h1>
           <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
             Upload a photo of your archaeological finding for AI-powered identification and analysis

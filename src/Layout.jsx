@@ -373,7 +373,7 @@ export default function Layout({ children, currentPageName }) {
         </style>
         
         <Sidebar className={`border-r ${isDarkMode ? 'border-white/10 bg-slate-900/60' : 'border-stone-200 bg-white/80'} backdrop-blur-xl z-10`}>
-          <SidebarHeader className={`border-b ${isDarkMode ? 'border-white/10' : 'border-stone-200'} p-6 space-y-4`}>
+          <SidebarHeader className={`border-b ${isDarkMode ? 'border-white/10' : 'border-stone-200'} p-6`}>
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 ${isDarkMode ? 'bg-gradient-to-br from-cyan-500 to-emerald-600' : 'bg-gradient-to-br from-amber-600 to-stone-700'} rounded-xl flex items-center justify-center shadow-lg`}>
                 <Compass className="w-6 h-6 text-white" />
@@ -382,17 +382,6 @@ export default function Layout({ children, currentPageName }) {
                 <h2 className={`font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} text-lg`}>FossilFinder</h2>
                 <p className={`text-xs ${isDarkMode ? 'text-cyan-300/70' : 'text-stone-500'} font-medium`}>Archaeological AI Analysis</p>
               </div>
-            </div>
-
-            {/* Donation Button */}
-            <div className="flex justify-center">
-              <a href="https://www.buymeacoffee.com/fossilfinder" target="_blank" rel="noopener noreferrer">
-                <img 
-                  src="https://img.buymeacoffee.com/button-api/?text=Support our hosting fees&emoji=🌐&slug=fossilfinder&button_colour=40DCA5&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" 
-                  alt="Buy Me A Coffee"
-                  className="h-10 hover:opacity-80 transition-opacity"
-                />
-              </a>
             </div>
           </SidebarHeader>
           

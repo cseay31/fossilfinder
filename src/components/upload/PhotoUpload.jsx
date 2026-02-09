@@ -3,69 +3,48 @@ import { Camera, Upload, Image, X, CheckCircle, AlertCircle } from 'lucide-react
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDropzone } from 'react-dropzone';
 
 export default function PhotoUpload({ onPhotoCapture, photo }) {
   const cameraInputRef = useRef(null);
-  const fileInputRef = useRef(null);
   const [fileError, setFileError] = useState("");
   const [fileSuccess, setFileSuccess] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
-  const validateAndUploadFile = (file) => {
+  const onDrop = (acceptedFiles, rejectedFiles) => {
     setFileError("");
     setFileSuccess(false);
 
-    // Validate file type
-    if (!file.type.match(/^image\/(jpeg|png)$/)) {
-      setFileError('Invalid file type. Only JPEG and PNG images are supported.');
+    if (rejectedFiles.length > 0) {
+      const rejection = rejectedFiles[0];
+      if (rejection.errors[0]?.code === 'file-too-large') {
+        setFileError(`File is too large. Maximum size is 10MB.`);
+      } else if (rejection.errors[0]?.code === 'file-invalid-type') {
+        setFileError(`Invalid file type. Only JPEG and PNG images are supported.`);
+      } else if (rejection.errors[0]?.code === 'too-many-files') {
+        setFileError(`Please upload only one file at a time.`);
+      } else {
+        setFileError(`File rejected: ${rejection.errors[0]?.message || 'Unknown error'}`);
+      }
       return;
     }
 
-    // Validate file size (10MB)
-    if (file.size > 10485760) {
-      setFileError('File is too large. Maximum size is 10MB.');
-      return;
-    }
-
-    setFileSuccess(true);
-    setTimeout(() => setFileSuccess(false), 2000);
-    onPhotoCapture(file);
-  };
-
-  const handleDragEnter = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-
-    const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      validateAndUploadFile(files[0]);
+    if (acceptedFiles.length > 0) {
+      setFileSuccess(true);
+      setTimeout(() => setFileSuccess(false), 2000);
+      onPhotoCapture(acceptedFiles[0]);
     }
   };
 
-  const handleFileChange = (e) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      validateAndUploadFile(files[0]);
-    }
-  };
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+    onDrop,
+    accept: {
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png']
+    },
+    maxSize: 10485760, // 10MB
+    maxFiles: 1,
+    multiple: false
+  });
 
   const clearPhoto = () => {
     setFileError("");
@@ -108,17 +87,15 @@ export default function PhotoUpload({ onPhotoCapture, photo }) {
       <input
         ref={cameraInputRef}
         type="file"
-        accept="image/jpeg,image/png"
+        accept=".jpg,.jpeg,.png"
         capture="environment"
-        onChange={handleFileChange}
-        className="hidden"
-      />
-      
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/jpeg,image/png"
-        onChange={handleFileChange}
+        onChange={(e) => {
+          if (e.target.files && e.target.files[0]) {
+            setFileSuccess(true);
+            setTimeout(() => setFileSuccess(false), 2000);
+            onPhotoCapture(e.target.files[0]);
+          }
+        }}
         className="hidden"
       />
 
@@ -150,32 +127,45 @@ export default function PhotoUpload({ onPhotoCapture, photo }) {
       </AnimatePresence>
 
       <div
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
+        {...getRootProps()}
         className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 cursor-pointer ${
-          isDragging
+          isDragAccept 
+            ? 'border-green-500 bg-green-50/50 scale-105' 
+            : isDragReject
+            ? 'border-red-500 bg-red-50/50 scale-95'
+            : isDragActive 
             ? 'border-amber-400 bg-amber-50/50 scale-102' 
             : 'border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50/50'
         }`}
       >
+        <input {...getInputProps()} />
         <div className="space-y-4">
           <motion.div
-            animate={isDragging ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+            animate={isDragActive ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
             transition={{ duration: 0.2 }}
-            className="w-16 h-16 mx-auto rounded-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-stone-100"
+            className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center ${
+              isDragAccept
+                ? 'bg-gradient-to-br from-green-100 to-green-200'
+                : isDragReject
+                ? 'bg-gradient-to-br from-red-100 to-red-200'
+                : 'bg-gradient-to-br from-amber-100 to-stone-100'
+            }`}
           >
-            <Image className="w-8 h-8 text-amber-600" />
+            {isDragAccept ? (
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            ) : isDragReject ? (
+              <AlertCircle className="w-8 h-8 text-red-600" />
+            ) : (
+              <Image className="w-8 h-8 text-amber-600" />
+            )}
           </motion.div>
           
           <div>
             <h3 className="text-lg font-semibold text-stone-800 mb-2">
-              Upload Archaeological Photo
+              {isDragAccept ? 'Drop to upload!' : isDragReject ? 'Invalid file type' : 'Upload Archaeological Photo'}
             </h3>
             <p className="text-stone-600 mb-6">
-              {isDragging ? 'Drop your image here...' : 'Drag & drop an image or click to browse'}
+              {isDragActive ? 'Drop your image here...' : 'Drag & drop an image or click to browse'}
             </p>
           </div>
 
@@ -195,10 +185,6 @@ export default function PhotoUpload({ onPhotoCapture, photo }) {
             <Button
               type="button"
               variant="outline"
-              onClick={(e) => {
-                e.stopPropagation();
-                fileInputRef.current?.click();
-              }}
               className="border-stone-300 hover:bg-stone-50"
             >
               <Upload className="w-5 h-5 mr-2" />
