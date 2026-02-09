@@ -212,6 +212,12 @@ export default function Layout({ children, currentPageName }) {
             <p className="text-slate-600 mb-6">
               We'll be back shortly. Thank you for your patience!
             </p>
+            <Button
+              onClick={() => window.open('https://fossilfinder.statuspage.io', '_blank')}
+              className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
+            >
+              Check Status Page
+            </Button>
           </div>
         </div>
       </div>
