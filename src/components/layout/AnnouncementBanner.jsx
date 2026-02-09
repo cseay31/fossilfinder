@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings } from "@/entities/Settings";
+import { base44 } from '@/api/base44Client';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { X, Info, AlertTriangle, CheckCircle, AlertCircle } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function AnnouncementBanner() {
 
   const loadAnnouncement = async () => {
     try {
-      const data = await Settings.filter({ setting_key: 'global' });
+      const data = await base44.entities.AppSettings.list();
       if (data.length > 0 && data[0].announcement_active && data[0].announcement_text) {
         setAnnouncement(data[0]);
       }
