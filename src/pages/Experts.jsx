@@ -575,14 +575,6 @@ Focus on finding experts who are actively publishing and well-regarded in their 
 
         {/* Copyright Info Button - Easter Egg */}
         <div className="text-center py-8">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowPasswordBox(true)}
-            className="text-xs text-stone-400 hover:text-stone-600 hover:bg-transparent"
-          >
-            COPYRIGHT INFO
-          </Button>
         </div>
       </div>
     </div>
