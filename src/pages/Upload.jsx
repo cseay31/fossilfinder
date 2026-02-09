@@ -346,7 +346,7 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
           className="text-center mb-8"
         >
           <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
-            Analyze <span ref={titleRef}></span>
+            Analyze <span className={`${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`}>{currentWord}</span>
           </h1>
           <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
             Upload a photo of your archaeological finding for AI-powered identification and analysis
