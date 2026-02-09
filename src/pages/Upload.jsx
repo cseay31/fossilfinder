@@ -338,9 +338,6 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
           <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
             Analyze Your Discovery
           </h1>
-          <a href="https://www.buymeacoffee.com/fossilfinder" target="_blank" rel="noopener noreferrer" className="inline-block mb-4">
-            <img src="https://img.buymeacoffee.com/button-api/?text=Support our hosting costs&emoji=🌐&slug=fossilfinder&button_colour=40DCA5&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" alt="Support FossilFinder" />
-          </a>
           <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
             Upload a photo of your archaeological finding for AI-powered identification and analysis
           </p>
