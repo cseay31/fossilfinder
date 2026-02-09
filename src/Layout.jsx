@@ -386,9 +386,9 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Donation Button */}
             <div className="flex justify-center">
-              <a href="https://www.buymeacoffee.com/seayc31" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.buymeacoffee.com/fossilfinder" target="_blank" rel="noopener noreferrer">
                 <img 
-                  src="https://img.buymeacoffee.com/button-api/?text=help with our hosting fees&emoji=💸&slug=seayc31&button_colour=40DCA5&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" 
+                  src="https://img.buymeacoffee.com/button-api/?text=Support our hosting fees&emoji=🌐&slug=fossilfinder&button_colour=40DCA5&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" 
                   alt="Buy Me A Coffee"
                   className="h-10 hover:opacity-80 transition-opacity"
                 />
