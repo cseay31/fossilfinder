@@ -15,7 +15,7 @@ import ShellLoader from "../components/admin/ShellLoader";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { trackAction } from "../components/tracking/ActivityTracker";
-import TypeIt from "typeit";
+import TypeIt from "typeit-react";
 
 export default function UploadPage({ isDarkMode }) {
   const [currentStep, setCurrentStep] = useState("upload");
