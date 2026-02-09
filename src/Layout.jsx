@@ -494,6 +494,17 @@ export default function Layout({ children, currentPageName }) {
                   </Button>
                 </div>
 
+                {/* Donation Button */}
+                <div className="flex justify-center">
+                  <a href="https://www.buymeacoffee.com/seayc31" target="_blank" rel="noopener noreferrer">
+                    <img 
+                      src="https://img.buymeacoffee.com/button-api/?text=help with our hosting fees&emoji=💸&slug=seayc31&button_colour=40DCA5&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" 
+                      alt="Buy Me A Coffee"
+                      className="h-10 hover:opacity-80 transition-opacity"
+                    />
+                  </a>
+                </div>
+
                 {/* Copyright */}
                 <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Connor Seay 2025, All rights reserved</p>
 
