@@ -15,7 +15,6 @@ import ShellLoader from "../components/admin/ShellLoader";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { trackAction } from "../components/tracking/ActivityTracker";
-import TypeIt from "typeit";
 
 export default function UploadPage({ isDarkMode }) {
   const [currentStep, setCurrentStep] = useState("upload");
@@ -32,24 +31,9 @@ export default function UploadPage({ isDarkMode }) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
-  const titleRef = useRef(null);
 
   useEffect(() => {
     loadSettings();
-  }, []);
-
-  useEffect(() => {
-    if (titleRef.current) {
-      new TypeIt(titleRef.current, {
-        strings: ["Fossils", "Artifacts", "Rocks", "Anything"],
-        speed: 150,
-        deleteSpeed: 75,
-        breakLines: false,
-        waitUntilVisible: true,
-        loop: true,
-        loopDelay: 2000,
-      }).go();
-    }
   }, []);
 
   const loadSettings = async () => {
