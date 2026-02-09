@@ -53,6 +53,12 @@ export default function Layout({ children, currentPageName }) {
   React.useEffect(() => {
     localStorage.setItem('fossilfinder-theme', isDarkMode ? 'dark' : 'light');
     
+    // Load Status Page notification script
+    const statusPageScript = document.createElement('script');
+    statusPageScript.src = 'https://fossilfinder.statuspage.io/embed/script.js';
+    statusPageScript.async = true;
+    document.body.appendChild(statusPageScript);
+    
     // Add CSS variables for safe areas
     const style = document.createElement('style');
     style.innerHTML = `
