@@ -3,48 +3,69 @@ import { Camera, Upload, Image, X, CheckCircle, AlertCircle } from 'lucide-react
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDropzone } from 'react-dropzone';
 
 export default function PhotoUpload({ onPhotoCapture, photo }) {
   const cameraInputRef = useRef(null);
+  const fileInputRef = useRef(null);
   const [fileError, setFileError] = useState("");
   const [fileSuccess, setFileSuccess] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const onDrop = (acceptedFiles, rejectedFiles) => {
+  const validateAndUploadFile = (file) => {
     setFileError("");
     setFileSuccess(false);
 
-    if (rejectedFiles.length > 0) {
-      const rejection = rejectedFiles[0];
-      if (rejection.errors[0]?.code === 'file-too-large') {
-        setFileError(`File is too large. Maximum size is 10MB.`);
-      } else if (rejection.errors[0]?.code === 'file-invalid-type') {
-        setFileError(`Invalid file type. Only JPEG and PNG images are supported.`);
-      } else if (rejection.errors[0]?.code === 'too-many-files') {
-        setFileError(`Please upload only one file at a time.`);
-      } else {
-        setFileError(`File rejected: ${rejection.errors[0]?.message || 'Unknown error'}`);
-      }
+    // Validate file type
+    if (!file.type.match(/^image\/(jpeg|png)$/)) {
+      setFileError('Invalid file type. Only JPEG and PNG images are supported.');
       return;
     }
 
-    if (acceptedFiles.length > 0) {
-      setFileSuccess(true);
-      setTimeout(() => setFileSuccess(false), 2000);
-      onPhotoCapture(acceptedFiles[0]);
+    // Validate file size (10MB)
+    if (file.size > 10485760) {
+      setFileError('File is too large. Maximum size is 10MB.');
+      return;
+    }
+
+    setFileSuccess(true);
+    setTimeout(() => setFileSuccess(false), 2000);
+    onPhotoCapture(file);
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      validateAndUploadFile(files[0]);
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
-    onDrop,
-    accept: {
-      'image/jpeg': ['.jpg', '.jpeg'],
-      'image/png': ['.png']
-    },
-    maxSize: 10485760, // 10MB
-    maxFiles: 1,
-    multiple: false
-  });
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      validateAndUploadFile(files[0]);
+    }
+  };
 
   const clearPhoto = () => {
     setFileError("");
