@@ -108,15 +108,17 @@ export default function PhotoUpload({ onPhotoCapture, photo }) {
       <input
         ref={cameraInputRef}
         type="file"
-        accept=".jpg,.jpeg,.png"
+        accept="image/jpeg,image/png"
         capture="environment"
-        onChange={(e) => {
-          if (e.target.files && e.target.files[0]) {
-            setFileSuccess(true);
-            setTimeout(() => setFileSuccess(false), 2000);
-            onPhotoCapture(e.target.files[0]);
-          }
-        }}
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png"
+        onChange={handleFileChange}
         className="hidden"
       />
 
@@ -148,45 +150,32 @@ export default function PhotoUpload({ onPhotoCapture, photo }) {
       </AnimatePresence>
 
       <div
-        {...getRootProps()}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
         className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 cursor-pointer ${
-          isDragAccept 
-            ? 'border-green-500 bg-green-50/50 scale-105' 
-            : isDragReject
-            ? 'border-red-500 bg-red-50/50 scale-95'
-            : isDragActive 
+          isDragging
             ? 'border-amber-400 bg-amber-50/50 scale-102' 
             : 'border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50/50'
         }`}
       >
-        <input {...getInputProps()} />
         <div className="space-y-4">
           <motion.div
-            animate={isDragActive ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+            animate={isDragging ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
             transition={{ duration: 0.2 }}
-            className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center ${
-              isDragAccept
-                ? 'bg-gradient-to-br from-green-100 to-green-200'
-                : isDragReject
-                ? 'bg-gradient-to-br from-red-100 to-red-200'
-                : 'bg-gradient-to-br from-amber-100 to-stone-100'
-            }`}
+            className="w-16 h-16 mx-auto rounded-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-stone-100"
           >
-            {isDragAccept ? (
-              <CheckCircle className="w-8 h-8 text-green-600" />
-            ) : isDragReject ? (
-              <AlertCircle className="w-8 h-8 text-red-600" />
-            ) : (
-              <Image className="w-8 h-8 text-amber-600" />
-            )}
+            <Image className="w-8 h-8 text-amber-600" />
           </motion.div>
           
           <div>
             <h3 className="text-lg font-semibold text-stone-800 mb-2">
-              {isDragAccept ? 'Drop to upload!' : isDragReject ? 'Invalid file type' : 'Upload Archaeological Photo'}
+              Upload Archaeological Photo
             </h3>
             <p className="text-stone-600 mb-6">
-              {isDragActive ? 'Drop your image here...' : 'Drag & drop an image or click to browse'}
+              {isDragging ? 'Drop your image here...' : 'Drag & drop an image or click to browse'}
             </p>
           </div>
 
@@ -206,6 +195,10 @@ export default function PhotoUpload({ onPhotoCapture, photo }) {
             <Button
               type="button"
               variant="outline"
+              onClick={(e) => {
+                e.stopPropagation();
+                fileInputRef.current?.click();
+              }}
               className="border-stone-300 hover:bg-stone-50"
             >
               <Upload className="w-5 h-5 mr-2" />
