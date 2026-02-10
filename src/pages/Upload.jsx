@@ -147,27 +147,26 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
         }
       });
 
-      // Handle AI detection result
-      if (aiDetectionResult.is_ai_generated) {
-        setError(`🚫 AI-Generated Image Detected\n\nReason: ${aiDetectionResult.explanation}\n\nYour account is being suspended for 1 day.`);
+      // Handle AI detection result - only reject if high confidence (80%+)
+      if (aiDetectionResult.is_ai_generated && aiDetectionResult.confidence_score >= 80) {
+        setError(`🚫 AI-Generated Image Detected\n\nThis image appears to be AI-generated with ${aiDetectionResult.confidence_score}% confidence.\n\nReason: ${aiDetectionResult.explanation}\n\nPlease upload a photograph of a real, physical object.`);
         setCurrentStep("upload");
         setIsAnalyzing(false);
         
-        // Ban user for 1 day
+        // Log the attempt but don't ban
         try {
-          const banDate = new Date();
-          banDate.setDate(banDate.getDate() + 1);
-          await base44.auth.updateMe({
-            is_banned: true,
-            ban_reason: `Automatic 1-day ban for uploading AI-generated image. Reason: ${aiDetectionResult.explanation}. Ban expires: ${banDate.toLocaleString()}`,
-            ban_expires: banDate.toISOString()
+          await base44.entities.SecurityLog.create({
+            event_type: 'suspicious_activity',
+            user_email: (await base44.auth.me()).email,
+            severity: 'medium',
+            details: JSON.stringify({
+              reason: 'AI-generated image upload attempt',
+              confidence: aiDetectionResult.confidence_score,
+              explanation: aiDetectionResult.explanation
+            })
           });
-          
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-        } catch (banError) {
-          console.error("Failed to apply ban:", banError);
+        } catch (logError) {
+          console.error("Failed to log security event:", logError);
         }
         return;
       }
