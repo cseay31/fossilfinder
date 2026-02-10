@@ -16,7 +16,7 @@ import {
   Megaphone, Settings as SettingsIcon, Ban, Save, AlertTriangle, UserCheck, 
   MessageCircle, Heart, Share2, Shield, Map, BookOpen, ScanLine, Trophy,
   MessageSquare, Upload, MapPin, Bot, Wrench, ToggleLeft, Loader2, RefreshCw, Trash2,
-  TrendingUp
+  TrendingUp, Coffee
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useConfirmDialog } from '../ui/confirmation-dialog';
@@ -67,7 +67,8 @@ export default function SiteSettings() {
           maintenance_mode: false,
           maintenance_message: '',
           max_uploads_per_day: 10,
-          require_location: true
+          require_location: true,
+          donation_button_enabled: true
         };
         
         const created = await base44.entities.AppSettings.create(defaults);
@@ -379,6 +380,20 @@ export default function SiteSettings() {
         </CardHeader>
         <CardContent className="space-y-3">
           <SettingToggle icon={Bot} iconColor="text-purple-400" title="AI Comment Moderation" description="Automatically check comments for inappropriate content" settingKey="ai_moderation_enabled" />
+        </CardContent>
+      </Card>
+
+      {/* Donation Settings */}
+      <Card className="bg-slate-900/50 border-slate-700/50">
+        <CardHeader>
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Coffee className="w-6 h-6 text-amber-400" />
+            Donation Button
+          </CardTitle>
+          <CardDescription className="text-slate-400">Control the "Buy Me a Coffee" donation button in sidebar</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <SettingToggle icon={Coffee} iconColor="text-amber-400" title="Show Donation Button" description="Display the Buy Me a Coffee button in the sidebar" settingKey="donation_button_enabled" />
         </CardContent>
       </Card>
 
