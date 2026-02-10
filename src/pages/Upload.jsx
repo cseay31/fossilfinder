@@ -118,49 +118,91 @@ export default function UploadPage({ isDarkMode }) {
     await trackAction("Started analyzing discovery");
 
     try {
-      // Step 1: AI Detection Check
+      // Step 1: AI Detection Check with internet search for verification
       const aiDetectionResult = await base44.integrations.Core.InvokeLLM({
-        prompt: `Analyze this image carefully and determine if it appears to be AI-generated or a real photograph.
+        prompt: `CRITICAL ANALYSIS REQUIRED: You are a forensic image analyst protecting archaeological research integrity.
 
-Look for indicators such as:
-- Unnatural textures or patterns
-- Inconsistent lighting or shadows
-- Anatomical impossibilities or distortions
-- Overly smooth or artificial surfaces
-- Telltale signs of AI generation (weird artifacts, impossible physics, etc.)
-- Whether it appears to be a photograph of a real, physical object
+Analyze this image to determine if it is:
+1. A REAL photograph of a physical object/fossil/artifact
+2. An AI-GENERATED or digitally created image
+3. A screenshot of a digital render or 3D model
 
-Provide your assessment with a confidence score (0-100) where:
-- 0-30 = Definitely a real photograph
-- 31-70 = Uncertain/ambiguous
-- 71-100 = Likely AI-generated
+RED FLAGS for AI/fake images:
+- Impossible or contradictory physics
+- Unnatural textures or "too perfect" surfaces
+- Inconsistent lighting/shadows
+- Anatomical impossibilities
+- Blurry or melted edges
+- Signs of diffusion models (Stable Diffusion, Midjourney, DALL-E artifacts)
+- Digital artifacts or rendering signs
+- Lacks the grain, imperfections, or noise of real photography
+- Object appears to be floating or defying gravity
+- Unnatural color gradients or patterns
 
-Be thorough and err on the side of caution to protect the integrity of archaeological research.`,
+REAL photograph indicators:
+- Natural camera grain/noise
+- Consistent lighting from a single source
+- Real-world imperfections and dirt
+- Natural shadows and depth
+- Camera metadata feel (focus, exposure)
+- Physical plausibility
+
+Rate confidence 0-100:
+- 0-20: Definitely real photograph
+- 21-50: Likely real, minor concerns
+- 51-75: Suspicious, multiple AI indicators
+- 76-100: Almost certainly AI-generated
+
+BE STRICT. Archaeological research depends on authenticity.`,
         file_urls: [photoUrl],
+        add_context_from_internet: true,
         response_json_schema: {
           type: "object",
           properties: {
             is_ai_generated: { type: "boolean" },
             confidence_score: { type: "number", minimum: 0, maximum: 100 },
-            explanation: { type: "string" }
-          }
+            explanation: { type: "string" },
+            red_flags_found: { type: "array", items: { type: "string" } }
+          },
+          required: ["is_ai_generated", "confidence_score", "explanation"]
         }
       });
 
-      // Handle AI detection result - only reject if high confidence (80%+)
-      if (aiDetectionResult.is_ai_generated && aiDetectionResult.confidence_score >= 80) {
-        setError(`🚫 AI-Generated Image Detected\n\nThis image appears to be AI-generated with ${aiDetectionResult.confidence_score}% confidence.\n\nReason: ${aiDetectionResult.explanation}\n\nPlease upload a photograph of a real, physical object.`);
+      // Handle AI detection result - reject if confidence >= 70%
+      if (aiDetectionResult.is_ai_generated && aiDetectionResult.confidence_score >= 70) {
+        const redFlags = aiDetectionResult.red_flags_found?.join(', ') || 'Multiple indicators detected';
+        setError(`🚫 AI-Generated Image Detected (${aiDetectionResult.confidence_score}% confidence)\n\n${aiDetectionResult.explanation}\n\nRed flags: ${redFlags}\n\nPlease upload only real photographs of physical objects.`);
         setCurrentStep("upload");
         setIsAnalyzing(false);
         
-        // Log the attempt but don't ban
+        // Log the rejection
         try {
           await base44.entities.SecurityLog.create({
             event_type: 'suspicious_activity',
             user_email: (await base44.auth.me()).email,
             severity: 'medium',
             details: JSON.stringify({
-              reason: 'AI-generated image upload attempt',
+              reason: 'AI-generated image rejected',
+              confidence: aiDetectionResult.confidence_score,
+              explanation: aiDetectionResult.explanation,
+              red_flags: aiDetectionResult.red_flags_found
+            })
+          });
+        } catch (logError) {
+          console.error("Failed to log security event:", logError);
+        }
+        return;
+      }
+      
+      // Log low-confidence detections for monitoring
+      if (aiDetectionResult.confidence_score > 50) {
+        try {
+          await base44.entities.SecurityLog.create({
+            event_type: 'suspicious_activity',
+            user_email: (await base44.auth.me()).email,
+            severity: 'low',
+            details: JSON.stringify({
+              reason: 'Suspicious image (allowed but flagged)',
               confidence: aiDetectionResult.confidence_score,
               explanation: aiDetectionResult.explanation
             })
@@ -168,7 +210,6 @@ Be thorough and err on the side of caution to protect the integrity of archaeolo
         } catch (logError) {
           console.error("Failed to log security event:", logError);
         }
-        return;
       }
 
       // Step 2: Create discovery with location data
