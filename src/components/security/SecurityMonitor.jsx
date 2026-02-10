@@ -57,112 +57,13 @@ export default function SecurityMonitor({ currentUser }) {
   const lastPage = useRef('');
   const actionCount = useRef(0);
   
-  useEffect(() => {
-    // Initialize bot detection
-    BotDetector.initialize();
-    
-    // Monitor session duration
-    const sessionMonitor = setInterval(async () => {
-      const sessionDuration = (Date.now() - sessionStart.current) / 1000 / 60; // minutes
-      
-      // Detect suspicious session patterns
-      if (sessionDuration > 120) { // 2 hours
-        try {
-          await base44.entities.SecurityLog.create({
-            event_type: 'suspicious_activity',
-            user_email: currentUser?.email || 'anonymous',
-            severity: 'low',
-            details: JSON.stringify({
-              reason: 'Long session duration',
-              duration_minutes: sessionDuration
-            })
-          });
-        } catch (err) {
-          console.error('Security logging failed:', err);
-        }
-      }
-    }, 300000); // Check every 5 minutes
-    
-    return () => clearInterval(sessionMonitor);
-  }, [currentUser]);
+  // Removed session monitoring - was creating false positives for long sessions
   
-  useEffect(() => {
-    // Log page navigation for audit trail
-    const logPageView = async () => {
-      if (!currentUser) return;
-      
-      try {
-        await base44.entities.SecurityLog.create({
-          event_type: 'suspicious_activity',
-          user_email: currentUser.email,
-          page: location.pathname,
-          action: 'page_view',
-          severity: 'low',
-          user_agent: navigator.userAgent,
-          details: JSON.stringify({
-            referrer: document.referrer,
-            timestamp: new Date().toISOString()
-          })
-        });
-        
-        lastPage.current = location.pathname;
-      } catch (err) {
-        // Silent fail for security logs
-      }
-    };
-    
-    logPageView();
-  }, [location.pathname, currentUser]);
+  // Removed page view logging - was creating false positives
   
-  useEffect(() => {
-    // Bot detection check every 30 seconds
-    const botCheck = setInterval(async () => {
-      const analysis = BotDetector.analyze();
-      
-      if (analysis.isLikelyBot && currentUser) {
-        try {
-          await base44.entities.SecurityLog.create({
-            event_type: 'bot_detected',
-            user_email: currentUser.email,
-            severity: 'high',
-            details: JSON.stringify({
-              confidence: analysis.confidence,
-              interactions: analysis.interactions
-            }),
-            blocked: false
-          });
-        } catch (err) {
-          console.error('Bot detection logging failed:', err);
-        }
-      }
-    }, 30000);
-    
-    return () => clearInterval(botCheck);
-  }, [currentUser]);
+  // Removed automatic bot detection - was causing false positives
   
-  // Monitor for rapid actions (potential automation)
-  useEffect(() => {
-    const monitorRapidActions = () => {
-      actionCount.current++;
-      
-      if (actionCount.current > 50) {
-        base44.entities.SecurityLog.create({
-          event_type: 'rate_limit_exceeded',
-          user_email: currentUser?.email || 'anonymous',
-          severity: 'medium',
-          details: JSON.stringify({
-            action_count: actionCount.current,
-            time_window: '1_minute'
-          })
-        }).catch(() => {});
-        
-        actionCount.current = 0;
-      }
-    };
-    
-    window.addEventListener('click', monitorRapidActions);
-    return () => window.removeEventListener('click', monitorRapidActions);
-  }, [currentUser]);
+  // Removed rapid action monitoring - use rate limiting hooks instead
   
   return null;
 }
