@@ -131,11 +131,13 @@ export default function Layout({ children, currentPageName }) {
   const [maintenanceMessage, setMaintenanceMessage] = useState('');
   const [showDisplayNamePrompt, setShowDisplayNamePrompt] = useState(false);
   const [isFooterOpen, setIsFooterOpen] = useState(false);
+  const [appSettings, setAppSettings] = useState(null);
 
   useEffect(() => {
     loadDiscoveries();
     loadCurrentUser();
     checkMaintenanceMode();
+    loadAppSettings();
     
     // Hide initial loading screen after 6 seconds
     const timer = setTimeout(() => {
@@ -153,6 +155,17 @@ export default function Layout({ children, currentPageName }) {
     
     return () => clearTimeout(timer);
   }, [location.pathname]);
+
+  const loadAppSettings = async () => {
+    try {
+      const settings = await base44.entities.AppSettings.list();
+      if (settings.length > 0) {
+        setAppSettings(settings[0]);
+      }
+    } catch (error) {
+      console.error("Failed to load app settings:", error);
+    }
+  };
 
   const checkMaintenanceMode = async () => {
     try {
@@ -395,9 +408,11 @@ export default function Layout({ children, currentPageName }) {
                 <p className={`text-xs ${isDarkMode ? 'text-cyan-300/70' : 'text-stone-500'} font-medium`}>Archaeological AI Analysis</p>
               </div>
             </div>
-            <a href="https://www.buymeacoffee.com/fossilfinder" target="_blank" rel="noopener noreferrer" className="block">
-              <img src="https://img.buymeacoffee.com/button-api/?text=Support our hosting costs&emoji=🌐&slug=fossilfinder&button_colour=40DCA5&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" alt="Support FossilFinder" className="w-full" />
-            </a>
+            {appSettings?.donation_button_enabled !== false && (
+              <a href="https://www.buymeacoffee.com/fossilfinder" target="_blank" rel="noopener noreferrer" className="block">
+                <img src="https://img.buymeacoffee.com/button-api/?text=Support our hosting costs&emoji=🌐&slug=fossilfinder&button_colour=40DCA5&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" alt="Support FossilFinder" className="w-full" />
+              </a>
+            )}
           </SidebarHeader>
           
           <SidebarContent className="p-3">

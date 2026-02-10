@@ -63,9 +63,9 @@ import Leaderboard from './pages/Leaderboard';
 import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
 import Profile from './pages/Profile';
+import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
 import WikiArticle from './pages/WikiArticle';
-import Upload from './pages/Upload';
 import __Layout from './Layout.jsx';
 
 
@@ -86,9 +86,9 @@ export const PAGES = {
     "MultiScan": MultiScan,
     "MultiScanDiscoveries": MultiScanDiscoveries,
     "Profile": Profile,
+    "Upload": Upload,
     "Wiki": Wiki,
     "WikiArticle": WikiArticle,
-    "Upload": Upload,
 }
 
 export const pagesConfig = {
