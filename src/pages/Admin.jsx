@@ -23,6 +23,7 @@ import AdminMessaging from "../components/admin/AdminMessaging";
 import SlideshowReview from "../components/admin/SlideshowReview";
 import LiveUserActivity from "../components/admin/LiveUserActivity";
 import ContentReports from "../components/admin/ContentReports";
+import AuditLogViewer from "../components/admin/AuditLogViewer";
 import ShellLoader from "../components/admin/ShellLoader";
 import { calculatePoints, checkBadgeEligibility } from "../components/gamification/BadgeSystem";
 
@@ -319,6 +320,9 @@ export default function AdminPage({ isDarkMode }) {
             <TabsTrigger value="reports" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-600 data-[state=active]:to-orange-600">
               <Flag className="w-4 h-4 mr-2" /> Reports
             </TabsTrigger>
+            <TabsTrigger value="audit-logs" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-600 data-[state=active]:to-purple-600">
+              <FileText className="w-4 h-4 mr-2" /> Audit Logs
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -592,6 +596,7 @@ export default function AdminPage({ isDarkMode }) {
           <TabsContent value="analytics"><AnalyticsDashboard discoveries={discoveries} /></TabsContent>
           <TabsContent value="live-activity"><LiveUserActivity isDarkMode={isDarkMode} /></TabsContent>
           <TabsContent value="reports"><ContentReports /></TabsContent>
+          <TabsContent value="audit-logs"><AuditLogViewer isDarkMode={isDarkMode} /></TabsContent>
           
           {/* Full System Discoveries Tab */}
           <TabsContent value="full-system" className="space-y-6">
