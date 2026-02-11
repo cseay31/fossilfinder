@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import ActivityTracker from "./components/tracking/ActivityTracker";
+import AuditLogger from "./components/tracking/AuditLogger";
 import LoadingScreen from "./components/layout/LoadingScreen";
 import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
 import DisplayNamePrompt from "./components/layout/DisplayNamePrompt";
@@ -350,6 +351,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <SidebarProvider>
       <ActivityTracker />
+      <AuditLogger />
       <ModerationWatcher currentUser={currentUser} />
       <DisplayNamePrompt 
         isOpen={showDisplayNamePrompt} 
