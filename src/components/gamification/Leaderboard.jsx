@@ -17,13 +17,26 @@ export default function Leaderboard({ isDarkMode }) {
 
   const loadLeaderboard = async () => {
     try {
-      const [allUsers, user] = await Promise.all([
+      const [allUsers, user, allDiscoveries] = await Promise.all([
         base44.entities.User.list(),
-        base44.auth.me()
+        base44.auth.me(),
+        base44.entities.Discovery.list()
       ]);
       
+      // Recalculate stats for all users to ensure accuracy
+      const usersWithStats = allUsers.map(u => {
+        const userDiscoveries = allDiscoveries.filter(d => d.created_by === u.email);
+        const totalLikes = userDiscoveries.reduce((sum, d) => sum + (d.likes || 0), 0);
+        
+        return {
+          ...u,
+          discovery_count: userDiscoveries.length,
+          total_likes: totalLikes
+        };
+      });
+      
       // Sort by points
-      const sorted = allUsers
+      const sorted = usersWithStats
         .filter(u => !u.is_banned)
         .sort((a, b) => (b.points || 0) - (a.points || 0))
         .slice(0, 50);
