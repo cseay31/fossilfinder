@@ -286,8 +286,6 @@ BE STRICT. Archaeological research depends on authenticity.`,
       // Update user stats and award points/badges
       try {
         const user = await base44.auth.me();
-        const allDiscoveries = await base44.entities.Discovery.list();
-        const userDiscoveries = allDiscoveries.filter(d => d.created_by === user.email);
 
         // Calculate points for this discovery
         let pointsToAward = 20; // Base points for discovery
@@ -295,8 +293,12 @@ BE STRICT. Archaeological research depends on authenticity.`,
         if (aiResponse.significance_level === 'exceptional') pointsToAward += 50;
 
         // Check for new badges
-        const { checkBadgeEligibility, BADGES, calculatePoints } = await import("../components/gamification/BadgeSystem");
-        const allComments = await base44.entities.DiscoveryComment.list();
+        const { checkBadgeEligibility, BADGES } = await import("../components/gamification/BadgeSystem");
+        const [allDiscoveries, allComments] = await Promise.all([
+          base44.entities.Discovery.list(),
+          base44.entities.DiscoveryComment.list()
+        ]);
+        const userDiscoveries = allDiscoveries.filter(d => d.created_by === user.email);
         const newBadges = checkBadgeEligibility(user, userDiscoveries, allComments);
 
         // Calculate badge points
@@ -309,7 +311,7 @@ BE STRICT. Archaeological research depends on authenticity.`,
         await base44.auth.updateMe({
           points: (user.points || 0) + pointsToAward + badgePoints,
           discovery_count: userDiscoveries.length,
-          badges: [...(user.badges || []), ...newBadges]
+          badges: [...new Set([...(user.badges || []), ...newBadges])] // Prevent duplicates
         });
       } catch (updateError) {
         console.error("Failed to update user stats:", updateError);
