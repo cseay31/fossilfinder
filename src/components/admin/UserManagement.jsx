@@ -75,13 +75,17 @@ export default function UserManagement() {
         subject: "Action Required: Update Your Display Name - FossilFinder",
         body: `Hello,
 
-You have used your real name in your display name or username on FossilFinder. For your privacy and safety, we have temporarily censored your account and removed your name from public boards.
+IMPORTANT: This is NOT a moderation action.
 
-This is recommended to protect your identity online.
+You have used your real name in your display name or username on FossilFinder. We have temporarily censored your account and removed your name from public boards to protect your identity from people online.
 
-Please log in to FossilFinder and update your display name to something that doesn't include your real name.
+This is recommended to protect your identity. Only administrators will have access to your name in our secure servers - the public will only see "Explorer" until you update your display name.
+
+Please log in to FossilFinder as soon as possible and update your display name to something that doesn't include your real name.
 
 Your account will remain censored until you take action.
+
+This is for your safety and privacy protection.
 
 If you have any questions, please contact an administrator.
 
