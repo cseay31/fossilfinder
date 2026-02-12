@@ -21,7 +21,7 @@ export default function LiveUserActivity({ isDarkMode }) {
 
     const interval = setInterval(() => {
       loadActivities();
-    }, 5000); // Refresh every 5 seconds
+    }, 20000); // Refresh every 20 seconds (battery optimized)
 
     return () => clearInterval(interval);
   }, [autoRefresh]);
