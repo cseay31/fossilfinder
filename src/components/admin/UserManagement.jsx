@@ -203,6 +203,11 @@ FossilFinder Team`
                               </Badge>
                             )}
                           </div>
+                          {user.display_name && (
+                            <div className="text-sm text-slate-600 mt-1">
+                              <strong>Display Name:</strong> {user.display_name}
+                            </div>
+                          )}
                           <div className="flex items-center gap-2 text-sm text-slate-600">
                             <Mail className="w-4 h-4" />
                             {user.email}
