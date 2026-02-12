@@ -77,7 +77,7 @@ export default function UserManagement() {
 
 IMPORTANT: This is NOT a moderation action.
 
-You have used your real name in your display name or username on FossilFinder. We have temporarily censored your account and removed your name from public boards to protect your identity from people online.
+Our systems have detected you used your real name in your display name or username on FossilFinder. We have temporarily censored your account and removed your name from public boards to protect your identity from people online.
 
 This is recommended to protect your identity. Only administrators will have access to your name in our secure servers - the public will only see "Explorer" until you update your display name.
 
