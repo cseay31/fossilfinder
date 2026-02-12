@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Medal, Award, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
+import { getCensoredName } from "../utils/getCensoredName";
 
 export default function Leaderboard({ isDarkMode }) {
   const [users, setUsers] = useState([]);
@@ -126,7 +127,7 @@ export default function Leaderboard({ isDarkMode }) {
                 
                 <div className="flex-1 min-w-0">
                   <p className={`font-semibold truncate ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
-                    {user.display_name || user.full_name || 'Explorer'}
+                    {getCensoredName(user)}
                     {isCurrentUser && (
                       <Badge variant="outline" className="ml-2 text-xs">You</Badge>
                     )}

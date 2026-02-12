@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Users, Search, Mail, Shield, UserCheck, Calendar, Ban, AlertTriangle, MessageSquare } from 'lucide-react';
+import { Users, Search, Mail, Shield, UserCheck, Calendar, Ban, AlertTriangle, MessageSquare, EyeOff, Eye } from 'lucide-react';
 import { format } from "date-fns";
 import { motion, AnimatePresence } from 'framer-motion';
 import ModerationModal from '../admin/ModerationModal';
@@ -54,6 +54,64 @@ export default function UserManagement() {
       loadUsers();
     } catch (error) {
       console.error("Failed to update user role:", error);
+    }
+  };
+
+  const censorUserName = async (user) => {
+    if (!confirm(`Censor ${user.full_name || user.email}'s name for privacy protection? This will hide their name from public boards and send them a notification email.`)) {
+      return;
+    }
+
+    try {
+      // Update user to be censored
+      await base44.entities.User.update(user.id, {
+        is_name_censored: true,
+        censor_reason: "Real name detected in display name or username - censored for privacy protection"
+      });
+
+      // Send email notification
+      await base44.integrations.Core.SendEmail({
+        to: user.email,
+        subject: "Action Required: Update Your Display Name - FossilFinder",
+        body: `Hello,
+
+You have used your real name in your display name or username on FossilFinder. For your privacy and safety, we have temporarily censored your account and removed your name from public boards.
+
+This is recommended to protect your identity online.
+
+Please log in to FossilFinder and update your display name to something that doesn't include your real name.
+
+Your account will remain censored until you take action.
+
+If you have any questions, please contact an administrator.
+
+Best regards,
+FossilFinder Team`
+      });
+
+      alert("User name censored and notification email sent successfully.");
+      loadUsers();
+    } catch (error) {
+      console.error("Failed to censor user name:", error);
+      alert("Failed to censor user name. Please try again.");
+    }
+  };
+
+  const uncensorUserName = async (user) => {
+    if (!confirm(`Remove censorship from ${user.email}?`)) {
+      return;
+    }
+
+    try {
+      await base44.entities.User.update(user.id, {
+        is_name_censored: false,
+        censor_reason: null
+      });
+      alert("User name censorship removed.");
+      loadUsers();
+    } catch (error) {
+      console.error("Failed to uncensor user name:", error);
+      alert("Failed to uncensor user name. Please try again.");
     }
   };
 
@@ -134,6 +192,12 @@ export default function UserManagement() {
                                 {user.warning_count} Warning{user.warning_count > 1 ? 's' : ''}
                               </Badge>
                             )}
+                            {user.is_name_censored && (
+                              <Badge className="bg-orange-100 text-orange-800 border-orange-200">
+                                <EyeOff className="w-3 h-3 mr-1" />
+                                Name Censored
+                              </Badge>
+                            )}
                           </div>
                           <div className="flex items-center gap-2 text-sm text-slate-600">
                             <Mail className="w-4 h-4" />
@@ -146,6 +210,11 @@ export default function UserManagement() {
                           {user.is_banned && user.ban_reason && (
                             <div className="mt-2 text-sm text-red-700">
                               <strong>Ban Reason:</strong> {user.ban_reason}
+                            </div>
+                          )}
+                          {user.is_name_censored && user.censor_reason && (
+                            <div className="mt-2 text-sm text-orange-700">
+                              <strong>Censor Reason:</strong> {user.censor_reason}
                             </div>
                           )}
                         </div>
@@ -170,6 +239,25 @@ export default function UserManagement() {
                         >
                           <Shield className="w-4 h-4 mr-2" />
                           {user.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => user.is_name_censored ? uncensorUserName(user) : censorUserName(user)}
+                          className={user.is_name_censored ? "border-orange-300 text-orange-700 hover:bg-orange-50" : "border-slate-300"}
+                        >
+                          {user.is_name_censored ? (
+                            <>
+                              <Eye className="w-4 h-4 mr-2" />
+                              Uncensor
+                            </>
+                          ) : (
+                            <>
+                              <EyeOff className="w-4 h-4 mr-2" />
+                              Censor Name
+                            </>
+                          )}
                         </Button>
 
                         <Button
