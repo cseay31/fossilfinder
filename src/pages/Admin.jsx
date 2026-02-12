@@ -234,12 +234,10 @@ export default function AdminPage({ isDarkMode }) {
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950' : 'bg-gradient-to-br from-slate-50 to-slate-100'} p-4 md:p-6`}>
-      {/* Aurora Background - Dark Mode Only */}
+      {/* Subtle Background - Battery Optimized */}
       {isDarkMode && (
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
-          <div className="absolute top-20 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950" />
         </div>
       )}
 

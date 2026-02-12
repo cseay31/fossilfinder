@@ -361,15 +361,13 @@ export default function Layout({ children, currentPageName }) {
       {isInitialLoad && <InitialLoadingScreen isDarkMode={isDarkMode} />}
       {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
       <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
-        {/* Northern Lights Background for Dark Mode */}
+        {/* Subtle Background for Dark Mode - Battery Optimized */}
         {isDarkMode && (
           <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
-            <div className="absolute top-0 left-0 w-full h-full opacity-30">
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-              <div className="absolute top-20 right-1/4 w-80 h-80 bg-cyan-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
-              <div className="absolute top-10 left-1/2 w-72 h-72 bg-purple-500/15 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
-              <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-teal-400/10 rounded-full blur-[80px] animate-pulse" style={{ animationDuration: '7s', animationDelay: '3s' }} />
+            <div className="absolute top-0 left-0 w-full h-full opacity-20">
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px]" />
+              <div className="absolute top-20 right-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-[100px]" />
             </div>
           </div>
         )}
@@ -619,10 +617,10 @@ export default function Layout({ children, currentPageName }) {
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
               >
                 {React.cloneElement(children, { isDarkMode })}
               </motion.div>
