@@ -26,7 +26,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
 
             <h2>1. Acceptance of Terms</h2>
             <p>
-              By creating an account, accessing, or using FossilFinder ("the Service," "we," "our," or "us"), operated by Connor Seay, you ("User," "you," or "your") accept and agree to be legally bound by these Terms of Service ("Terms"), whether you are a registered user or a visitor. If you do not agree to these Terms in their entirety, you must immediately cease using the Service.
+              By creating an account, accessing, or using FossilFinder ("the Service," "we," "our," or "us"), operated by FossilFinder, LLC, you ("User," "you," or "your") accept and agree to be legally bound by these Terms of Service ("Terms"), whether you are a registered user or a visitor. If you do not agree to these Terms in their entirety, you must immediately cease using the Service.
             </p>
             <p>
               Your continued use of the Service following the posting of changes to these Terms will mean you accept those changes. We reserve the right to modify these Terms at any time, and will provide notice of material changes via email or in-app notification.
@@ -53,15 +53,27 @@ export default function TermsOfServicePage({ isDarkMode }) {
             
             <h3>3.1 Age Requirements</h3>
             <p>
-              You must be at least 13 years of age to create an account and use the Service. This requirement is mandated by the Children's Online Privacy Protection Act (COPPA). Users under 13 years of age are strictly prohibited from using the Service.
+              <strong>MINIMUM AGE REQUIREMENT:</strong> You must be at least 13 years of age to create an account and use the Service. This requirement is mandated by the Children's Online Privacy Protection Act (COPPA). 
             </p>
             <p>
-              Users who are 13 years of age or older but under 18 years of age should have parental or guardian supervision while using the Service, particularly when sharing location information or interacting with other users.
+              <strong>STRICT PROHIBITION:</strong> Users under 13 years of age are strictly prohibited from accessing or using the Service in any capacity. We do not knowingly collect personal information from children under 13. If we discover that a user is under 13, the account will be immediately terminated and all personal information will be deleted.
+            </p>
+            <p>
+              <strong>PARENTAL RESPONSIBILITY:</strong> Users who are 13 years of age or older but under 18 years of age should have parental or guardian supervision while using the Service, particularly when sharing location information or interacting with other users.
+            </p>
+            <p>
+              <strong>PARENTAL REPORTING:</strong> If you are a parent or guardian and believe your child under 13 has accessed the Service, please contact us immediately through the Contact Admin feature so we can delete their account and information.
             </p>
 
             <h3>3.2 Age Verification</h3>
             <p>
-              We may require age verification to ensure COPPA compliance. By providing your date of birth during verification, you consent to us determining whether you are over 13 years of age. Your date of birth is immediately deleted after verification; we only store whether you are over or under 13.
+              We may require age verification to ensure COPPA compliance. By providing your date of birth during verification, you represent and warrant that you are at least 13 years of age. 
+            </p>
+            <p>
+              <strong>DATA RETENTION:</strong> Your complete date of birth is immediately deleted after verification. We only retain: (1) whether you meet the minimum age requirement, and (2) a timestamp of when verification occurred, for compliance audit purposes. This limited retention is necessary to demonstrate COPPA compliance if questioned by regulators.
+            </p>
+            <p>
+              <strong>FALSE INFORMATION:</strong> Providing false age information is a violation of these Terms and may result in immediate account termination.
             </p>
 
             <h3>3.3 Account Registration</h3>
@@ -143,7 +155,12 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Is spam, advertising, or commercial solicitation</li>
               <li>Impersonates any person or entity</li>
               <li>Depicts illegal fossil or artifact collection activities</li>
+              <li><strong>Reveals precise GPS coordinates for significant fossil discoveries on public lands, protected areas, or archaeological sites</strong> (to prevent looting and comply with federal protection laws)</li>
+              <li><strong>Facilitates or encourages unauthorized fossil collection on federal lands, national parks, monuments, or protected sites</strong></li>
             </ul>
+            <p>
+              <strong>GPS COORDINATE RESTRICTIONS:</strong> While general location sharing (e.g., "Morrison Formation, Colorado") is permitted, posting exact GPS coordinates or detailed access directions for significant paleontological sites on public or protected lands is prohibited to prevent site degradation and comply with the Paleontological Resources Preservation Act and Archaeological Resources Protection Act.
+            </p>
 
             <h2>5. Prohibited Conduct</h2>
             <p>
@@ -317,14 +334,22 @@ export default function TermsOfServicePage({ isDarkMode }) {
 
             <h3>10.1 Expert Matching Service</h3>
             <p>
-              The Expert Matching feature uses AI to search publicly available information for relevant experts. We:
+              <strong>CRITICAL WARNING:</strong> The Expert Matching feature uses AI to search publicly available web information for relevant experts. This is an automated search tool only.
+            </p>
+            <p>
+              <strong>NO VERIFICATION PERFORMED:</strong> We:
             </p>
             <ul>
-              <li>Do NOT verify credentials, qualifications, or affiliations</li>
+              <li>Do NOT verify credentials, qualifications, licenses, or affiliations</li>
+              <li>Do NOT conduct background checks or safety screenings</li>
               <li>Do NOT endorse or guarantee any expert's advice or opinions</li>
               <li>Are NOT responsible for communications with experts</li>
-              <li>Do NOT guarantee expert availability or response</li>
+              <li>Do NOT guarantee expert availability, response, or legitimacy</li>
+              <li>Do NOT verify the expert is who they claim to be</li>
             </ul>
+            <p>
+              <strong>USER BEWARE:</strong> Exercise extreme caution when contacting any expert. Independently verify credentials through official channels (university websites, professional organizations, state licensing boards) before sharing personal information, location data, or meeting in person. Never meet experts alone or share precise location information of valuable discoveries without proper verification.
+            </p>
 
             <h3>10.2 Expert Liability</h3>
             <p>
@@ -381,7 +406,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               The Service, including its code, design, features, functionality, text, graphics, logos, and software, is owned by FossilFinder and protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property laws.
             </p>
             <p>
-              "FossilFinder" and associated logos are trademarks of Connor Seay. You may not use these marks without prior written permission.
+              "FossilFinder" and associated logos are trademarks of FossilFinder, LLC. You may not use these marks without prior written permission.
             </p>
 
             <h3>13.2 Limited License to Use</h3>
@@ -398,16 +423,25 @@ export default function TermsOfServicePage({ isDarkMode }) {
 
             <h3>13.3 DMCA Compliance</h3>
             <p>
-              We respect intellectual property rights. If you believe content on the Service infringes your copyright, please contact us through the Contact Admin feature with:
+              We respect intellectual property rights and comply with the Digital Millennium Copyright Act (DMCA). If you believe content on the Service infringes your copyright, please send a written notice to our Designated Copyright Agent with:
             </p>
             <ul>
-              <li>Identification of the copyrighted work</li>
-              <li>Identification of the infringing material and its location</li>
-              <li>Your contact information</li>
-              <li>A statement of good faith belief that use is unauthorized</li>
-              <li>A statement of accuracy and authority to act</li>
+              <li>Identification of the copyrighted work claimed to be infringed</li>
+              <li>Identification of the infringing material and its location on the Service</li>
+              <li>Your contact information (address, telephone, email)</li>
+              <li>A statement that you have a good faith belief that use is unauthorized</li>
+              <li>A statement of accuracy made under penalty of perjury that you are authorized to act</li>
               <li>Your physical or electronic signature</li>
             </ul>
+            <p>
+              <strong>Designated Copyright Agent:</strong><br />
+              FossilFinder, LLC<br />
+              DMCA Compliance Department<br />
+              Contact via the in-app "Contact Admin" feature or email address provided therein
+            </p>
+            <p>
+              Please note: Our DMCA agent registration is on file with the U.S. Copyright Office as required by 17 U.S.C. § 512(c).
+            </p>
 
             <h2>14. Disclaimers and Limitations of Liability</h2>
 
@@ -479,7 +513,13 @@ export default function TermsOfServicePage({ isDarkMode }) {
 
             <h2>17. Governing Law and Jurisdiction</h2>
             <p>
-              These Terms shall be governed by and construed in accordance with the laws of the United States and the State where the operator is domiciled, without regard to conflict of law principles. Any legal action or proceeding arising under these Terms will be brought exclusively in the federal or state courts located in the applicable jurisdiction.
+              These Terms shall be governed by and construed in accordance with the laws of the United States and the State of Delaware, without regard to its conflict of law principles. 
+            </p>
+            <p>
+              <strong>EXCLUSIVE JURISDICTION:</strong> Any legal action or proceeding arising under these Terms will be brought exclusively in the federal or state courts located in New Castle County, Delaware. You consent to the personal jurisdiction of such courts and waive any objection to venue in such courts.
+            </p>
+            <p>
+              <strong>EXCEPTION:</strong> Either party may seek injunctive relief in any court of competent jurisdiction to protect intellectual property rights.
             </p>
 
             <h2>18. Changes to Service and Terms</h2>

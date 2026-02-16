@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
 
             <h2>1. Introduction and Scope</h2>
             <p>
-              This Privacy Policy describes the privacy practices of FossilFinder ("we," "our," "us," or "Service"), operated by Connor Seay. This policy applies to information collected through our web application, including all features, tools, and services offered.
+              This Privacy Policy describes the privacy practices of FossilFinder ("we," "our," "us," or "Service"), operated by FossilFinder, LLC. This policy applies to information collected through our web application, including all features, tools, and services offered.
             </p>
             <p>
               By using FossilFinder, you agree to the collection and use of information in accordance with this Privacy Policy. If you do not agree with this policy, please do not use the Service.
@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
             <h3>2.1 Personal Information</h3>
             <ul>
               <li><strong>Account Information:</strong> Email address, full name, display name, profile picture</li>
-              <li><strong>Age Verification:</strong> Birthday (for COPPA compliance - immediately deleted after verification, only storing over/under 13 status)</li>
+              <li><strong>Age Verification:</strong> Date of birth is collected during age verification and immediately deleted after processing. We retain only: (1) a boolean flag indicating you are 13 or older, and (2) timestamp of verification for COPPA compliance audit purposes</li>
               <li><strong>User Preferences:</strong> Notification settings, followed topics, theme preferences</li>
             </ul>
 
@@ -212,16 +212,34 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
             </p>
 
             <h2>7. Children's Privacy (COPPA Compliance)</h2>
+            
+            <h3>7.1 Strict Age Requirement</h3>
             <p>
-              FossilFinder complies with the Children's Online Privacy Protection Act (COPPA):
+              <strong>NO USERS UNDER 13:</strong> FossilFinder does not permit children under 13 years of age to use the Service. This is a strict prohibition in compliance with the Children's Online Privacy Protection Act (COPPA).
+            </p>
+            
+            <h3>7.2 Age Verification Process</h3>
+            <ul>
+              <li>Users must verify they are at least 13 years old during account creation</li>
+              <li>Date of birth is collected solely for age verification and is immediately deleted after processing</li>
+              <li>We retain only a boolean flag (over/under 13) and verification timestamp for compliance purposes</li>
+              <li>If we discover a user is under 13, the account is immediately terminated and all data is deleted</li>
+            </ul>
+            
+            <h3>7.3 Parental Notification</h3>
+            <p>
+              If you are a parent or guardian and believe your child under 13 has created an account or provided personal information to us, please contact us immediately through the Contact Admin feature. We will promptly:
             </p>
             <ul>
-              <li>We collect minimal information from users under 13</li>
-              <li>Birthday information is immediately deleted after age verification</li>
-              <li>Users under 13 cannot access social features (Forum, FosFeed)</li>
-              <li>Parental consent may be required for certain features in the future</li>
-              <li>We do not knowingly collect or share personal information from children under 13 without proper safeguards</li>
+              <li>Terminate the account</li>
+              <li>Delete all personal information associated with the account</li>
+              <li>Prevent future access from the associated email address</li>
             </ul>
+            
+            <h3>7.4 No Intentional Collection</h3>
+            <p>
+              We do not knowingly collect, use, or disclose personal information from children under 13. Our Service is designed and intended for users 13 years of age and older.
+            </p>
 
             <h2>8. Data Security</h2>
             <p>
