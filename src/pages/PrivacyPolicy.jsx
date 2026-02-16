@@ -17,12 +17,29 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
             </p>
           </CardHeader>
           <CardContent className={`prose ${isDarkMode ? 'prose-invert' : 'prose-slate'} max-w-none`}>
-            <h2>1. Introduction</h2>
+            <div className={`mb-6 p-4 rounded-lg ${isDarkMode ? 'bg-blue-900/20 border border-blue-500/30' : 'bg-blue-50 border border-blue-200'}`}>
+              <p className={`text-sm ${isDarkMode ? 'text-blue-200' : 'text-blue-900'} font-semibold mb-2`}>Your Privacy Matters</p>
+              <p className={`text-sm ${isDarkMode ? 'text-blue-300' : 'text-blue-800'}`}>
+                This Privacy Policy explains how FossilFinder collects, uses, stores, and protects your personal information. We are committed to transparency and your privacy rights.
+              </p>
+            </div>
+
+            <h2>1. Introduction and Scope</h2>
             <p>
-              FossilFinder ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Service.
+              This Privacy Policy describes the privacy practices of FossilFinder ("we," "our," "us," or "Service"), operated by Connor Seay. This policy applies to information collected through our web application, including all features, tools, and services offered.
+            </p>
+            <p>
+              By using FossilFinder, you agree to the collection and use of information in accordance with this Privacy Policy. If you do not agree with this policy, please do not use the Service.
+            </p>
+            <p>
+              <strong>Effective Date:</strong> February 16, 2026<br />
+              <strong>Last Updated:</strong> February 16, 2026
             </p>
 
             <h2>2. Information We Collect</h2>
+            <p>
+              We collect information that you provide directly to us, information collected automatically, and information from third-party sources.
+            </p>
             
             <h3>2.1 Personal Information</h3>
             <ul>
