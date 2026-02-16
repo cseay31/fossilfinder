@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
 
             <h2>1. Introduction and Scope</h2>
             <p>
-              This Privacy Policy describes the privacy practices of FossilFinder ("we," "our," "us," or "Service"), operated by FossilFinder, LLC. This policy applies to information collected through our web application, including all features, tools, and services offered.
+              This Privacy Policy describes the privacy practices of FossilFinder ("we," "our," "us," or "Service"), operated by Connor Seay. This policy applies to information collected through our web application, including all features, tools, and services offered.
             </p>
             <p>
               By using FossilFinder, you agree to the collection and use of information in accordance with this Privacy Policy. If you do not agree with this policy, please do not use the Service.

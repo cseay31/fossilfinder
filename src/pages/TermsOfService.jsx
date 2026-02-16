@@ -26,7 +26,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
 
             <h2>1. Acceptance of Terms</h2>
             <p>
-              By creating an account, accessing, or using FossilFinder ("the Service," "we," "our," or "us"), operated by FossilFinder, LLC, you ("User," "you," or "your") accept and agree to be legally bound by these Terms of Service ("Terms"), whether you are a registered user or a visitor. If you do not agree to these Terms in their entirety, you must immediately cease using the Service.
+              By creating an account, accessing, or using FossilFinder ("the Service," "we," "our," or "us"), operated by Connor Seay, you ("User," "you," or "your") accept and agree to be legally bound by these Terms of Service ("Terms"), whether you are a registered user or a visitor. If you do not agree to these Terms in their entirety, you must immediately cease using the Service.
             </p>
             <p>
               Your continued use of the Service following the posting of changes to these Terms will mean you accept those changes. We reserve the right to modify these Terms at any time, and will provide notice of material changes via email or in-app notification.
@@ -406,7 +406,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               The Service, including its code, design, features, functionality, text, graphics, logos, and software, is owned by FossilFinder and protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property laws.
             </p>
             <p>
-              "FossilFinder" and associated logos are trademarks of FossilFinder, LLC. You may not use these marks without prior written permission.
+              "FossilFinder" and associated logos are trademarks of Connor Seay. You may not use these marks without prior written permission.
             </p>
 
             <h3>13.2 Limited License to Use</h3>
@@ -421,31 +421,9 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Use of data mining, robots, or similar data gathering tools</li>
             </ul>
 
-            <h3>13.3 DMCA Compliance</h3>
-            <p>
-              We respect intellectual property rights and comply with the Digital Millennium Copyright Act (DMCA). If you believe content on the Service infringes your copyright, please send a written notice to our Designated Copyright Agent with:
-            </p>
-            <ul>
-              <li>Identification of the copyrighted work claimed to be infringed</li>
-              <li>Identification of the infringing material and its location on the Service</li>
-              <li>Your contact information (address, telephone, email)</li>
-              <li>A statement that you have a good faith belief that use is unauthorized</li>
-              <li>A statement of accuracy made under penalty of perjury that you are authorized to act</li>
-              <li>Your physical or electronic signature</li>
-            </ul>
-            <p>
-              <strong>Designated Copyright Agent:</strong><br />
-              FossilFinder, LLC<br />
-              DMCA Compliance Department<br />
-              Contact via the in-app "Contact Admin" feature or email address provided therein
-            </p>
-            <p>
-              Please note: Our DMCA agent registration is on file with the U.S. Copyright Office as required by 17 U.S.C. § 512(c).
-            </p>
+            <h2>13. Disclaimers and Limitations of Liability</h2>
 
-            <h2>14. Disclaimers and Limitations of Liability</h2>
-
-            <h3>14.1 "AS IS" and "AS AVAILABLE"</h3>
+            <h3>13.1 "AS IS" and "AS AVAILABLE"</h3>
             <p>
               THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO:
             </p>
@@ -456,7 +434,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Warranties regarding results obtained from use of the Service</li>
             </ul>
 
-            <h3>14.2 Limitation of Liability</h3>
+            <h3>13.2 Limitation of Liability</h3>
             <p>
               TO THE MAXIMUM EXTENT PERMITTED BY LAW, FOSSILFINDER AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO:
             </p>
@@ -472,12 +450,12 @@ export default function TermsOfServicePage({ isDarkMode }) {
               OUR TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT YOU PAID US IN THE PAST SIX MONTHS, OR $100, WHICHEVER IS GREATER.
             </p>
 
-            <h3>14.3 Jurisdictional Limitations</h3>
+            <h3>13.3 Jurisdictional Limitations</h3>
             <p>
               Some jurisdictions do not allow limitations on implied warranties or limitation of liability for incidental or consequential damages. In such jurisdictions, our liability is limited to the greatest extent permitted by law.
             </p>
 
-            <h2>15. Indemnification</h2>
+            <h2>14. Indemnification</h2>
             <p>
               You agree to defend, indemnify, and hold harmless FossilFinder, its officers, directors, employees, agents, licensors, and suppliers from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to:
             </p>
@@ -490,14 +468,14 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Your violation of any laws or regulations</li>
             </ul>
 
-            <h2>16. Dispute Resolution and Arbitration</h2>
+            <h2>15. Dispute Resolution and Arbitration</h2>
 
-            <h3>16.1 Informal Resolution</h3>
+            <h3>15.1 Informal Resolution</h3>
             <p>
               Before filing any formal dispute, you agree to attempt to resolve the dispute informally by contacting us through the Contact Admin feature. We will attempt to resolve the dispute informally within 30 days.
             </p>
 
-            <h3>16.2 Binding Arbitration</h3>
+            <h3>15.2 Binding Arbitration</h3>
             <p>
               If informal resolution fails, you agree that any dispute arising from or relating to these Terms or the Service shall be resolved through binding arbitration under the rules of the American Arbitration Association, rather than in court, except that:
             </p>
@@ -506,12 +484,12 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>You or we may seek equitable relief in court for intellectual property infringement</li>
             </ul>
 
-            <h3>16.3 Class Action Waiver</h3>
+            <h3>15.3 Class Action Waiver</h3>
             <p>
               YOU AND FOSSILFINDER AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING.
             </p>
 
-            <h2>17. Governing Law and Jurisdiction</h2>
+            <h2>16. Governing Law and Jurisdiction</h2>
             <p>
               These Terms shall be governed by and construed in accordance with the laws of the United States and the State of Delaware, without regard to its conflict of law principles. 
             </p>
@@ -522,9 +500,9 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <strong>EXCEPTION:</strong> Either party may seek injunctive relief in any court of competent jurisdiction to protect intellectual property rights.
             </p>
 
-            <h2>18. Changes to Service and Terms</h2>
+            <h2>17. Changes to Service and Terms</h2>
 
-            <h3>18.1 Service Modifications</h3>
+            <h3>17.1 Service Modifications</h3>
             <p>
               We reserve the right to:
             </p>
@@ -538,7 +516,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               We are not liable to you or any third party for any modification, suspension, or discontinuance of the Service.
             </p>
 
-            <h3>18.2 Terms Modifications</h3>
+            <h3>17.2 Terms Modifications</h3>
             <p>
               We may revise these Terms from time to time. Material changes will be notified via:
             </p>
@@ -551,9 +529,9 @@ export default function TermsOfServicePage({ isDarkMode }) {
               Continued use of the Service after changes constitutes acceptance of the revised Terms. If you do not agree to the new Terms, you must stop using the Service and may request account deletion.
             </p>
 
-            <h2>19. Account Termination</h2>
+            <h2>18. Account Termination</h2>
 
-            <h3>19.1 Termination by You</h3>
+            <h3>18.1 Termination by You</h3>
             <p>
               You may terminate your account at any time by contacting us through the Contact Admin feature. Upon termination:
             </p>
@@ -564,7 +542,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Public contributions (forum posts) may be retained in anonymized form</li>
             </ul>
 
-            <h3>19.2 Termination by Us</h3>
+            <h3>18.2 Termination by Us</h3>
             <p>
               We may suspend or terminate your account immediately, without notice, for:
             </p>
@@ -576,7 +554,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Business or legal reasons</li>
             </ul>
 
-            <h3>19.3 Effect of Termination</h3>
+            <h3>18.3 Effect of Termination</h3>
             <p>
               Upon termination:
             </p>
@@ -586,39 +564,39 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Sections that by their nature should survive (liability limitations, indemnification, dispute resolution) remain in effect</li>
             </ul>
 
-            <h2>20. Miscellaneous Provisions</h2>
+            <h2>19. Miscellaneous Provisions</h2>
 
-            <h3>20.1 Entire Agreement</h3>
+            <h3>19.1 Entire Agreement</h3>
             <p>
               These Terms, together with our Privacy Policy, constitute the entire agreement between you and FossilFinder and supersede all prior agreements and understandings, whether written or oral.
             </p>
 
-            <h3>20.2 Severability</h3>
+            <h3>19.2 Severability</h3>
             <p>
               If any provision of these Terms is found to be unlawful, void, or unenforceable, that provision shall be deemed severable and shall not affect the validity and enforceability of the remaining provisions.
             </p>
 
-            <h3>20.3 Waiver</h3>
+            <h3>19.3 Waiver</h3>
             <p>
               No waiver of any term of these Terms shall be deemed a further or continuing waiver of such term or any other term, and our failure to assert any right or provision under these Terms shall not constitute a waiver of such right or provision.
             </p>
 
-            <h3>20.4 Assignment</h3>
+            <h3>19.4 Assignment</h3>
             <p>
               You may not assign or transfer these Terms or your account without our prior written consent. We may assign or transfer these Terms, in whole or in part, without restriction.
             </p>
 
-            <h3>20.5 Force Majeure</h3>
+            <h3>19.5 Force Majeure</h3>
             <p>
               We shall not be liable for any failure to perform our obligations where such failure results from causes beyond our reasonable control, including but not limited to natural disasters, war, terrorism, riots, embargoes, acts of civil or military authorities, fire, floods, accidents, network infrastructure failures, strikes, or shortages of transportation facilities, fuel, energy, labor, or materials.
             </p>
 
-            <h3>20.6 Headings</h3>
+            <h3>19.6 Headings</h3>
             <p>
               Section headings are for convenience only and shall not govern the meaning or interpretation of these Terms.
             </p>
 
-            <h2>21. Contact Information</h2>
+            <h2>20. Contact Information</h2>
             <p>
               For questions, concerns, or notices regarding these Terms of Service, please contact us through:
             </p>
@@ -630,7 +608,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               All legal notices must be in writing and will be deemed given when received.
             </p>
 
-            <h2>22. Acknowledgment</h2>
+            <h2>21. Acknowledgment</h2>
             <p>
               BY USING THE SERVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF SERVICE AND AGREE TO BE BOUND BY THEM.
             </p>
