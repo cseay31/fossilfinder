@@ -294,7 +294,7 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
-  const navigationItems = [
+  let navigationItems = [
     {
       title: "Analyze Photo",
       url: createPageUrl("Upload"),
@@ -324,6 +324,7 @@ export default function Layout({ children, currentPageName }) {
       title: "FosFeed",
       url: createPageUrl("FosFeed"),
       icon: TrendingUp,
+      restrictedUnder13: true,
     },
     {
       title: "Discovery Map",
@@ -334,6 +335,7 @@ export default function Layout({ children, currentPageName }) {
       title: "Forum",
       url: createPageUrl("Forum"),
       icon: MessageCircle,
+      restrictedUnder13: true,
     },
     {
       title: "Leaderboard",
@@ -346,6 +348,11 @@ export default function Layout({ children, currentPageName }) {
       icon: Target,
     },
   ];
+
+  // Filter out restricted items for users under 13
+  if (currentUser?.is_over_13 === false) {
+    navigationItems = navigationItems.filter(item => !item.restrictedUnder13);
+  }
 
   // Add admin navigation for admin users
   if (currentUser?.role === 'admin') {
