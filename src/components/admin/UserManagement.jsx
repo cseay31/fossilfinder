@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Users, Search, Mail, Shield, UserCheck, Calendar, Ban, AlertTriangle, MessageSquare, EyeOff, Eye } from 'lucide-react';
+import { Users, Search, Mail, Shield, UserCheck, Calendar, Ban, AlertTriangle, MessageSquare, EyeOff, Eye, Cake } from 'lucide-react';
 import { format } from "date-fns";
 import { motion, AnimatePresence } from 'framer-motion';
 import ModerationModal from '../admin/ModerationModal';
@@ -119,6 +119,43 @@ FossilFinder Team`
     }
   };
 
+  const sendBirthdayCheck = async (user) => {
+    if (!confirm(`Send birthday verification request to ${user.email}? They will be prompted to verify their age on next login.`)) {
+      return;
+    }
+
+    try {
+      await base44.entities.User.update(user.id, {
+        needs_birthday_check: true
+      });
+
+      await base44.integrations.Core.SendEmail({
+        to: user.email,
+        subject: "Action Required: Age Verification - FossilFinder",
+        body: `Hello,
+
+For safety and compliance purposes, we need to verify the age of all FossilFinder users.
+
+Please log in to FossilFinder and complete the age verification process. This is a quick one-time check that takes less than a minute.
+
+PRIVACY NOTICE: Your birthday will NOT be stored or shown to anyone. It's only used to verify you're over 13 years old, then immediately deleted from our servers.
+
+Please do not lie about your age - this will not affect the app in any way. We just need to verify your age for legal compliance (COPPA).
+
+Thank you for your cooperation!
+
+Best regards,
+FossilFinder Team`
+      });
+
+      alert("Birthday verification request sent successfully.");
+      loadUsers();
+    } catch (error) {
+      console.error("Failed to send birthday check:", error);
+      alert("Failed to send birthday check. Please try again.");
+    }
+  };
+
   return (
     <>
       <div className="space-y-6">
@@ -202,6 +239,18 @@ FossilFinder Team`
                                 Name Censored
                               </Badge>
                             )}
+                            {user.birthday_verified && (
+                              <Badge className="bg-green-100 text-green-800 border-green-200">
+                                <Cake className="w-3 h-3 mr-1" />
+                                Age Verified {user.is_over_13 !== null && (user.is_over_13 ? '(13+)' : '(<13)')}
+                              </Badge>
+                            )}
+                            {!user.birthday_verified && (
+                              <Badge className="bg-gray-100 text-gray-800 border-gray-200">
+                                <Cake className="w-3 h-3 mr-1" />
+                                Not Verified
+                              </Badge>
+                            )}
                           </div>
                           {user.display_name && (
                             <div className="text-sm text-slate-600 mt-1">
@@ -268,6 +317,18 @@ FossilFinder Team`
                             </>
                           )}
                         </Button>
+
+                        {!user.birthday_verified && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => sendBirthdayCheck(user)}
+                            className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                          >
+                            <Cake className="w-4 h-4 mr-2" />
+                            Send Birthday Check
+                          </Button>
+                        )}
 
                         <Button
                           size="sm"

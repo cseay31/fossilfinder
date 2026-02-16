@@ -37,6 +37,7 @@ import AnnouncementBanner from "./components/layout/AnnouncementBanner";
 import ModerationNotification from "./components/layout/ModerationNotification";
 import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
 import ModerationWatcher from "./components/layout/ModerationWatcher";
+import BirthdayVerification from "./components/compliance/BirthdayVerification";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -133,6 +134,7 @@ export default function Layout({ children, currentPageName }) {
   const [showDisplayNamePrompt, setShowDisplayNamePrompt] = useState(false);
   const [isFooterOpen, setIsFooterOpen] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
+  const [showBirthdayCheck, setShowBirthdayCheck] = useState(false);
 
   useEffect(() => {
     loadDiscoveries();
@@ -184,10 +186,13 @@ export default function Layout({ children, currentPageName }) {
     try {
       const user = await base44.auth.me();
       setCurrentUser(user);
-      
+
       // Check if user needs to set display name
       if (!user.display_name || user.display_name.trim() === '') {
         setShowDisplayNamePrompt(true);
+      } else if (user.needs_birthday_check && !user.birthday_verified) {
+        // Check if user needs birthday verification (set by admin)
+        setShowBirthdayCheck(true);
       }
     } catch (error) {
       console.error("Failed to load current user:", error);
@@ -199,6 +204,12 @@ export default function Layout({ children, currentPageName }) {
   const handleDisplayNameComplete = async () => {
     setShowDisplayNamePrompt(false);
     // Reload user to get updated display name
+    await loadCurrentUser();
+  };
+
+  const handleBirthdayComplete = async (isOver13) => {
+    setShowBirthdayCheck(false);
+    // Reload user to get updated birthday verification
     await loadCurrentUser();
   };
 
@@ -357,6 +368,12 @@ export default function Layout({ children, currentPageName }) {
         isOpen={showDisplayNamePrompt} 
         onComplete={handleDisplayNameComplete}
         isDarkMode={isDarkMode}
+      />
+      <BirthdayVerification
+        isOpen={showBirthdayCheck}
+        onComplete={handleBirthdayComplete}
+        isDarkMode={isDarkMode}
+        isNewUser={false}
       />
       {isInitialLoad && <InitialLoadingScreen isDarkMode={isDarkMode} />}
       {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
