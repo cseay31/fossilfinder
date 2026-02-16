@@ -38,6 +38,7 @@ export default function ForumPage({ isDarkMode }) {
   const [isCreating, setIsCreating] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [appSettings, setAppSettings] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   useEffect(() => {
     loadPosts();
@@ -101,6 +102,8 @@ export default function ForumPage({ isDarkMode }) {
       setCurrentUser(user);
     } catch (error) {
       console.error("Failed to load user:", error);
+    } finally {
+      setIsLoadingUser(false);
     }
   };
 
@@ -436,6 +439,19 @@ Any questions? Ask below! 👇`,
     };
     return colors[category] || colors.general;
   };
+
+  // Check if user is under 13 (COPPA compliance)
+  if (!isLoadingUser && currentUser?.is_over_13 === false) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'} p-4 md:p-8 flex items-center justify-center`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <MessageSquare className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Age Restricted</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>The forum is only available to users 13 and older for safety purposes.</p>
+        </Card>
+      </div>
+    );
+  }
 
   // Check if forum is disabled
   if (appSettings && !appSettings.forum_enabled) {

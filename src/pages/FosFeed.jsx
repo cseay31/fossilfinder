@@ -23,6 +23,7 @@ export default function FosFeedPage({ isDarkMode }) {
   const [appSettings, setAppSettings] = useState(null);
   const containerRef = useRef(null);
   const [reportingDiscovery, setReportingDiscovery] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   useEffect(() => {
     loadData();
@@ -88,6 +89,7 @@ export default function FosFeedPage({ isDarkMode }) {
       console.error("Failed to load FosFeed data:", error);
     } finally {
       setIsLoading(false);
+      setIsLoadingUser(false);
     }
   };
 
@@ -204,6 +206,19 @@ Provide your verdict as "appropriate", "inappropriate", or "uncertain" along wit
       // Then by likes
       return (b.likes || 0) - (a.likes || 0);
     });
+
+  // Check if user is under 13 (COPPA compliance)
+  if (!isLoadingUser && currentUser?.is_over_13 === false) {
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} flex items-center justify-center p-4`}>
+        <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80'} backdrop-blur-xl shadow-lg max-w-md text-center p-8`}>
+          <TrendingUp className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'} mb-2`}>Age Restricted</h2>
+          <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>FosFeed is only available to users 13 and older for safety purposes.</p>
+        </Card>
+      </div>
+    );
+  }
 
   // Check if FosFeed is disabled
   if (!isLoading && appSettings && !appSettings.fosfeed_enabled) {
