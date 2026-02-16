@@ -568,6 +568,29 @@ export default function Layout({ children, currentPageName }) {
                 {/* Copyright */}
                 <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Connor Seay 2025, All rights reserved</p>
 
+                {/* Legal Links */}
+                <div className="space-y-2">
+                  <SidebarMenuButton 
+                    asChild 
+                    className={`${isDarkMode ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-slate-50 text-slate-600'} transition-all duration-200 rounded-xl text-xs`}
+                  >
+                    <Link to={createPageUrl("TermsOfService")} className="flex items-center gap-2 px-3 py-2">
+                      <FileText className="w-4 h-4" />
+                      <span>Terms of Service</span>
+                    </Link>
+                  </SidebarMenuButton>
+
+                  <SidebarMenuButton 
+                    asChild 
+                    className={`${isDarkMode ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-slate-50 text-slate-600'} transition-all duration-200 rounded-xl text-xs`}
+                  >
+                    <Link to={createPageUrl("PrivacyPolicy")} className="flex items-center gap-2 px-3 py-2">
+                      <Shield className="w-4 h-4" />
+                      <span>Privacy Policy</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </div>
+
                 {/* Contact Admin Button */}
                 <SidebarMenuButton 
                   asChild 
