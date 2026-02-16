@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label";
 import { User, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import BirthdayVerification from '@/components/compliance/BirthdayVerification';
+import TOSAgreement from '@/components/compliance/TOSAgreement';
 
 export default function DisplayNamePrompt({ isOpen, onComplete, isDarkMode }) {
   const [displayName, setDisplayName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
   const [showBirthdayCheck, setShowBirthdayCheck] = useState(false);
+  const [showTOSAgreement, setShowTOSAgreement] = useState(false);
   const [savedDisplayName, setSavedDisplayName] = useState('');
 
   const handleSubmit = async (e) => {
@@ -50,12 +52,17 @@ export default function DisplayNamePrompt({ isOpen, onComplete, isDarkMode }) {
 
   const handleBirthdayComplete = (isOver13) => {
     setShowBirthdayCheck(false);
+    setShowTOSAgreement(true);
+  };
+
+  const handleTOSComplete = () => {
+    setShowTOSAgreement(false);
     onComplete();
   };
 
   return (
     <>
-      <Dialog open={isOpen && !showBirthdayCheck} onOpenChange={() => {}}>
+      <Dialog open={isOpen && !showBirthdayCheck && !showTOSAgreement} onOpenChange={() => {}}>
         <DialogContent 
           className={`${isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-stone-200'} max-w-md`}
           onInteractOutside={(e) => e.preventDefault()}
@@ -130,6 +137,13 @@ export default function DisplayNamePrompt({ isOpen, onComplete, isDarkMode }) {
       <BirthdayVerification
         isOpen={showBirthdayCheck}
         onComplete={handleBirthdayComplete}
+        isDarkMode={isDarkMode}
+        isNewUser={true}
+      />
+
+      <TOSAgreement
+        isOpen={showTOSAgreement}
+        onComplete={handleTOSComplete}
         isDarkMode={isDarkMode}
         isNewUser={true}
       />

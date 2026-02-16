@@ -38,6 +38,7 @@ import ModerationNotification from "./components/layout/ModerationNotification";
 import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
 import ModerationWatcher from "./components/layout/ModerationWatcher";
 import BirthdayVerification from "./components/compliance/BirthdayVerification";
+import TOSAgreement from "./components/compliance/TOSAgreement";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -135,6 +136,7 @@ export default function Layout({ children, currentPageName }) {
   const [isFooterOpen, setIsFooterOpen] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
   const [showBirthdayCheck, setShowBirthdayCheck] = useState(false);
+  const [showTOSAgreement, setShowTOSAgreement] = useState(false);
 
   useEffect(() => {
     loadDiscoveries();
@@ -193,6 +195,9 @@ export default function Layout({ children, currentPageName }) {
       } else if (user.needs_birthday_check && !user.birthday_verified) {
         // Check if user needs birthday verification (set by admin)
         setShowBirthdayCheck(true);
+      } else if (!user.tos_accepted) {
+        // Check if user needs to accept TOS
+        setShowTOSAgreement(true);
       }
     } catch (error) {
       console.error("Failed to load current user:", error);
@@ -210,6 +215,12 @@ export default function Layout({ children, currentPageName }) {
   const handleBirthdayComplete = async (isOver13) => {
     setShowBirthdayCheck(false);
     // Reload user to get updated birthday verification
+    await loadCurrentUser();
+  };
+
+  const handleTOSComplete = async () => {
+    setShowTOSAgreement(false);
+    // Reload user to get updated TOS acceptance
     await loadCurrentUser();
   };
 
@@ -379,6 +390,12 @@ export default function Layout({ children, currentPageName }) {
       <BirthdayVerification
         isOpen={showBirthdayCheck}
         onComplete={handleBirthdayComplete}
+        isDarkMode={isDarkMode}
+        isNewUser={false}
+      />
+      <TOSAgreement
+        isOpen={showTOSAgreement}
+        onComplete={handleTOSComplete}
         isDarkMode={isDarkMode}
         isNewUser={false}
       />

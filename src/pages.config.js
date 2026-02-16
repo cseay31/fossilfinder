@@ -66,6 +66,8 @@ import Profile from './pages/Profile';
 import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
 import WikiArticle from './pages/WikiArticle';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +91,8 @@ export const PAGES = {
     "Upload": Upload,
     "Wiki": Wiki,
     "WikiArticle": WikiArticle,
+    "TermsOfService": TermsOfService,
+    "PrivacyPolicy": PrivacyPolicy,
 }
 
 export const pagesConfig = {
