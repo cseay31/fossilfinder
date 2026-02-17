@@ -590,7 +590,14 @@ export default function AdminPage({ isDarkMode }) {
           <TabsContent value="users"><UserManagement /></TabsContent>
           <TabsContent value="moderation"><ModerationPanel /></TabsContent>
           <TabsContent value="messages"><MessageManagement /></TabsContent>
-          <TabsContent value="announcements"><AdminMessaging /></TabsContent>
+          <TabsContent value="announcements">
+            <div className="space-y-8">
+              <AdminMessaging />
+              <div className={`rounded-xl border p-6 ${isDarkMode ? 'bg-slate-800/30 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}>
+                <PopupMessageManager isDarkMode={isDarkMode} />
+              </div>
+            </div>
+          </TabsContent>
           <TabsContent value="settings"><SiteSettings /></TabsContent>
           <TabsContent value="analytics"><AnalyticsDashboard discoveries={discoveries} /></TabsContent>
           <TabsContent value="live-activity"><LiveUserActivity isDarkMode={isDarkMode} /></TabsContent>
