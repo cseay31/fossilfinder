@@ -427,6 +427,7 @@ export default function Layout({ children, currentPageName }) {
         isDarkMode={isDarkMode}
         isNewUser={false}
       />
+      <AppLoadPopup isDarkMode={isDarkMode} />
       {isInitialLoad && <InitialLoadingScreen isDarkMode={isDarkMode} />}
       {isLoading && <LoadingScreen isDarkMode={isDarkMode} />}
       <div className={`min-h-screen flex w-full ${isDarkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-amber-50 to-stone-100'}`}>
