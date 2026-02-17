@@ -78,7 +78,7 @@ export default function AppLoadPopup({ isDarkMode }) {
         // silently fail
       }
     };
-    load();
+    loadPopup();
   }, []);
 
   if (!popup) return null;
