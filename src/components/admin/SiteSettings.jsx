@@ -68,7 +68,8 @@ export default function SiteSettings() {
           maintenance_message: '',
           max_uploads_per_day: 10,
           require_location: true,
-          donation_button_enabled: true
+          donation_button_enabled: true,
+          confetti_enabled: true
         };
         
         const created = await base44.entities.AppSettings.create(defaults);
