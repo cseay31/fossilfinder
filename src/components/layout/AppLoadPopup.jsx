@@ -47,9 +47,19 @@ export default function AppLoadPopup({ isDarkMode }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fireConfetti();
-
     const load = async () => {
+      try {
+        const settings = await base44.entities.AppSettings.list();
+        if (settings.length === 0 || settings[0].confetti_enabled !== false) {
+          fireConfetti();
+        }
+      } catch (e) {
+        fireConfetti(); // default to on if settings fail
+      }
+    };
+    load();
+
+    const loadPopup = async () => {
       try {
         const messages = await base44.entities.PopupMessage.filter({ is_active: true });
         if (messages.length === 0) return;
