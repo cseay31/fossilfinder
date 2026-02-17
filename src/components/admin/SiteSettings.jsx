@@ -398,6 +398,20 @@ export default function SiteSettings() {
         </CardContent>
       </Card>
 
+      {/* Fun Effects */}
+      <Card className="bg-slate-900/50 border-slate-700/50">
+        <CardHeader>
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <Sparkles className="w-6 h-6 text-pink-400" />
+            Fun Effects
+          </CardTitle>
+          <CardDescription className="text-slate-400">Visual effects on app load</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <SettingToggle icon={Sparkles} iconColor="text-pink-400" title="Session Confetti" description="Show a confetti burst when users first open the app each session" settingKey="confetti_enabled" />
+        </CardContent>
+      </Card>
+
       {/* Action Buttons */}
       <Card className="bg-slate-900/50 border-slate-700/50">
         <CardContent className="pt-6 space-y-3">
