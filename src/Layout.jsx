@@ -40,6 +40,7 @@ import ModerationWatcher from "./components/layout/ModerationWatcher";
 import BirthdayVerification from "./components/compliance/BirthdayVerification";
 import TOSAgreement from "./components/compliance/TOSAgreement";
 import PendingConsentBanner from "./components/compliance/PendingConsentBanner";
+import ParentalConsentPrompt from "./components/compliance/ParentalConsentPrompt";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -138,6 +139,7 @@ export default function Layout({ children, currentPageName }) {
   const [appSettings, setAppSettings] = useState(null);
   const [showBirthdayCheck, setShowBirthdayCheck] = useState(false);
   const [showTOSAgreement, setShowTOSAgreement] = useState(false);
+  const [showParentalConsent, setShowParentalConsent] = useState(false);
 
   useEffect(() => {
     loadDiscoveries();
@@ -218,8 +220,24 @@ export default function Layout({ children, currentPageName }) {
 
   const handleBirthdayComplete = async (isOver13) => {
     setShowBirthdayCheck(false);
-    // Reload user to get updated birthday verification
-    await loadCurrentUser();
+    if (!isOver13) {
+      // User is under 13, need parental consent
+      setShowParentalConsent(true);
+    } else {
+      // User is 13+, check if they need TOS
+      await loadCurrentUser();
+    }
+  };
+
+  const handleParentalConsentComplete = async () => {
+    setShowParentalConsent(false);
+    // After parent email sent, proceed to TOS if needed
+    const user = await base44.auth.me();
+    if (!user.tos_accepted) {
+      setShowTOSAgreement(true);
+    } else {
+      await loadCurrentUser();
+    }
   };
 
   const handleTOSComplete = async () => {
@@ -396,6 +414,11 @@ export default function Layout({ children, currentPageName }) {
         onComplete={handleBirthdayComplete}
         isDarkMode={isDarkMode}
         isNewUser={false}
+      />
+      <ParentalConsentPrompt
+        isOpen={showParentalConsent}
+        onComplete={handleParentalConsentComplete}
+        isDarkMode={isDarkMode}
       />
       <TOSAgreement
         isOpen={showTOSAgreement}
