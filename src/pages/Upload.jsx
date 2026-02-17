@@ -30,6 +30,7 @@ export default function UploadPage({ isDarkMode }) {
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
+  const [isUploadDisabled, setIsUploadDisabled] = useState(false);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
 
   useEffect(() => {

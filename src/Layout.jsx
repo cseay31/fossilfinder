@@ -39,6 +39,7 @@ import AdminMessageBanner from "./components/dashboard/AdminMessageBanner";
 import ModerationWatcher from "./components/layout/ModerationWatcher";
 import BirthdayVerification from "./components/compliance/BirthdayVerification";
 import TOSAgreement from "./components/compliance/TOSAgreement";
+import PendingConsentBanner from "./components/compliance/PendingConsentBanner";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -198,6 +199,9 @@ export default function Layout({ children, currentPageName }) {
       } else if (!user.tos_accepted) {
         // Check if user needs to accept TOS
         setShowTOSAgreement(true);
+      } else if (user.age_category === 'under_13' && !user.parental_consent_verified) {
+        // Under-13 user without parental consent - show restricted access banner
+        // They can browse but not upload
       }
     } catch (error) {
       console.error("Failed to load current user:", error);
@@ -654,6 +658,11 @@ export default function Layout({ children, currentPageName }) {
           <AnnouncementBanner />
           <ModerationNotification />
           <AdminMessageBanner />
+          {currentUser?.age_category === 'under_13' && !currentUser?.parental_consent_verified && (
+            <div className="px-6 pt-4">
+              <PendingConsentBanner isDarkMode={isDarkMode} />
+            </div>
+          )}
 
           {/* Floating Mobile Menu Button */}
           <div className="md:hidden fixed bottom-24 right-6 z-50">

@@ -15,6 +15,7 @@ export default function DisplayNamePrompt({ isOpen, onComplete, isDarkMode }) {
   const [error, setError] = useState('');
   const [showBirthdayCheck, setShowBirthdayCheck] = useState(false);
   const [showTOSAgreement, setShowTOSAgreement] = useState(false);
+  const [showParentalConsent, setShowParentalConsent] = useState(false);
   const [savedDisplayName, setSavedDisplayName] = useState('');
 
   const handleSubmit = async (e) => {
@@ -141,6 +142,11 @@ export default function DisplayNamePrompt({ isOpen, onComplete, isDarkMode }) {
         isNewUser={true}
       />
 
+      <ParentalConsentPrompt
+        isOpen={showParentalConsent}
+        onComplete={handleParentalConsentComplete}
+        isDarkMode={isDarkMode}
+      />
       <TOSAgreement
         isOpen={showTOSAgreement}
         onComplete={handleTOSComplete}
