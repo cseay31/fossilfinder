@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Users, Search, Mail, Shield, UserCheck, Calendar, Ban, AlertTriangle, MessageSquare, EyeOff, Eye, Cake } from 'lucide-react';
+import { Users, Search, Mail, Shield, UserCheck, Calendar, Ban, AlertTriangle, MessageSquare, EyeOff, Eye, Cake, Clock, CheckCircle2, XCircle, Send } from 'lucide-react';
 import { format } from "date-fns";
 import { motion, AnimatePresence } from 'framer-motion';
 import ModerationModal from '../admin/ModerationModal';
