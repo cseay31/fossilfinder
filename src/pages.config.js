@@ -68,6 +68,7 @@ import TermsOfService from './pages/TermsOfService';
 import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
 import WikiArticle from './pages/WikiArticle';
+import ParentalConsent from './pages/ParentalConsent';
 import __Layout from './Layout.jsx';
 
 
@@ -93,6 +94,7 @@ export const PAGES = {
     "Upload": Upload,
     "Wiki": Wiki,
     "WikiArticle": WikiArticle,
+    "ParentalConsent": ParentalConsent,
 }
 
 export const pagesConfig = {
