@@ -24,6 +24,7 @@ import SlideshowReview from "../components/admin/SlideshowReview";
 import LiveUserActivity from "../components/admin/LiveUserActivity";
 import ContentReports from "../components/admin/ContentReports";
 import AuditLogViewer from "../components/admin/AuditLogViewer";
+import PopupMessageManager from "../components/admin/PopupMessageManager";
 import ShellLoader from "../components/admin/ShellLoader";
 import { calculatePoints, checkBadgeEligibility } from "../components/gamification/BadgeSystem";
 
