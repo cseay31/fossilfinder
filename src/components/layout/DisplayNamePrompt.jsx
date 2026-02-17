@@ -8,6 +8,7 @@ import { User, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import BirthdayVerification from '@/components/compliance/BirthdayVerification';
 import TOSAgreement from '@/components/compliance/TOSAgreement';
+import ParentalConsentPrompt from '@/components/compliance/ParentalConsentPrompt';
 
 export default function DisplayNamePrompt({ isOpen, onComplete, isDarkMode }) {
   const [displayName, setDisplayName] = useState('');
@@ -53,6 +54,17 @@ export default function DisplayNamePrompt({ isOpen, onComplete, isDarkMode }) {
 
   const handleBirthdayComplete = (isOver13) => {
     setShowBirthdayCheck(false);
+    if (!isOver13) {
+      // User is under 13, need parental consent
+      setShowParentalConsent(true);
+    } else {
+      // User is 13+, proceed to TOS
+      setShowTOSAgreement(true);
+    }
+  };
+
+  const handleParentalConsentComplete = () => {
+    setShowParentalConsent(false);
     setShowTOSAgreement(true);
   };
 
