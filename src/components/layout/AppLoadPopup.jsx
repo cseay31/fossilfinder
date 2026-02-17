@@ -32,11 +32,23 @@ const typeConfig = {
   },
 };
 
+function fireConfetti() {
+  const key = "confetti-session-fired";
+  if (sessionStorage.getItem(key)) return;
+  sessionStorage.setItem(key, "1");
+
+  confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+  setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { x: 0.1, y: 0.5 } }), 300);
+  setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { x: 0.9, y: 0.5 } }), 500);
+}
+
 export default function AppLoadPopup({ isDarkMode }) {
   const [popup, setPopup] = useState(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    fireConfetti();
+
     const load = async () => {
       try {
         const messages = await base44.entities.PopupMessage.filter({ is_active: true });
