@@ -16,7 +16,7 @@ import {
   Megaphone, Settings as SettingsIcon, Ban, Save, AlertTriangle, UserCheck, 
   MessageCircle, Heart, Share2, Shield, Map, BookOpen, ScanLine, Trophy,
   MessageSquare, Upload, MapPin, Bot, Wrench, ToggleLeft, Loader2, RefreshCw, Trash2,
-  TrendingUp, Coffee
+  TrendingUp, Coffee, Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useConfirmDialog } from '../ui/confirmation-dialog';
