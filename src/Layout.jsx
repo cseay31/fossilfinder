@@ -52,7 +52,7 @@ export default function Layout({ children, currentPageName }) {
       // Use system preference if no saved preference
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
-    return true;
+    return false;
   });
 
   React.useEffect(() => {

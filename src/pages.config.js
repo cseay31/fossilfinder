@@ -62,13 +62,13 @@ import Home from './pages/Home';
 import Leaderboard from './pages/Leaderboard';
 import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
+import ParentalConsent from './pages/ParentalConsent';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
 import TermsOfService from './pages/TermsOfService';
 import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
 import WikiArticle from './pages/WikiArticle';
-import ParentalConsent from './pages/ParentalConsent';
 import __Layout from './Layout.jsx';
 
 
@@ -88,13 +88,13 @@ export const PAGES = {
     "Leaderboard": Leaderboard,
     "MultiScan": MultiScan,
     "MultiScanDiscoveries": MultiScanDiscoveries,
+    "ParentalConsent": ParentalConsent,
     "PrivacyPolicy": PrivacyPolicy,
     "Profile": Profile,
     "TermsOfService": TermsOfService,
     "Upload": Upload,
     "Wiki": Wiki,
     "WikiArticle": WikiArticle,
-    "ParentalConsent": ParentalConsent,
 }
 
 export const pagesConfig = {
