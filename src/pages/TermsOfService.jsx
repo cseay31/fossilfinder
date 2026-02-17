@@ -53,27 +53,53 @@ export default function TermsOfServicePage({ isDarkMode }) {
             
             <h3>3.1 Age Requirements</h3>
             <p>
-              <strong>MINIMUM AGE REQUIREMENT:</strong> You must be at least 13 years of age to create an account and use the Service. This requirement is mandated by the Children's Online Privacy Protection Act (COPPA). 
+              <strong>GENERAL USE:</strong> Users 13 years of age or older may create and use an account with full access to the Service.
             </p>
             <p>
-              <strong>STRICT PROHIBITION:</strong> Users under 13 years of age are strictly prohibited from accessing or using the Service in any capacity. We do not knowingly collect personal information from children under 13. If we discover that a user is under 13, the account will be immediately terminated and all personal information will be deleted.
+              <strong>CHILDREN UNDER 13 (COPPA COMPLIANCE):</strong> Children under 13 years of age may use the Service ONLY with verified parental or legal guardian consent, in compliance with the Children's Online Privacy Protection Act (COPPA). 
             </p>
             <p>
-              <strong>PARENTAL RESPONSIBILITY:</strong> Users who are 13 years of age or older but under 18 years of age should have parental or guardian supervision while using the Service, particularly when sharing location information or interacting with other users.
+              <strong>PARENTAL CONSENT REQUIREMENT:</strong> If you are under 13 years old:
             </p>
+            <ul>
+              <li>You must provide a parent or legal guardian's email address during registration</li>
+              <li>Your parent/guardian will receive a verification email and must explicitly consent to your use of the Service</li>
+              <li>Your account will remain in a restricted "pending parental consent" state until consent is verified</li>
+              <li>Without verified parental consent, you cannot upload photos, post content, or access social features</li>
+              <li>Your parent/guardian may revoke consent at any time, which will result in account termination</li>
+            </ul>
             <p>
-              <strong>PARENTAL REPORTING:</strong> If you are a parent or guardian and believe your child under 13 has accessed the Service, please contact us immediately through the Contact Admin feature so we can delete their account and information.
+              <strong>TEEN USERS (13-17):</strong> Users who are 13 years of age or older but under 18 years of age should have parental or guardian supervision while using the Service, particularly when sharing location information or interacting with other users.
             </p>
 
-            <h3>3.2 Age Verification</h3>
+            <h3>3.2 Age Verification and Parental Consent</h3>
             <p>
-              We may require age verification to ensure COPPA compliance. By providing your date of birth during verification, you represent and warrant that you are at least 13 years of age. 
+              <strong>AGE VERIFICATION PROCESS:</strong> All users must verify their age during account creation. By providing your date of birth, you represent that the information is accurate and truthful.
             </p>
             <p>
-              <strong>DATA RETENTION:</strong> Your complete date of birth is immediately deleted after verification. We only retain: (1) whether you meet the minimum age requirement, and (2) a timestamp of when verification occurred, for compliance audit purposes. This limited retention is necessary to demonstrate COPPA compliance if questioned by regulators.
+              <strong>DATA RETENTION:</strong> Your complete date of birth is immediately deleted after age verification. We only retain: (1) your age category (under 13, 13-17, or 18+), and (2) a timestamp of verification, for COPPA compliance audit purposes.
             </p>
             <p>
-              <strong>FALSE INFORMATION:</strong> Providing false age information is a violation of these Terms and may result in immediate account termination.
+              <strong>PARENTAL CONSENT FOR UNDER-13 USERS:</strong> If you are under 13 years old, the following additional process applies:
+            </p>
+            <ul>
+              <li>You must provide a valid parent or legal guardian email address</li>
+              <li>We will send a verification email to your parent/guardian explaining what information we collect and how it is used</li>
+              <li>Your parent/guardian must click a unique verification link and explicitly consent to your use of the Service</li>
+              <li>Until consent is verified, your account is restricted from uploading content, posting publicly, or accessing social features</li>
+              <li>We store the parent/guardian email address (hashed for security) and consent timestamp for compliance purposes</li>
+            </ul>
+            <p>
+              <strong>PARENTAL RIGHTS:</strong> Parents/guardians may at any time:
+            </p>
+            <ul>
+              <li>Review what information has been collected from their child</li>
+              <li>Request deletion of their child's information</li>
+              <li>Refuse further collection of information</li>
+              <li>Revoke consent (which will terminate the account)</li>
+            </ul>
+            <p>
+              <strong>FALSE INFORMATION:</strong> Providing false age information or a fake parent/guardian email is a serious violation of these Terms and federal law (COPPA). Such violations may result in immediate account termination and reporting to appropriate authorities.
             </p>
 
             <h3>3.3 Account Registration</h3>

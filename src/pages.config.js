@@ -62,12 +62,12 @@ import Home from './pages/Home';
 import Leaderboard from './pages/Leaderboard';
 import MultiScan from './pages/MultiScan';
 import MultiScanDiscoveries from './pages/MultiScanDiscoveries';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
+import TermsOfService from './pages/TermsOfService';
 import Upload from './pages/Upload';
 import Wiki from './pages/Wiki';
 import WikiArticle from './pages/WikiArticle';
-import TermsOfService from './pages/TermsOfService';
-import PrivacyPolicy from './pages/PrivacyPolicy';
 import __Layout from './Layout.jsx';
 
 
@@ -87,12 +87,12 @@ export const PAGES = {
     "Leaderboard": Leaderboard,
     "MultiScan": MultiScan,
     "MultiScanDiscoveries": MultiScanDiscoveries,
+    "PrivacyPolicy": PrivacyPolicy,
     "Profile": Profile,
+    "TermsOfService": TermsOfService,
     "Upload": Upload,
     "Wiki": Wiki,
     "WikiArticle": WikiArticle,
-    "TermsOfService": TermsOfService,
-    "PrivacyPolicy": PrivacyPolicy,
 }
 
 export const pagesConfig = {

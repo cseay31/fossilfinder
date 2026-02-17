@@ -213,32 +213,149 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
 
             <h2>7. Children's Privacy (COPPA Compliance)</h2>
             
-            <h3>7.1 Strict Age Requirement</h3>
+            <h3>7.1 Overview of COPPA Compliance</h3>
             <p>
-              <strong>NO USERS UNDER 13:</strong> FossilFinder does not permit children under 13 years of age to use the Service. This is a strict prohibition in compliance with the Children's Online Privacy Protection Act (COPPA).
+              FossilFinder complies with the Children's Online Privacy Protection Act (COPPA), which regulates the collection of personal information from children under 13 years of age. We take children's privacy extremely seriously and have implemented comprehensive protections.
             </p>
             
-            <h3>7.2 Age Verification Process</h3>
-            <ul>
-              <li>Users must verify they are at least 13 years old during account creation</li>
-              <li>Date of birth is collected solely for age verification and is immediately deleted after processing</li>
-              <li>We retain only a boolean flag (over/under 13) and verification timestamp for compliance purposes</li>
-              <li>If we discover a user is under 13, the account is immediately terminated and all data is deleted</li>
-            </ul>
-            
-            <h3>7.3 Parental Notification</h3>
+            <h3>7.2 Verified Parental Consent</h3>
             <p>
-              If you are a parent or guardian and believe your child under 13 has created an account or provided personal information to us, please contact us immediately through the Contact Admin feature. We will promptly:
+              <strong>REQUIREMENT:</strong> Children under 13 may only use FossilFinder with verified parental or legal guardian consent. We use an email-based verification system to obtain consent.
+            </p>
+            <p>
+              <strong>CONSENT PROCESS:</strong>
             </p>
             <ul>
-              <li>Terminate the account</li>
-              <li>Delete all personal information associated with the account</li>
-              <li>Prevent future access from the associated email address</li>
+              <li>During registration, users under 13 must provide a parent/guardian email address</li>
+              <li>We send a detailed consent notice to the parent/guardian explaining:
+                <ul>
+                  <li>What personal information we collect from children</li>
+                  <li>How we use that information</li>
+                  <li>Our disclosure practices</li>
+                  <li>Parental rights to review and delete information</li>
+                </ul>
+              </li>
+              <li>The parent/guardian must click a unique verification link and explicitly consent</li>
+              <li>The child's account remains in a restricted state until consent is verified</li>
+              <li>We store a hashed copy of the parent/guardian email and consent timestamp for compliance records</li>
             </ul>
             
-            <h3>7.4 No Intentional Collection</h3>
+            <h3>7.3 Information Collected from Children Under 13</h3>
             <p>
-              We do not knowingly collect, use, or disclose personal information from children under 13. Our Service is designed and intended for users 13 years of age and older.
+              With verified parental consent, we collect only the following information from children under 13:
+            </p>
+            <ul>
+              <li><strong>Account Information:</strong> Child's email address (for login), display name</li>
+              <li><strong>Age Verification Data:</strong> Age category (under 13) and verification timestamp (date of birth is immediately deleted)</li>
+              <li><strong>Parent/Guardian Contact:</strong> Parent/guardian email (hashed), consent timestamp</li>
+              <li><strong>Discovery Content:</strong> Photos uploaded for analysis, discovery descriptions</li>
+              <li><strong>Location Data:</strong> GPS coordinates (only if parent consents and only when uploading discoveries)</li>
+              <li><strong>Usage Data:</strong> Pages visited, features used (for service improvement only)</li>
+            </ul>
+            <p>
+              <strong>RESTRICTED COLLECTION:</strong> We do NOT collect from children under 13:
+            </p>
+            <ul>
+              <li>Social Security numbers or government IDs</li>
+              <li>Phone numbers</li>
+              <li>Physical addresses beyond general location for discoveries</li>
+              <li>Photos or videos of the child themselves (only of fossils/artifacts)</li>
+              <li>Geolocation data except during uploads (and only with parent permission)</li>
+            </ul>
+            
+            <h3>7.4 How We Use Children's Information</h3>
+            <p>
+              Information collected from children under 13 is used ONLY for:
+            </p>
+            <ul>
+              <li>Providing the core fossil/artifact identification service</li>
+              <li>Storing their personal discovery history</li>
+              <li>Improving AI analysis accuracy (in aggregate, de-identified form)</li>
+              <li>Communicating service updates (via parent email only)</li>
+              <li>Complying with legal obligations</li>
+            </ul>
+            <p>
+              <strong>PROHIBITED USES:</strong> We do NOT use children's information for:
+            </p>
+            <ul>
+              <li>Advertising or marketing</li>
+              <li>Behavioral profiling</li>
+              <li>Selling or renting to third parties</li>
+              <li>Training AI models that could identify the child</li>
+            </ul>
+            
+            <h3>7.5 Restricted Features for Children Under 13</h3>
+            <p>
+              To protect children's privacy and safety, the following features are RESTRICTED for users under 13:
+            </p>
+            <ul>
+              <li><strong>Social Features:</strong> FosFeed, Forum, and public comments are disabled</li>
+              <li><strong>Public Discoveries:</strong> All discoveries are set to "private" by default; sharing requires additional parent consent</li>
+              <li><strong>Expert Matching:</strong> Disabled to prevent direct contact with strangers</li>
+              <li><strong>Leaderboards:</strong> Display name is anonymized (e.g., "User123") if shown</li>
+              <li><strong>Direct Messaging:</strong> Not available (future feature)</li>
+              <li><strong>Profile Pictures:</strong> Restricted to avatar icons only, no photo uploads of people</li>
+            </ul>
+            <p>
+              <strong>PENDING CONSENT STATUS:</strong> Until parental consent is verified, accounts for users under 13 are further restricted:
+            </p>
+            <ul>
+              <li>Cannot upload photos</li>
+              <li>Cannot post any content</li>
+              <li>Read-only access to public educational content only</li>
+            </ul>
+            
+            <h3>7.6 Parental Rights and Controls</h3>
+            <p>
+              Parents and legal guardians have the following rights regarding their child's information:
+            </p>
+            <ul>
+              <li><strong>Review:</strong> Request to review all personal information collected from your child</li>
+              <li><strong>Delete:</strong> Request deletion of your child's personal information</li>
+              <li><strong>Refuse Further Collection:</strong> Revoke consent and prevent further data collection (will terminate account)</li>
+              <li><strong>Opt-Out of Disclosures:</strong> Opt out of any information sharing (we don't share by default)</li>
+              <li><strong>Update Information:</strong> Correct inaccuracies in your child's information</li>
+            </ul>
+            <p>
+              <strong>HOW TO EXERCISE RIGHTS:</strong> Parents can exercise these rights by:
+            </p>
+            <ul>
+              <li>Using the "Contact Admin" feature in the app</li>
+              <li>Emailing from the verified parent/guardian email address used during consent</li>
+              <li>We will verify parent identity before taking action (may require additional verification)</li>
+            </ul>
+            
+            <h3>7.7 Data Retention for Children's Accounts</h3>
+            <p>
+              We retain children's personal information only as long as:
+            </p>
+            <ul>
+              <li>The account is active and parental consent remains valid</li>
+              <li>Necessary to provide the Service to the child</li>
+              <li>Required by law (e.g., compliance records)</li>
+            </ul>
+            <p>
+              When a child's account is deleted (by parent or upon turning 13):
+            </p>
+            <ul>
+              <li>Personal information is permanently deleted within 30 days</li>
+              <li>Discovery photos and data may be retained in de-identified, aggregated form for AI training</li>
+              <li>Parental consent records are retained for 3 years for compliance audit purposes</li>
+            </ul>
+            
+            <h3>7.8 No Third-Party Advertising or Analytics for Children</h3>
+            <p>
+              We do NOT use third-party advertising, analytics, or tracking services on accounts for children under 13. No cookies or tracking pixels are deployed for child users except those strictly necessary for security and Service functionality.
+            </p>
+            
+            <h3>7.9 Parental Notification of Changes</h3>
+            <p>
+              If we make material changes to how we collect, use, or share children's information, we will notify parents via email at the verified parent/guardian address and obtain renewed consent if required by law.
+            </p>
+            
+            <h3>7.10 Contact for COPPA Compliance Questions</h3>
+            <p>
+              If you have questions about our COPPA compliance practices or wish to exercise parental rights, please contact us through the "Contact Admin" feature or reply to the parental consent email.
             </p>
 
             <h2>8. Data Security</h2>
