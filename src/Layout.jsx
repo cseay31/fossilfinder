@@ -40,6 +40,7 @@ import ModerationWatcher from "./components/layout/ModerationWatcher";
 import BirthdayVerification from "./components/compliance/BirthdayVerification";
 import TOSAgreement from "./components/compliance/TOSAgreement";
 import PendingConsentBanner from "./components/compliance/PendingConsentBanner";
+import AppLoadPopup from "./components/layout/AppLoadPopup";
 import ParentalConsentPrompt from "./components/compliance/ParentalConsentPrompt";
 
 export default function Layout({ children, currentPageName }) {
