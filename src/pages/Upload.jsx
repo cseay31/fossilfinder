@@ -236,7 +236,7 @@ BE STRICT. Archaeological research depends on authenticity.`,
 
                   const discovery = await base44.entities.Discovery.create(discoveryData);
 
-      // Step 3: Analyze the fossil
+      // Step 3: Analyze the fossil with enhanced AI categorization
       const analysisPrompt = `
       You are an expert archaeologist and paleontologist. Analyze this photo of a potential fossil, artifact, or archaeological finding.
 
@@ -249,14 +249,18 @@ BE STRICT. Archaeological research depends on authenticity.`,
       2. Confidence level (0-100): How certain you are of this identification
       3. Time period: Geological era or archaeological period
       4. Description: Detailed scientific description of what you observe
-      5. Significance: Scientific importance of this finding
+      5. Significance: Scientific importance of this finding (low/medium/high/exceptional)
       6. Recommendations: What should be done next with this discovery
-      7. Worth Admin Review: Determine if this discovery is significant enough to warrant admin review (true/false)
-      - Consider: exceptional significance, rare finds, high scientific value, unclear/unusual findings that need expert validation
-      - Routine or common findings with clear identification = false
-      - Significant, rare, or scientifically important findings = true
+      7. Worth Admin Review: true if exceptional, rare, or scientifically important; false for routine findings
+      8. Category: One of: fossil, artifact, mineral, rock, plant_fossil, marine_fossil, vertebrate, invertebrate, trace_fossil, unknown
+      9. Tags: 3-7 descriptive tags (e.g. ["Jurassic", "marine", "cephalopod", "well-preserved"])
+      10. AI Summary: A single clear sentence summarizing the discovery for non-experts
+      11. Common Name: The popular/common name if known (e.g. "Ammonite", "Arrowhead")
+      12. Key Features: 3-5 specific visual features that identify this specimen
+      13. Related Species: 2-4 related species or similar artifact types the user might research
+      14. Research Suggestions: 2-3 suggested research topics or resource types as a JSON array of objects with "title" and "description" fields
 
-      Be thorough and scientific in your analysis. If you're not certain about the identification, explain why and suggest alternative possibilities.
+      Be thorough and scientific. If uncertain, explain why and suggest alternative possibilities.
       `;
 
       const aiResponse = await base44.integrations.Core.InvokeLLM({
@@ -271,7 +275,14 @@ BE STRICT. Archaeological research depends on authenticity.`,
             description: { type: "string" },
             significance_level: { type: "string", enum: ["low", "medium", "high", "exceptional"] },
             recommendations: { type: "string" },
-            needs_admin_review: { type: "boolean" }
+            needs_admin_review: { type: "boolean" },
+            category: { type: "string" },
+            tags: { type: "array", items: { type: "string" } },
+            ai_summary: { type: "string" },
+            common_name: { type: "string" },
+            key_features: { type: "array", items: { type: "string" } },
+            related_species: { type: "array", items: { type: "string" } },
+            research_suggestions: { type: "array", items: { type: "object", properties: { title: { type: "string" }, description: { type: "string" } } } }
           }
         }
       });
