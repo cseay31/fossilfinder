@@ -13,7 +13,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               Terms of Service
             </CardTitle>
             <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-              Last Updated: February 16, 2026
+              Last Updated: February 18, 2026
             </p>
           </CardHeader>
           <CardContent className={`prose ${isDarkMode ? 'prose-invert' : 'prose-slate'} max-w-none`}>
@@ -37,7 +37,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               FossilFinder is an AI-powered web application designed for amateur archaeologists, paleontology enthusiasts, and professionals to analyze, document, and share fossil and artifact discoveries. The Service includes, but is not limited to:
             </p>
             <ul>
-              <li><strong>AI Analysis Engine:</strong> Artificial intelligence-powered photo analysis providing fossil and artifact identification, geological period estimation, and significance assessment</li>
+              <li><strong>AI Analysis Engine:</strong> Artificial intelligence-powered photo analysis providing fossil and artifact identification, geological period estimation, and significance assessment, including automatic categorization, tagging, key feature extraction, and AI-generated summaries</li>
               <li><strong>Discovery Management:</strong> Digital cataloging system for organizing personal fossil and artifact collections with photos, locations, and metadata</li>
               <li><strong>Multi-Scan Technology:</strong> Advanced scanning tools to identify multiple points of interest within a single image</li>
               <li><strong>Social Platform (FosFeed):</strong> Social media-style feed for sharing and discovering public fossil finds from the community</li>
