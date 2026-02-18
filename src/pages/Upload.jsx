@@ -289,6 +289,7 @@ BE STRICT. Archaeological research depends on authenticity.`,
 
       const updatedDiscovery = await base44.entities.Discovery.update(discovery.id, {
         ...aiResponse,
+        research_suggestions: aiResponse.research_suggestions ? JSON.stringify(aiResponse.research_suggestions) : null,
         analysis_status: "completed",
         location: discovery.location,
         latitude: discovery.latitude,
