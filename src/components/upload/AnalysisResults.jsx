@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { CheckCircle, Calendar, MapPin, TrendingUp, Users, RotateCcw } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import AIInsightsPanel from "./AIInsightsPanel";
 
 // Helper function to escape HTML and prevent content injection
 function escapeHTML(str) {
