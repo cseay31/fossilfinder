@@ -23,7 +23,7 @@ function escapeHTML(str) {
   });
 }
 
-export default function AnalysisResults({ results, onStartNew }) {
+export default function AnalysisResults({ results, onStartNew, isDarkMode }) {
   const getConfidenceColor = (score) => {
     if (score >= 80) return "bg-green-100 text-green-800 border-green-200";
     if (score >= 60) return "bg-yellow-100 text-yellow-800 border-yellow-200";
