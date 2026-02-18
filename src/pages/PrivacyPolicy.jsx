@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
               Privacy Policy
             </CardTitle>
             <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-              Last Updated: February 16, 2026
+              Last Updated: February 18, 2026
             </p>
           </CardHeader>
           <CardContent className={`prose ${isDarkMode ? 'prose-invert' : 'prose-slate'} max-w-none`}>
@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
             </p>
             <p>
               <strong>Effective Date:</strong> February 16, 2026<br />
-              <strong>Last Updated:</strong> February 16, 2026
+              <strong>Last Updated:</strong> February 18, 2026
             </p>
 
             <h2>2. Information We Collect</h2>
