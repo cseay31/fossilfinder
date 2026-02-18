@@ -246,7 +246,19 @@ export default function TermsOfServicePage({ isDarkMode }) {
               <li>Professional appraisers (for commercial purposes)</li>
             </ul>
 
-            <h3>6.4 AI Model Updates</h3>
+            <h3>6.4 AI-Generated Insights, Tags, and Suggestions</h3>
+            <p>
+              The Service provides AI-generated tags, categories, key features, research suggestions, and related discovery recommendations. These are automated outputs and:
+            </p>
+            <ul>
+              <li>May be inaccurate, incomplete, or misleading</li>
+              <li>Are for educational and organizational purposes only</li>
+              <li>Should not be relied upon for scientific, legal, or commercial purposes</li>
+              <li>Research suggestions are general references, not endorsements of specific publications</li>
+              <li>Related discovery links are based on automated matching and may be incorrect</li>
+            </ul>
+
+            <h3>6.5 AI Model Updates</h3>
             <p>
               We continuously update and improve our AI models. Results for the same image may change over time as models improve. We are not liable for discrepancies between analyses conducted at different times.
             </p>
