@@ -591,6 +591,7 @@ BE STRICT. Archaeological research depends on authenticity.`,
             <AnalysisResults
               results={analysisResults}
               onStartNew={startNewAnalysis}
+              isDarkMode={isDarkMode}
             />
           )}
         </div>
