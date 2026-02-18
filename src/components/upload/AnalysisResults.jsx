@@ -163,6 +163,9 @@ export default function AnalysisResults({ results, onStartNew, isDarkMode }) {
           </div>
         </CardContent>
       </Card>
+
+      {/* AI Insights Panel */}
+      <AIInsightsPanel discovery={results} isDarkMode={isDarkMode} />
     </motion.div>
   );
 }
