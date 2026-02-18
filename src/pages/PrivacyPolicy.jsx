@@ -90,12 +90,18 @@ export default function PrivacyPolicyPage({ isDarkMode }) {
               <li>Connect users with expert archaeologists and paleontologists</li>
             </ul>
 
-            <h3>3.2 AI Improvement</h3>
+            <h3>3.2 AI Features and Enhancement</h3>
             <ul>
-              <li>Train and improve AI analysis models using discovery data</li>
+              <li>Provide AI-powered auto-categorization and tagging of discoveries</li>
+              <li>Generate AI summaries and insights for each discovery</li>
+              <li>Suggest related discoveries and research resources</li>
+              <li>Train and improve AI analysis models using discovery data (in aggregate, de-identified form)</li>
               <li>Enhance accuracy of fossil/artifact identification</li>
               <li>Develop new analysis features</li>
             </ul>
+            <p>
+              <strong>COPPA NOTE:</strong> For users under 13, discovery data used in AI features is processed in de-identified, aggregated form only. No individual child's data is used to train AI models in a way that could identify the child.
+            </p>
 
             <h3>3.3 Safety and Compliance</h3>
             <ul>
