@@ -581,10 +581,7 @@ BE STRICT. Archaeological research depends on authenticity.`,
           )}
 
           {currentStep === "analyzing" && (
-            <>
-              <ShellLoader isLoading={true} message="Analyzing your discovery..." />
-              <AnalysisProgress />
-            </>
+            <AnalysisProgress />
           )}
 
           {currentStep === "results" && analysisResults && (
