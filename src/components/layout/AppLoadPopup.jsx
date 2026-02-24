@@ -37,9 +37,13 @@ function fireConfetti() {
   if (sessionStorage.getItem(key)) return;
   sessionStorage.setItem(key, "1");
 
-  confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-  setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { x: 0.1, y: 0.5 } }), 300);
-  setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { x: 0.9, y: 0.5 } }), 500);
+  try {
+    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+    setTimeout(() => { try { confetti({ particleCount: 60, spread: 120, origin: { x: 0.1, y: 0.5 } }); } catch(e) {} }, 300);
+    setTimeout(() => { try { confetti({ particleCount: 60, spread: 120, origin: { x: 0.9, y: 0.5 } }); } catch(e) {} }, 500);
+  } catch (e) {
+    // confetti not supported in this environment
+  }
 }
 
 export default function AppLoadPopup({ isDarkMode }) {
