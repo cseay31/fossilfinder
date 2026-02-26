@@ -292,14 +292,10 @@ export default function DiscoveryMapPage({ isDarkMode }) {
                   />
                   <MapBounds discoveries={filteredDiscoveries} />
                   
-                  {filteredDiscoveries.map((discovery) => {
-                    // Round to ~1km precision for privacy (2 decimal places ≈ 1.1km)
-                    const approxLat = Math.round(discovery.latitude * 100) / 100;
-                    const approxLng = Math.round(discovery.longitude * 100) / 100;
-                    return (
+                  {filteredDiscoveries.map((discovery) => (
                     <Marker
                       key={discovery.id}
-                      position={[approxLat, approxLng]}
+                      position={[discovery.latitude, discovery.longitude]}
                       icon={createCustomIcon(discovery.significance_level)}
                     >
                       <Popup>
