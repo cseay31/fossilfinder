@@ -292,7 +292,8 @@ export default function DiscoveryMapPage({ isDarkMode }) {
                   />
                   <MapBounds discoveries={filteredDiscoveries} />
                   
-                  {filteredDiscoveries.map((discovery) => (
+                  {filteredDiscoveries.map((discovery) => {
+                    return (
                     <Marker
                       key={discovery.id}
                       position={[discovery.latitude, discovery.longitude]}
@@ -335,7 +336,8 @@ export default function DiscoveryMapPage({ isDarkMode }) {
                         </div>
                       </Popup>
                     </Marker>
-                  ))}
+                    );
+                  })}
                 </MapContainer>
               </div>
             )}
