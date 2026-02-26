@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Search, Brain, FileSearch } from 'lucide-react';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, Search, Brain, FileSearch, AlertTriangle } from 'lucide-react';
 
 export default function AnalysisProgress() {
   const steps = [
