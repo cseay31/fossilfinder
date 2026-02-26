@@ -4,7 +4,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Search, Brain, FileSearch, AlertTriangle } from 'lucide-react';
 
+// Detect Safari
+function useIsSafari() {
+  const [isSafari, setIsSafari] = useState(false);
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    setIsSafari(/^((?!chrome|android).)*safari/i.test(ua));
+  }, []);
+  return isSafari;
+}
+
 export default function AnalysisProgress() {
+  const isSafari = useIsSafari();
   const steps = [
     { icon: FileSearch, label: "Processing Image", active: true },
     { icon: Brain, label: "AI Analysis", active: true },
