@@ -42,6 +42,7 @@ import TOSAgreement from "./components/compliance/TOSAgreement";
 import PendingConsentBanner from "./components/compliance/PendingConsentBanner";
 import AppLoadPopup from "./components/layout/AppLoadPopup";
 import ParentalConsentPrompt from "./components/compliance/ParentalConsentPrompt";
+import SafariBrowserWarning from "./components/layout/SafariBrowserWarning";
 
 export default function Layout({ children, currentPageName }) {
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
