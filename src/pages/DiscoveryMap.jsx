@@ -303,12 +303,13 @@ export default function DiscoveryMapPage({ isDarkMode }) {
                           {discovery.photo_url && (
                             <img
                               src={discovery.photo_url}
-                              alt={discovery.classification}
+                              alt={discovery.classification || "Discovery"}
                               className="w-full h-32 object-cover rounded-lg mb-2"
+                              onError={(e) => { e.target.style.display = 'none'; }}
                             />
                           )}
                           <h3 className="font-semibold text-slate-800 mb-1">
-                            {discovery.classification || "Analyzing..."}
+                            {discovery.classification || "Unknown"}
                           </h3>
                           <div className="space-y-1 text-sm">
                             {discovery.time_period && (
@@ -334,8 +335,7 @@ export default function DiscoveryMapPage({ isDarkMode }) {
                         </div>
                       </Popup>
                     </Marker>
-                  );
-                  })}
+                  ))}
                 </MapContainer>
               </div>
             )}
