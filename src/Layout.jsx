@@ -681,6 +681,7 @@ export default function Layout({ children, currentPageName }) {
         </Sidebar>
 
         <main className="flex-1 flex flex-col relative z-10">
+          <SafariBrowserWarning />
           <AnnouncementBanner />
           <ModerationNotification />
           <AdminMessageBanner />
