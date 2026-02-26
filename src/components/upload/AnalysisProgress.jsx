@@ -28,6 +28,14 @@ export default function AnalysisProgress() {
       animate={{ opacity: 1 }}
       className="max-w-2xl mx-auto"
     >
+      {isSafari && (
+        <Alert className="mb-4 border-amber-300 bg-amber-50">
+          <AlertTriangle className="h-4 w-4 text-amber-600" />
+          <AlertDescription className="text-amber-800">
+            <strong>Safari Warning:</strong> GPS location capture may not work in Safari. For full functionality, use Chrome, Firefox, or Edge.
+          </AlertDescription>
+        </Alert>
+      )}
       <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
         <CardContent className="p-8">
           <div className="text-center mb-8">
