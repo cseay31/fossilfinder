@@ -109,7 +109,16 @@ export default function DiscoveryMapPage({ isDarkMode }) {
   const loadDiscoveries = async () => {
     try {
       const data = await base44.entities.Discovery.list("-created_date");
-      setDiscoveries(data);
+      // Strip precise coords - only keep public/completed ones, and sanitize coordinates
+      const sanitized = data
+        .filter(d => d.analysis_status === 'completed' && d.visibility !== 'private')
+        .map(d => ({
+          ...d,
+          // Fuzz to ~1km for privacy/security
+          latitude: d.latitude ? Math.round(d.latitude * 100) / 100 : null,
+          longitude: d.longitude ? Math.round(d.longitude * 100) / 100 : null,
+        }));
+      setDiscoveries(sanitized);
     } catch (error) {
       console.error("Failed to load discoveries:", error);
     } finally {
