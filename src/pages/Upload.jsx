@@ -389,10 +389,7 @@ export default function UploadPage({ isDarkMode }) {
                       <Camera className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
                       Capture or Upload Photo
                     </CardTitle>
-                    <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} mt-2`}>
-                      <Shield className="w-4 h-4 inline mr-1 text-green-500" />
-                      AI-generated images are automatically detected and blocked
-                    </p>
+
                   </CardHeader>
                 <CardContent>
                   <PhotoUpload onPhotoCapture={handlePhotoCapture} photo={photo} isProcessing={isUploadingPhoto} />
