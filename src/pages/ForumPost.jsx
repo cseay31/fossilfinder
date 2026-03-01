@@ -12,7 +12,8 @@ import ReactMarkdown from 'react-markdown';
 import BackButton from '../components/mobile/BackButton';
 
 export default function ForumPostPage({ isDarkMode }) {
-  const { id } = useParams();
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
   const [post, setPost] = useState(null);
   const [replies, setReplies] = useState([]);
   const [isLoadingReplies, setIsLoadingReplies] = useState(true);
