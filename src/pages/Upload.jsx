@@ -272,224 +272,173 @@ export default function UploadPage({ isDarkMode }) {
 
   if (!isLoadingSettings && isDiscoveryDisabled) {
     return (
-      <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
-            <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg p-8`}>
-              <CardHeader className="text-center pb-4">
-                      <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <AlertCircle className="w-8 h-8 text-white" />
-                      </div>
-                      <CardTitle className={`text-2xl ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
-                        Discovery Uploads Temporarily Unavailable
-                      </CardTitle>
-                      <p className={`${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
-                        New discovery uploads are currently disabled by an administrator.
-                      </p>
-                    </CardHeader>
-                    <CardContent className="pt-4">
-                      <p className={`${isDarkMode ? 'text-slate-500' : 'text-stone-500'} mb-6`}>
-                        Please check back later. You can still browse your existing discoveries and connect with experts.
-                      </p>
-                <div className="flex gap-3 justify-center">
-                  <Button asChild variant="outline">
-                    <Link to={createPageUrl("Dashboard")}>
-                      <Search className="w-4 h-4 mr-2" />
-                      View Discoveries
-                    </Link>
-                  </Button>
-                  <Button asChild>
-                    <Link to={createPageUrl("Experts")}>
-                      <Users className="w-4 h-4 mr-2" />
-                      Browse Experts
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
+      <div className={`min-h-screen flex items-center justify-center p-6 ${isDarkMode ? 'bg-transparent' : 'bg-[#F2F2F7]'}`}>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm text-center">
+          <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 ${isDarkMode ? 'bg-slate-800' : 'bg-white'} shadow-sm`}>
+            <AlertCircle className="w-8 h-8 text-orange-400" />
+          </div>
+          <h2 className={`text-2xl font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>Uploads Paused</h2>
+          <p className={`text-sm mb-8 leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-[#6C6C70]'}`}>
+            New discovery uploads are temporarily disabled. Check back soon.
+          </p>
+          <div className="flex gap-3 justify-center">
+            <Button asChild variant="outline" className="rounded-xl">
+              <Link to={createPageUrl("Dashboard")}><Search className="w-4 h-4 mr-2" />Discoveries</Link>
+            </Button>
+            <Button asChild className="rounded-xl bg-[#007AFF] hover:bg-[#0066CC] text-white">
+              <Link to={createPageUrl("Experts")}><Users className="w-4 h-4 mr-2" />Experts</Link>
+            </Button>
+          </div>
+        </motion.div>
       </div>
     );
   }
 
+  const locationStatus = latitude && longitude ? 'captured' : appSettings?.require_location !== false ? 'required' : 'optional';
+
   return (
-    <div className={`min-h-screen pb-safe-bottom ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <h1 className={`text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} mb-3`}>
-            Analyze Your Discovery
+    <div className={`min-h-screen pb-safe-bottom ${isDarkMode ? 'bg-transparent' : 'bg-[#F2F2F7]'} p-4 md:p-8`}>
+      <div className="max-w-2xl mx-auto">
+
+        {/* Header */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8 pt-2">
+          <h1 className={`text-[34px] font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>
+            Analyse Discovery
           </h1>
-          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-stone-600'} max-w-2xl mx-auto`}>
-            Upload a photo of your archaeological finding for AI-powered identification and analysis
+          <p className={`text-base mt-1 ${isDarkMode ? 'text-slate-400' : 'text-[#6C6C70]'}`}>
+            Photo → AI identification in seconds
           </p>
         </motion.div>
 
-        {error && (
-          <Alert className="mb-6 border-red-200 bg-red-50">
-            <Ban className="h-4 w-4 text-red-600" />
-            <AlertDescription className="text-red-800">{error}</AlertDescription>
-          </Alert>
-        )}
-
-        {!isLoadingSettings && appSettings?.announcement_active && appSettings?.announcement_text && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
-          >
-            <Alert className="border-amber-200 bg-amber-50">
-              <AlertCircle className="h-4 w-4 text-amber-600" />
-              <AlertDescription className="text-amber-800">
+        {/* Announcement */}
+        <AnimatePresence>
+          {!isLoadingSettings && appSettings?.announcement_active && appSettings?.announcement_text && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mb-4">
+              <div className={`rounded-2xl px-4 py-3 text-sm ${isDarkMode ? 'bg-amber-900/30 text-amber-300' : 'bg-amber-50 text-amber-800'}`}>
                 {appSettings.announcement_text}
-              </AlertDescription>
-            </Alert>
-          </motion.div>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {isUploadingPhoto && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
-          >
-            <Alert className="border-blue-200 bg-blue-50">
-              <Loader2 className="h-4 w-4 text-blue-600 animate-spin" />
-              <AlertDescription className="text-blue-800">
-                <div className="flex items-center gap-2">
-                  <Upload className="w-4 h-4" />
-                  <span>Uploading photo...</span>
-                </div>
-              </AlertDescription>
-            </Alert>
-          </motion.div>
-        )}
+        {/* Error */}
+        <AnimatePresence>
+          {error && (
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="mb-4">
+              <div className={`rounded-2xl px-4 py-3 flex items-start gap-3 ${isDarkMode ? 'bg-red-900/30 text-red-300' : 'bg-red-50 text-red-700'}`}>
+                <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                <span className="text-sm">{error}</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {currentStep === "upload" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6"
-            >
-              <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
-                  <CardHeader className="pb-4">
-                    <CardTitle className={`flex items-center gap-3 text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>
-                      <Camera className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
-                      Capture or Upload Photo
-                    </CardTitle>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
 
-                  </CardHeader>
-                <CardContent>
+              {/* Photo Section */}
+              <div className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'} shadow-sm`}>
+                <div className={`px-5 pt-5 pb-3 flex items-center gap-2 ${isDarkMode ? 'border-white/5' : 'border-stone-100'} border-b`}>
+                  <Camera className={`w-5 h-5 ${isDarkMode ? 'text-cyan-400' : 'text-[#007AFF]'}`} />
+                  <span className={`font-semibold text-[17px] ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>Photo</span>
+                  {isUploadingPhoto && <Loader2 className="w-4 h-4 animate-spin text-[#007AFF] ml-auto" />}
+                </div>
+                <div className="px-5 py-4">
                   <PhotoUpload onPhotoCapture={handlePhotoCapture} photo={photo} isProcessing={isUploadingPhoto} />
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
-              {photo && photoUrl && !isUploadingPhoto && (
-                <Card className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}>
-                      <CardHeader className="pb-4">
-                        <CardTitle className={`flex items-center gap-3 text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>
-                          <MapPin className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
-                          Additional Information
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div>
-                            <Label htmlFor="location" className={`${isDarkMode ? 'text-slate-300' : 'text-stone-700'} font-medium`}>
-                              Discovery Location {appSettings?.require_location !== false && <span className="text-red-500">*</span>}
-                            </Label>
-                            <div className="flex gap-2 mt-1">
-                              <Input
-                                id="location"
-                                value={location}
-                                onChange={(e) => setLocation(e.target.value)}
-                                placeholder="Where did you find this item? (GPS coordinates, site name, etc.)"
-                                className={`flex-1 ${isDarkMode ? 'bg-slate-800/50 border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-500 focus:ring-cyan-500' : 'border-stone-200 focus:border-amber-400 focus:ring-amber-400'}`}
-                              />
+              {/* Details Section — appears after photo is ready */}
+              <AnimatePresence>
+                {photo && photoUrl && !isUploadingPhoto && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-4"
+                  >
+                    {/* Location */}
+                    <div className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'} shadow-sm`}>
+                      <div className={`px-5 pt-5 pb-3 flex items-center gap-2 border-b ${isDarkMode ? 'border-white/5' : 'border-stone-100'}`}>
+                        <MapPin className={`w-5 h-5 ${isDarkMode ? 'text-cyan-400' : 'text-[#007AFF]'}`} />
+                        <span className={`font-semibold text-[17px] ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>Location</span>
+                        {appSettings?.require_location !== false && (
+                          <span className="ml-auto text-xs text-red-400 font-medium">Required</span>
+                        )}
+                      </div>
+                      <div className="px-5 py-4 space-y-3">
+                        <div className="flex gap-2">
+                          <Input
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            placeholder="Site name or GPS coordinates"
+                            className={`flex-1 rounded-xl h-11 ${isDarkMode ? 'bg-slate-800/50 border-white/10 text-white placeholder:text-slate-500' : 'border-stone-200 bg-[#F2F2F7]'}`}
+                          />
                           <Button
                             type="button"
                             variant="outline"
                             onClick={getCurrentLocation}
                             disabled={isGettingLocation}
-                            className={`${isDarkMode ? 'border-white/10 bg-slate-800/50 hover:bg-slate-700/50 text-white' : 'border-stone-200 hover:bg-stone-50'}`}
+                            className={`rounded-xl h-11 w-11 p-0 flex-shrink-0 ${isDarkMode ? 'border-white/10 bg-slate-800/50 text-white' : 'border-stone-200 bg-[#F2F2F7]'} ${locationStatus === 'captured' ? 'text-green-500 border-green-200' : ''}`}
                           >
-                            {isGettingLocation ? (
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                              <Navigation className="w-4 h-4" />
-                            )}
+                            {isGettingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : <Navigation className="w-4 h-4" />}
                           </Button>
                         </div>
-                        {latitude && longitude ? (
-                          <p className="text-xs text-green-600 mt-1">
-                            ✓ GPS coordinates captured: {latitude.toFixed(6)}, {longitude.toFixed(6)}
-                          </p>
-                        ) : appSettings?.require_location !== false ? (
-                          <p className="text-xs text-amber-600 mt-1">
-                            ⚠️ GPS location required - click the location button to capture coordinates
-                          </p>
-                        ) : (
-                          <p className="text-xs text-slate-500 mt-1">
-                            GPS location optional - click the location button to capture coordinates
-                          </p>
-                        )}
+                        <p className={`text-xs ${locationStatus === 'captured' ? 'text-green-500' : locationStatus === 'required' ? 'text-amber-500' : 'text-slate-400'}`}>
+                          {locationStatus === 'captured'
+                            ? `GPS captured — ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
+                            : locationStatus === 'required'
+                            ? 'Tap the navigation icon to capture GPS coordinates'
+                            : 'GPS optional — tap the navigation icon to capture'}
+                        </p>
                       </div>
-
-                    <div>
-                      <Label htmlFor="notes" className={`${isDarkMode ? 'text-slate-300' : 'text-stone-700'} font-medium`}>
-                        Additional Notes (Optional)
-                      </Label>
-                      <Textarea
-                        id="notes"
-                        value={additionalNotes}
-                        onChange={(e) => setAdditionalNotes(e.target.value)}
-                        placeholder="Any additional context, observations, or details about the discovery..."
-                        className={`mt-1 ${isDarkMode ? 'bg-slate-800/50 border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-500 focus:ring-cyan-500' : 'border-stone-200 focus:border-amber-400 focus:ring-amber-400'}`}
-                        rows={3}
-                      />
                     </div>
 
+                    {/* Notes */}
+                    <div className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'} shadow-sm`}>
+                      <div className={`px-5 pt-5 pb-3 border-b ${isDarkMode ? 'border-white/5' : 'border-stone-100'}`}>
+                        <span className={`font-semibold text-[17px] ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>Notes</span>
+                        <span className={`ml-2 text-sm ${isDarkMode ? 'text-slate-500' : 'text-[#AEAEB2]'}`}>Optional</span>
+                      </div>
+                      <div className="px-5 py-4">
+                        <Textarea
+                          value={additionalNotes}
+                          onChange={(e) => setAdditionalNotes(e.target.value)}
+                          placeholder="Observations, surrounding geology, associated finds…"
+                          className={`rounded-xl resize-none ${isDarkMode ? 'bg-slate-800/50 border-white/10 text-white placeholder:text-slate-500' : 'border-stone-200 bg-[#F2F2F7]'}`}
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+
+                    {/* CTA */}
                     <Button
                       onClick={analyzePhoto}
                       disabled={isAnalyzing || (appSettings?.require_location !== false && (!latitude || !longitude))}
-                      className={`w-full ${isDarkMode ? 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500' : 'bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800'} text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50`}
+                      className={`w-full h-14 rounded-2xl text-[17px] font-semibold transition-all duration-200 disabled:opacity-40 ${
+                        isDarkMode
+                          ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950'
+                          : 'bg-[#007AFF] hover:bg-[#0066CC] text-white'
+                      }`}
                     >
                       {isAnalyzing ? (
-                        <>
-                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                          Starting Analysis...
-                        </>
+                        <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Starting…</>
                       ) : (
-                        <>
-                          <CheckCircle className="w-5 h-5 mr-2" />
-                          Analyze Discovery
-                        </>
+                        <><CheckCircle className="w-5 h-5 mr-2" />Analyse Discovery</>
                       )}
                     </Button>
-                  </CardContent>
-                </Card>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
 
-          {currentStep === "analyzing" && (
-            <AnalysisProgress />
-          )}
+          {currentStep === "analyzing" && <AnalysisProgress />}
 
           {currentStep === "results" && analysisResults && (
-            <AnalysisResults
-              results={analysisResults}
-              onStartNew={startNewAnalysis}
-              isDarkMode={isDarkMode}
-            />
+            <AnalysisResults results={analysisResults} onStartNew={startNewAnalysis} isDarkMode={isDarkMode} />
           )}
         </div>
       </div>
