@@ -23,12 +23,12 @@ export default function ForumPostPage({ isDarkMode }) {
 
   useEffect(() => {
     loadData();
-  }, [id]);
+  }, [postId]);
 
   const loadData = async () => {
     try {
       const [postData, user] = await Promise.all([
-        base44.entities.ForumPost.filter({ id }),
+        base44.entities.ForumPost.filter({ id: postId }),
         base44.auth.me()
       ]);
       
