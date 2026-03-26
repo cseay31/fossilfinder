@@ -56,12 +56,7 @@ export default function InitialLoadingScreen({ isDarkMode }) {
           }`}
         />
         
-        {/* Logo */}
-        <img
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68cb44acc0c184cf9259a878/4425c7d73_dfgafsgfsdgsdfgsdfgsdfgsdcopy.png"
-          alt="FossilFinder Logo"
-          className="w-28 h-28 object-contain mt-4"
-        />
+
         
         <motion.p
           key={messageIndex}

@@ -50,15 +50,7 @@ export default function LoadingScreen({ isDarkMode }) {
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
         
-        {/* Logo */}
-        <motion.img
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68cb44acc0c184cf9259a878/4425c7d73_dfgafsgfsdgsdfgsdfgsdfgsdcopy.png"
-          alt="FossilFinder Logo"
-          className="w-28 h-28 object-contain mt-4"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-        />
+
         
         <motion.p
           animate={{ opacity: [0.5, 1, 0.5] }}
