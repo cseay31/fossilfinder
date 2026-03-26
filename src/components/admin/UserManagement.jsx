@@ -58,42 +58,17 @@ export default function UserManagement() {
   };
 
   const censorUserName = async (user) => {
-    if (!confirm(`Censor ${user.full_name || user.email}'s name for privacy protection? This will hide their name from public boards and send them a notification email.`)) {
+    if (!confirm(`Censor ${user.full_name || user.email}'s display name for privacy protection? Their name will be hidden from public boards.`)) {
       return;
     }
 
     try {
-      // Update user to be censored
       await base44.entities.User.update(user.id, {
         is_name_censored: true,
         censor_reason: "Real name detected in display name or username - censored for privacy protection"
       });
 
-      // Send email notification
-      await base44.integrations.Core.SendEmail({
-        to: user.email,
-        subject: "Action Required: Update Your Display Name - FossilFinder",
-        body: `Hello,
-
-IMPORTANT: This is NOT a moderation action.
-
-Our systems have detected you used your real name in your display name or username on FossilFinder. We have temporarily censored your account and removed your name from public boards to protect your identity from people online.
-
-This is recommended to protect your identity. Only administrators will have access to your name in our secure servers - the public will only see "Explorer" until you update your display name.
-
-Please log in to FossilFinder as soon as possible and update your display name to something that doesn't include your real name.
-
-Your account will remain censored until you take action.
-
-This is for your safety and privacy protection.
-
-If you have any questions, please contact an administrator.
-
-Best regards,
-FossilFinder Team`
-      });
-
-      alert("User name censored and notification email sent successfully.");
+      alert("User name censored successfully.");
       loadUsers();
     } catch (error) {
       console.error("Failed to censor user name:", error);
