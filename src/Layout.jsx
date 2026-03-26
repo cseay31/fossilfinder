@@ -596,7 +596,7 @@ export default function Layout({ children, currentPageName }) {
                 </div>
 
                 {/* Copyright */}
-                <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Connor Seay 2025, All rights reserved</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Copyright 2026, All rights reserved</p>
 
                 {/* Legal Links */}
                 <div className="space-y-2">

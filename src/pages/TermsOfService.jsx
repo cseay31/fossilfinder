@@ -444,7 +444,7 @@ export default function TermsOfServicePage({ isDarkMode }) {
               The Service, including its code, design, features, functionality, text, graphics, logos, and software, is owned by FossilFinder and protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property laws.
             </p>
             <p>
-              "FossilFinder" and associated logos are trademarks of Connor Seay. You may not use these marks without prior written permission.
+              "FossilFinder" and associated logos are trademarks of seayc31. You may not use these marks without prior written permission.
             </p>
 
             <h3>13.2 Limited License to Use</h3>
