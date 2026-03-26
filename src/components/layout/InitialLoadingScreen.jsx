@@ -9,7 +9,7 @@ export default function InitialLoadingScreen({ isDarkMode }) {
     "Loading discoveries",
     "Loading posts",
     "Loading locations",
-    "Built by seayc31 with help of the Ensworth FLL team"
+    "Built by seayc31"
   ];
 
   useEffect(() => {
