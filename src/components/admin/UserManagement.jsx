@@ -104,30 +104,11 @@ export default function UserManagement() {
         needs_birthday_check: true
       });
 
-      await base44.integrations.Core.SendEmail({
-        to: user.email,
-        subject: "Action Required: Age Verification - FossilFinder",
-        body: `Hello,
-
-For safety and compliance purposes, we need to verify the age of all FossilFinder users.
-
-Please log in to FossilFinder and complete the age verification process. This is a quick one-time check that takes less than a minute.
-
-PRIVACY NOTICE: Your birthday will NOT be stored or shown to anyone. It's only used to verify you're over 13 years old, then immediately deleted from our servers.
-
-Please do not lie about your age - this will not affect the app in any way. We just need to verify your age for legal compliance (COPPA).
-
-Thank you for your cooperation!
-
-Best regards,
-FossilFinder Team`
-      });
-
-      alert("Birthday verification request sent successfully.");
+      alert("Birthday verification request set successfully.");
       loadUsers();
     } catch (error) {
       console.error("Failed to send birthday check:", error);
-      alert("Failed to send birthday check. Please try again.");
+      alert("Failed to set birthday check. Please try again.");
     }
   };
 
