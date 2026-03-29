@@ -476,7 +476,7 @@ export default function Layout({ children, currentPageName }) {
               </div>
               <div>
                 <h2 className={`font-bold ${isDarkMode ? 'text-white' : 'text-stone-800'} text-lg`}>FossilFinder</h2>
-                <p className={`text-xs ${isDarkMode ? 'text-cyan-300/70' : 'text-stone-500'} font-medium`}>Archaeological AI Analysis</p>
+                <p className={`text-xs ${isDarkMode ? 'text-cyan-300/70' : 'text-stone-500'} font-medium`}>Help the world, free forever.</p>
               </div>
             </div>
             {appSettings?.donation_button_enabled !== false && (

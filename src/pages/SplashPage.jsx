@@ -107,9 +107,12 @@ export default function SplashPage() {
           </h1>
 
           <p
-            className={`text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed ${
-              isDarkMode ? "text-slate-300" : "text-stone-600"
-            }`}
+            className={`text-base font-semibold tracking-wide uppercase mb-3 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`}
+          >
+            Help the world, free forever.
+          </p>
+          <p
+            className={`text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-stone-600'}`}
           >
             AI-powered fossil & artifact identification. Upload a photo and get instant analysis from our archaeological AI.
           </p>
