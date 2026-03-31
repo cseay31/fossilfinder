@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { base44 } from '@/api/base44Client';
 import { validateAndSanitize } from './InputValidator';
 import { useRateLimit } from './SecurityMonitor';
 import { toast } from 'sonner';
@@ -66,9 +67,7 @@ export default function SecureFormWrapper({
       await onSubmit(pendingData);
     } else {
       toast.error('Verification failed. Please try again.');
-      await SecurityUtils.logSecurityEvent('bot_detected', 'high', {
-        action: 'Failed bot challenge'
-      });
+      console.warn('Bot challenge failed:', { action: 'Failed bot challenge' });
     }
     
     setPendingData(null);

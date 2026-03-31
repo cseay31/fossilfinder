@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Flag, Eye, CheckCircle, XCircle, AlertTriangle, Loader2, ExternalLink } from 'lucide-react';
+import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 
 export default function ContentReports() {
@@ -129,7 +130,7 @@ export default function ContentReports() {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => window.open(createPageUrl(`/discovery/${report.content_id}`), '_blank')}
+                          onClick={() => window.open(`/DiscoveryDetail?id=${report.content_id}`, '_blank')}
                           className="border-slate-600 text-slate-300"
                         >
                           <ExternalLink className="w-4 h-4" />
