@@ -1,0 +1,80 @@
+{
+  "name": "SecurityLog",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "login_attempt",
+        "failed_login",
+        "suspicious_activity",
+        "rate_limit_exceeded",
+        "bot_detected",
+        "injection_attempt",
+        "xss_attempt",
+        "unauthorized_access",
+        "data_export",
+        "bulk_operation",
+        "session_hijack_attempt"
+      ],
+      "description": "Type of security event"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user involved"
+    },
+    "ip_address": {
+      "type": "string",
+      "description": "IP address of the request"
+    },
+    "user_agent": {
+      "type": "string",
+      "description": "Browser/device user agent"
+    },
+    "page": {
+      "type": "string",
+      "description": "Page where event occurred"
+    },
+    "action": {
+      "type": "string",
+      "description": "Specific action taken"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "low",
+      "description": "Severity level"
+    },
+    "details": {
+      "type": "string",
+      "description": "Additional details (JSON string)"
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the action was blocked"
+    }
+  },
+  "required": [
+    "event_type"
+  ],
+  "rls": {
+    "create": false,
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": false,
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
