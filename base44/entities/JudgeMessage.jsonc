@@ -1,0 +1,67 @@
+{
+  "name": "JudgeMessage",
+  "type": "object",
+  "properties": {
+    "judge_email": {
+      "type": "string",
+      "description": "Email of the judge receiving the message"
+    },
+    "message": {
+      "type": "string",
+      "description": "Message content from admin"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "info",
+        "help",
+        "welcome",
+        "tip"
+      ],
+      "default": "info",
+      "description": "Type of message"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether judge has seen the message"
+    },
+    "admin_name": {
+      "type": "string",
+      "description": "Name of admin who sent message"
+    }
+  },
+  "required": [
+    "judge_email",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.judge_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
