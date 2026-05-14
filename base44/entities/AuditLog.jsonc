@@ -1,0 +1,54 @@
+{
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who performed the action"
+    },
+    "user_name": {
+      "type": "string",
+      "description": "Display name of the user"
+    },
+    "action_type": {
+      "type": "string",
+      "description": "Type of action performed"
+    },
+    "page": {
+      "type": "string",
+      "description": "Page where action occurred"
+    },
+    "element": {
+      "type": "string",
+      "description": "Element that was interacted with"
+    },
+    "details": {
+      "type": "string",
+      "description": "Additional details (JSON string)"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the action occurred"
+    }
+  },
+  "required": [
+    "user_email",
+    "action_type",
+    "page"
+  ],
+  "rls": {
+    "create": false,
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": false,
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
