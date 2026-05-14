@@ -1,8 +1,12 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
-  const { event, data } = await req.json();
+
+  // This is called by an automation (entity trigger), validate via service role
+  // but still verify the request comes with a valid payload
+  const body = await req.json();
+  const { event, data } = body;
 
   if (!data?.content || !data?.created_by) {
     return Response.json({ message: 'Missing content or author, skipping.' });
