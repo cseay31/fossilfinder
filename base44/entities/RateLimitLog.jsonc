@@ -41,11 +41,11 @@
     "action_type"
   ],
   "rls": {
-    "create": false,
+    "create": true,
     "read": {
       "$or": [
         {
-          "user_email": "{{user.email}}"
+          "data.user_email": "{{user.email}}"
         },
         {
           "user_condition": {
@@ -54,7 +54,11 @@
         }
       ]
     },
-    "update": false,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
     "delete": {
       "user_condition": {
         "role": "admin"
