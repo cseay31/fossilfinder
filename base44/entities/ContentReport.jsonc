@@ -1,0 +1,89 @@
+{
+  "name": "ContentReport",
+  "type": "object",
+  "properties": {
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "discovery",
+        "comment",
+        "forum_post"
+      ],
+      "description": "Type of content being reported"
+    },
+    "content_id": {
+      "type": "string",
+      "description": "ID of the reported content"
+    },
+    "reporter_email": {
+      "type": "string",
+      "description": "Email of user who reported"
+    },
+    "reason": {
+      "type": "string",
+      "description": "User's reason for reporting"
+    },
+    "ai_analysis": {
+      "type": "string",
+      "description": "AI analysis of the content"
+    },
+    "ai_verdict": {
+      "type": "string",
+      "enum": [
+        "appropriate",
+        "inappropriate",
+        "uncertain"
+      ],
+      "description": "AI determination"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewed",
+        "action_taken",
+        "dismissed"
+      ],
+      "default": "pending",
+      "description": "Report status"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Notes from admin review"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "description": "Admin who reviewed"
+    }
+  },
+  "required": [
+    "content_type",
+    "content_id",
+    "reporter_email"
+  ],
+  "rls": {
+    "create": true,
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
