@@ -1,0 +1,176 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "User's display name shown to other users"
+    },
+    "bio": {
+      "type": "string",
+      "description": "User bio/description"
+    },
+    "profile_image": {
+      "type": "string",
+      "description": "Profile image URL"
+    },
+    "following": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of user emails this user follows"
+    },
+    "followers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of user emails following this user"
+    },
+    "follower_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of followers"
+    },
+    "following_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of users being followed"
+    },
+    "is_banned": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the user is banned"
+    },
+    "ban_reason": {
+      "type": "string",
+      "description": "Reason for ban"
+    },
+    "ban_expires": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the ban expires"
+    },
+    "is_name_censored": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the user's name is censored for privacy protection"
+    },
+    "censor_reason": {
+      "type": "string",
+      "description": "Reason why name was censored"
+    },
+    "points": {
+      "type": "number",
+      "default": 0,
+      "description": "Total gamification points earned"
+    },
+    "badges": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of earned badge IDs"
+    },
+    "discovery_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of discoveries made"
+    },
+    "followed_classifications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of followed fossil classifications"
+    },
+    "followed_locations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of followed locations"
+    },
+    "notification_preferences": {
+      "type": "object",
+      "properties": {
+        "new_discoveries": {
+          "type": "boolean",
+          "default": true
+        },
+        "featured_picks": {
+          "type": "boolean",
+          "default": true
+        },
+        "followed_content": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "description": "User notification preferences"
+    },
+    "is_over_13": {
+      "type": "boolean",
+      "description": "Whether user is over 13 years old (null = not verified, true = 13+, false = under 13)"
+    },
+    "birthday_verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether user's birthday has been verified"
+    },
+    "needs_birthday_check": {
+      "type": "boolean",
+      "default": false,
+      "description": "Admin flag to prompt user for birthday verification"
+    },
+    "warning_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of moderation warnings"
+    },
+    "tos_accepted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether user has accepted Terms of Service"
+    },
+    "tos_accepted_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When user accepted TOS"
+    },
+    "parent_email_hash": {
+      "type": "string",
+      "description": "Hashed parent/guardian email for COPPA compliance (under-13 users only)"
+    },
+    "parental_consent_verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether parent/guardian has verified consent for under-13 user"
+    },
+    "parental_consent_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When parental consent was verified"
+    },
+    "parental_consent_token": {
+      "type": "string",
+      "description": "Unique token for parent consent verification link"
+    },
+    "age_category": {
+      "type": "string",
+      "enum": [
+        "under_13",
+        "teen",
+        "adult"
+      ],
+      "description": "Age category for feature restrictions (under_13, teen 13-17, adult 18+)"
+    },
+    "welcome_email_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the welcome email has been sent to this user"
+    }
+  },
+  "required": []
+}
