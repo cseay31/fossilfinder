@@ -185,17 +185,12 @@
           "created_by": "{{user.email}}"
         },
         {
-          "visibility": "public"
-        },
-        {
-          "shared_with": {
-            "$contains": "{{user.email}}"
-          }
-        },
-        {
           "user_condition": {
             "role": "admin"
           }
+        },
+        {
+          "data.shared_with": "{{user.email}}"
         }
       ]
     },
