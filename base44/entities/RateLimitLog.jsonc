@@ -1,0 +1,64 @@
+{
+  "name": "RateLimitLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "upload",
+        "comment",
+        "forum_post",
+        "like",
+        "report",
+        "message",
+        "search",
+        "api_call"
+      ],
+      "description": "Type of action being rate limited"
+    },
+    "count": {
+      "type": "number",
+      "default": 1,
+      "description": "Number of actions in current window"
+    },
+    "window_start": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start of the rate limit window"
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether action was blocked due to rate limit"
+    }
+  },
+  "required": [
+    "user_email",
+    "action_type"
+  ],
+  "rls": {
+    "create": false,
+    "read": {
+      "$or": [
+        {
+          "user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": false,
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
