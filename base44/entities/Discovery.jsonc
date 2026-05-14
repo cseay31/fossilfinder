@@ -1,0 +1,227 @@
+{
+  "name": "Discovery",
+  "type": "object",
+  "properties": {
+    "photo_url": {
+      "type": "string",
+      "description": "URL of the uploaded fossil/artifact photo"
+    },
+    "analysis_status": {
+      "type": "string",
+      "enum": [
+        "analyzing",
+        "completed",
+        "sent_to_expert",
+        "verified"
+      ],
+      "default": "analyzing",
+      "description": "Current status of the analysis"
+    },
+    "classification": {
+      "type": "string",
+      "description": "Type of fossil or artifact identified"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "AI confidence percentage in the identification"
+    },
+    "time_period": {
+      "type": "string",
+      "description": "Estimated geological time period or archaeological age"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed analysis and description"
+    },
+    "location": {
+      "type": "string",
+      "description": "Location where the item was found"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "GPS latitude coordinate"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "GPS longitude coordinate"
+    },
+    "expert_notes": {
+      "type": "string",
+      "description": "Notes from archaeologist review"
+    },
+    "significance_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "exceptional"
+      ],
+      "default": "medium",
+      "description": "Scientific significance of the finding"
+    },
+    "scan_results": {
+      "type": "string",
+      "description": "JSON string of multi-scan points of interest"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "private",
+        "shared"
+      ],
+      "default": "public",
+      "description": "Visibility setting for the discovery"
+    },
+    "shared_with": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of user emails the discovery is shared with"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this discovery is featured in community showcase"
+    },
+    "is_staff_pick": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this discovery is a staff shoutout pick"
+    },
+    "likes": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of likes on the discovery"
+    },
+    "liked_by": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Emails of users who liked"
+    },
+    "comment_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of comments"
+    },
+    "owner_name": {
+      "type": "string",
+      "description": "Display name of the discovery owner"
+    },
+    "geological_period": {
+      "type": "string",
+      "description": "Specific geological period (e.g., Jurassic, Cretaceous)"
+    },
+    "formation": {
+      "type": "string",
+      "description": "Geological formation name"
+    },
+    "common_name": {
+      "type": "string",
+      "description": "Common name of the fossil (e.g., T-Rex, Ammonite)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "AI-generated tags categorizing the discovery"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "fossil",
+        "artifact",
+        "mineral",
+        "rock",
+        "plant_fossil",
+        "marine_fossil",
+        "vertebrate",
+        "invertebrate",
+        "trace_fossil",
+        "unknown"
+      ],
+      "description": "AI-assigned primary category"
+    },
+    "ai_summary": {
+      "type": "string",
+      "description": "AI-generated concise summary for the discovery"
+    },
+    "related_species": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "AI-suggested related species or artifact types"
+    },
+    "research_suggestions": {
+      "type": "string",
+      "description": "AI-generated research paper/resource suggestions (JSON string)"
+    },
+    "key_features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Key identifying features of the discovery"
+    }
+  },
+  "required": [
+    "photo_url"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "visibility": "public"
+        },
+        {
+          "shared_with": {
+            "$contains": "{{user.email}}"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
