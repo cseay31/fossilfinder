@@ -1,0 +1,74 @@
+{
+  "name": "WikiArticle",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the wiki article"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug for the article"
+    },
+    "content": {
+      "type": "string",
+      "description": "Article content in markdown format"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "getting-started",
+        "features",
+        "archaeology",
+        "technical",
+        "faq"
+      ],
+      "default": "getting-started",
+      "description": "Category of the article"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for searching and categorization"
+    },
+    "views": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of times article has been viewed"
+    },
+    "last_edited_by": {
+      "type": "string",
+      "description": "Email of the last person who edited"
+    },
+    "version": {
+      "type": "number",
+      "default": 1,
+      "description": "Version number of the article"
+    }
+  },
+  "required": [
+    "title",
+    "slug",
+    "content"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
