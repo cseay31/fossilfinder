@@ -27,6 +27,11 @@
       "type": "string",
       "format": "date-time",
       "description": "Last activity timestamp"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional description or additional notes about this activity record"
     }
   },
   "required": [
@@ -40,11 +45,7 @@
         "role": "admin"
       }
     },
-    "update": {
-      "user_condition": {
-        "role": "admin"
-      }
-    },
+    "update": false,
     "delete": {
       "user_condition": {
         "role": "admin"

@@ -1,0 +1,73 @@
+{
+  "name": "Archaeologist",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Full name of the archaeologist"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Contact email"
+    },
+    "institution": {
+      "type": "string",
+      "description": "University or research institution"
+    },
+    "specialization": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "paleontology",
+          "prehistoric_archaeology",
+          "classical_archaeology",
+          "underwater_archaeology",
+          "forensic_archaeology",
+          "biblical_archaeology",
+          "industrial_archaeology",
+          "environmental_archaeology"
+        ]
+      },
+      "description": "Areas of expertise"
+    },
+    "region": {
+      "type": "string",
+      "description": "Geographic region of expertise"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the archaeologist is available for consultation"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional description or notes about the archaeologist"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "institution"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

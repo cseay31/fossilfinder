@@ -54,6 +54,11 @@
     "reviewed_by": {
       "type": "string",
       "description": "Admin who reviewed"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional description or additional context for this report"
     }
   },
   "required": [
@@ -62,21 +67,11 @@
     "reporter_email"
   ],
   "rls": {
-    "create": true,
     "read": {
       "user_condition": {
         "role": "admin"
       }
     },
-    "update": {
-      "user_condition": {
-        "role": "admin"
-      }
-    },
-    "delete": {
-      "user_condition": {
-        "role": "admin"
-      }
-    }
+    "write": true
   }
 }

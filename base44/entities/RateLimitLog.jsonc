@@ -34,6 +34,11 @@
       "type": "boolean",
       "default": false,
       "description": "Whether action was blocked due to rate limit"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional description or additional context for this rate limit entry"
     }
   },
   "required": [
@@ -41,11 +46,10 @@
     "action_type"
   ],
   "rls": {
-    "create": true,
     "read": {
       "$or": [
         {
-          "data.user_email": "{{user.email}}"
+          "user_email": "{{user.email}}"
         },
         {
           "user_condition": {
@@ -54,15 +58,6 @@
         }
       ]
     },
-    "update": {
-      "user_condition": {
-        "role": "admin"
-      }
-    },
-    "delete": {
-      "user_condition": {
-        "role": "admin"
-      }
-    }
+    "write": true
   }
 }

@@ -1,0 +1,149 @@
+{
+  "name": "AppSettings",
+  "type": "object",
+  "properties": {
+    "announcement_text": {
+      "type": "string",
+      "description": "Site-wide announcement text"
+    },
+    "announcement_active": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether announcement banner is active"
+    },
+    "announcement_type": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "success",
+        "error"
+      ],
+      "default": "info",
+      "description": "Announcement banner type"
+    },
+    "discoveries_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Allow new discovery uploads"
+    },
+    "expert_matching_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable expert matching feature"
+    },
+    "forum_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable forum access"
+    },
+    "forum_posting_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Allow forum post creation"
+    },
+    "fosfeed_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable FosFeed social platform"
+    },
+    "fosfeed_posting_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Allow FosFeed posts"
+    },
+    "fosfeed_follow_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable follow/unfollow functionality"
+    },
+    "fosfeed_reporting_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable content reporting"
+    },
+    "community_showcase_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable community showcase"
+    },
+    "multi_scan_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable multi-scan feature"
+    },
+    "discovery_map_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable discovery map"
+    },
+    "education_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable education hub"
+    },
+    "comments_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Allow comments on discoveries"
+    },
+    "likes_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Allow likes on content"
+    },
+    "sharing_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Allow sharing discoveries"
+    },
+    "ai_moderation_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable AI comment moderation"
+    },
+    "maintenance_mode": {
+      "type": "boolean",
+      "default": false,
+      "description": "Site maintenance mode"
+    },
+    "maintenance_message": {
+      "type": "string",
+      "description": "Maintenance mode message"
+    },
+    "max_uploads_per_day": {
+      "type": "number",
+      "default": 10,
+      "description": "Max uploads per user per day"
+    },
+    "require_location": {
+      "type": "boolean",
+      "default": true,
+      "description": "Require GPS for uploads"
+    },
+    "donation_button_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show donation button in sidebar"
+    },
+    "confetti_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show confetti on session load-in"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional description or notes about these app settings"
+    }
+  },
+  "rls": {
+    "read": true,
+    "write": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  },
+  "required": []
+}
