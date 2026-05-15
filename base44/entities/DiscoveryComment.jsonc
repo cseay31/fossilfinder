@@ -32,7 +32,9 @@
     "content"
   ],
   "rls": {
-    "create": true,
+    "create": {
+      "created_by": "{{user.email}}"
+    },
     "read": true,
     "update": {
       "created_by": "{{user.email}}"
