@@ -23,7 +23,7 @@ export default function AdminStats({ discoveries }) {
   };
 
   const handlePasswordSubmit = () => {
-    if (simpleHash(password.toLowerCase()) === EASTER_EGG_HASH || password.toLowerCase() === "connor") {
+    if (simpleHash(password.toLowerCase()) === EASTER_EGG_HASH) {
       setShowSecret(true);
       setShowPasswordBox(false);
       setPassword("");
