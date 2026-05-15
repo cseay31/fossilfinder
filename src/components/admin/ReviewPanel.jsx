@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Discovery } from "@/entities/Discovery";
 import { SendEmail } from "@/integrations/Core";
@@ -49,6 +48,7 @@ export default function ReviewPanel({ discovery, onClose, onUpdate }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [message, setMessage] = useState('');
+  const [expertEmail, setExpertEmail] = useState('');
 
   const getConfidenceColor = (score) => {
     if (score >= 80) return "bg-green-100 text-green-800 border-green-200";
@@ -135,8 +135,14 @@ ${expertNotes ? `<h3>Admin Notes:</h3><p>${escapeHTML(expertNotes)?.replace(/\n/
 <p>Best regards,<br>FossilFinder Admin Team</p>
       `;
 
+      if (!expertEmail || !expertEmail.includes('@')) {
+        setMessage('Please enter a valid expert email address.');
+        setIsSending(false);
+        return;
+      }
+
       await SendEmail({
-        to: "expert@archaeologist.com", // This would come from the experts database
+        to: expertEmail,
         subject,
         body,
         from_name: "FossilFinder Admin"
@@ -327,6 +333,17 @@ ${expertNotes ? `<h3>Admin Notes:</h3><p>${escapeHTML(expertNotes)?.replace(/\n/
                         </SelectContent>
                       </Select>
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-slate-700 mb-2 block">Expert Email</label>
+                    <input
+                      type="email"
+                      value={expertEmail}
+                      onChange={(e) => setExpertEmail(e.target.value)}
+                      placeholder="expert@institution.edu"
+                      className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                   </div>
 
                   <div>

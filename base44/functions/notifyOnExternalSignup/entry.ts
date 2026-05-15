@@ -22,9 +22,14 @@ Deno.serve(async (req) => {
     return Response.json({ message: 'No new external users found.' });
   }
 
+  const adminEmail = Deno.env.get("ADMIN_NOTIFY_EMAIL");
+  if (!adminEmail) {
+    return Response.json({ error: 'ADMIN_NOTIFY_EMAIL secret is not set.' }, { status: 500 });
+  }
+
   for (const user of newExternalUsers) {
     await base44.asServiceRole.integrations.Core.SendEmail({
-      to: 'seayc31@ensworth.com',
+      to: adminEmail,
       subject: `New external user signed up — FossilFinder`,
       body: `Hi,
 
