@@ -46,26 +46,13 @@
     "action_type"
   ],
   "rls": {
-    "create": {
-      "data.user_email": "{{user.email}}"
-    },
+    "create": false,
     "read": {
-      "$or": [
-        {
-          "data.user_email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
-    },
-    "update": false,
-    "delete": {
       "user_condition": {
         "role": "admin"
       }
-    }
+    },
+    "update": false,
+    "delete": false
   }
 }
