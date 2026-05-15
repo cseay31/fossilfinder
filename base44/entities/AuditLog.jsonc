@@ -38,15 +38,17 @@
     "page"
   ],
   "rls": {
-    "create": {
-      "data.user_email": "{{user.email}}"
-    },
+    "create": false,
     "read": {
       "user_condition": {
         "role": "admin"
       }
     },
     "update": false,
-    "delete": false
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
   }
 }
