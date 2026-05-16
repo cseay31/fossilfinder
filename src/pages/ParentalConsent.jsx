@@ -26,34 +26,25 @@ export default function ParentalConsentPage() {
     }
 
     try {
-      // Find user by email and verify token
-      const users = await base44.entities.User.filter({ created_by: userEmail });
-      
-      if (users.length === 0) {
-        setStatus("invalid");
-        return;
-      }
+      const res = await base44.functions.invoke('parentalConsent', {
+        action: 'verify',
+        consent_token: consentToken,
+        user_email: userEmail,
+      });
+      const result = res?.data || {};
 
-      const user = users[0];
-
-      // Check if token matches
-      if (user.parental_consent_token !== consentToken) {
+      if (result.status === 'invalid') {
         setStatus("invalid");
         setErrorMessage("Invalid or expired consent link.");
         return;
       }
-
-      // Check if consent already given
-      if (user.parental_consent_verified) {
+      if (result.status === 'already_verified') {
+        setChildInfo(result.child);
         setStatus("already_verified");
-        setChildInfo(user);
         return;
       }
-
-      // Store child info for display
-      setChildInfo(user);
+      setChildInfo(result.child);
       setStatus("pending_action");
-
     } catch (error) {
       console.error("Failed to verify consent token:", error);
       setStatus("error");
@@ -61,59 +52,32 @@ export default function ParentalConsentPage() {
     }
   };
 
-  const handleGiveConsent = async () => {
+  const submitConsent = async (action) => {
     setIsProcessing(true);
     setErrorMessage("");
-
     try {
       const urlParams = new URLSearchParams(window.location.search);
-      const userEmail = urlParams.get("user_email");
-
-      // Update user with parental consent
-      const users = await base44.entities.User.filter({ created_by: userEmail });
-      const user = users[0];
-
-      await base44.entities.User.update(user.id, {
-        parental_consent_verified: true,
-        parental_consent_date: new Date().toISOString()
+      const res = await base44.functions.invoke('parentalConsent', {
+        action,
+        consent_token: urlParams.get("consent_token"),
+        user_email: urlParams.get("user_email"),
       });
-
-      setStatus("consent_given");
+      const result = res?.data || {};
+      if (result.error) {
+        setErrorMessage(result.error);
+        setIsProcessing(false);
+        return;
+      }
+      setStatus(result.status);
     } catch (error) {
-      console.error("Failed to give consent:", error);
-      setErrorMessage("Failed to process consent. Please try again.");
+      console.error("Failed to submit consent:", error);
+      setErrorMessage("Failed to process. Please try again.");
       setIsProcessing(false);
     }
   };
 
-  const handleDenyConsent = async () => {
-    setIsProcessing(true);
-    setErrorMessage("");
-
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const userEmail = urlParams.get("user_email");
-
-      // Find and delete the user account
-      const users = await base44.entities.User.filter({ created_by: userEmail });
-      const user = users[0];
-
-      // In a real implementation, you'd want to delete all associated data
-      // For now, just mark as consent denied
-      await base44.entities.User.update(user.id, {
-        parental_consent_verified: false,
-        parental_consent_date: new Date().toISOString(),
-        is_banned: true,
-        ban_reason: "Parental consent denied"
-      });
-
-      setStatus("consent_denied");
-    } catch (error) {
-      console.error("Failed to deny consent:", error);
-      setErrorMessage("Failed to process denial. Please try again.");
-      setIsProcessing(false);
-    }
-  };
+  const handleGiveConsent = () => submitConsent('approve');
+  const handleDenyConsent = () => submitConsent('deny');
 
   if (status === "loading") {
     return (
@@ -285,9 +249,9 @@ export default function ParentalConsentPage() {
             <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
               <h3 className="font-semibold text-blue-900 mb-2">Child's Account Information:</h3>
               <div className="text-sm text-blue-800 space-y-1">
-                <p><strong>Email:</strong> {childInfo.created_by}</p>
+                <p><strong>Email:</strong> {childInfo.email}</p>
                 <p><strong>Display Name:</strong> {childInfo.display_name || "Not set"}</p>
-                <p><strong>Account Created:</strong> {new Date(childInfo.created_date).toLocaleDateString()}</p>
+                <p><strong>Account Created:</strong> {childInfo.created_date ? new Date(childInfo.created_date).toLocaleDateString() : "—"}</p>
               </div>
             </div>
           )}

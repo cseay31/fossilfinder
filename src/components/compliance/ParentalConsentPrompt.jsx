@@ -47,96 +47,20 @@ export default function ParentalConsentPrompt({ isOpen, onComplete, isDarkMode }
     setIsSending(true);
 
     try {
-      // Generate unique consent token
-      const consentToken = `consent_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      // Hash the parent email for privacy (simple hash for demo - use crypto in production)
-      const parentEmailHash = btoa(parentEmail.toLowerCase());
-
-      // Update user with parent email hash and consent token
-      await base44.auth.updateMe({
-        parent_email_hash: parentEmailHash,
-        parental_consent_token: consentToken,
-        parental_consent_verified: false
+      const res = await base44.functions.invoke('parentalConsent', {
+        action: 'send',
+        parent_email: parentEmail,
+        origin: window.location.origin,
       });
 
-      // Send consent email to parent
-      const consentUrl = `${window.location.origin}${window.location.pathname}?consent_token=${consentToken}&user_email=${encodeURIComponent(user.email)}`;
-      
-      await base44.integrations.Core.SendEmail({
-        to: parentEmail,
-        subject: "FossilFinder - Parental Consent Required",
-        from_name: "FossilFinder Team",
-        body: `
-Dear Parent/Guardian,
-
-A child has attempted to create a FossilFinder account using your email address as their parent/guardian contact. FossilFinder is an educational platform that uses AI to identify fossils and archaeological artifacts from photos.
-
-IMPORTANT - PARENTAL CONSENT REQUIRED:
-Under the Children's Online Privacy Protection Act (COPPA), we require your explicit consent before allowing children under 13 to use our service.
-
-Child's Account Email: ${user.email}
-Child's Display Name: ${user.display_name || "Not set"}
-
-WHAT INFORMATION WE COLLECT FROM YOUR CHILD:
-• Email address and display name (for account login)
-• Photos of fossils/artifacts they upload (for AI analysis)
-• GPS location data (only when uploading discoveries, if you allow)
-• Discovery descriptions and notes
-• Usage statistics (pages visited, features used)
-
-HOW WE USE THIS INFORMATION:
-• To provide the fossil identification service
-• To save their personal discovery history
-• To improve our AI analysis (in de-identified, aggregate form only)
-• To communicate service updates (only via your email)
-
-WHAT WE DON'T DO:
-• We do NOT sell or rent your child's information
-• We do NOT use it for advertising or marketing
-• We do NOT allow public social features for under-13 users
-• We do NOT share information with third parties (except as required by law)
-
-YOUR RIGHTS AS A PARENT:
-• Review what information we've collected from your child
-• Request deletion of your child's information at any time
-• Revoke consent (which will terminate the account)
-• Update or correct inaccurate information
-
-RESTRICTED FEATURES FOR YOUR CHILD:
-For safety, children under 13 CANNOT access:
-• Social features (Forum, FosFeed, public comments)
-• Expert matching (no contact with strangers)
-• Public discovery sharing (all discoveries are private by default)
-• Direct messaging with other users
-
-TO GIVE CONSENT:
-Click the link below to verify your consent. This will activate your child's account and allow them to upload photos and use the core fossil identification features.
-
-${consentUrl}
-
-TO REFUSE CONSENT:
-Simply ignore this email. The account will remain in a restricted state and your child will not be able to upload content. You may also contact us to permanently delete the account.
-
-If you did not authorize this account creation or have questions, please reply to this email immediately.
-
-For more information, review our full Privacy Policy and Terms of Service at FossilFinder.
-
-Thank you,
-The FossilFinder Team
-
----
-This is an automated message. Please do not reply directly to this email. For support, use the Contact Admin feature in the app.
-        `
-      });
+      if (res?.data?.error) {
+        setError(res.data.error);
+        setIsSending(false);
+        return;
+      }
 
       setEmailSent(true);
-      
-      // Auto-complete after showing success message
-      setTimeout(() => {
-        onComplete();
-      }, 5000);
-
+      setTimeout(() => { onComplete(); }, 5000);
     } catch (err) {
       console.error("Failed to send parental consent email:", err);
       setError("Failed to send consent email. Please try again.");
