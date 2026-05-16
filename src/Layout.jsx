@@ -200,12 +200,13 @@ export default function Layout({ children, currentPageName }) {
       } else if (user.needs_birthday_check && !user.birthday_verified) {
         // Check if user needs birthday verification (set by admin)
         setShowBirthdayCheck(true);
+      } else if (user.age_category === 'under_13' && !user.parental_consent_token) {
+        // Under-13 user who hasn't yet submitted a parent email — force the prompt
+        // on every load so they can't bypass it by closing the tab.
+        setShowParentalConsent(true);
       } else if (!user.tos_accepted) {
         // Check if user needs to accept TOS
         setShowTOSAgreement(true);
-      } else if (user.age_category === 'under_13' && !user.parental_consent_verified) {
-        // Under-13 user without parental consent - show restricted access banner
-        // They can browse but not upload
       }
     } catch (error) {
       console.error("Failed to load current user:", error);
