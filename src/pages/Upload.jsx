@@ -28,10 +28,12 @@ export default function UploadPage({ isDarkMode }) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
   const uploadedUrlsRef = React.useRef({});
 
   useEffect(() => {
     loadSettings();
+    loadUser();
   }, []);
 
   const loadSettings = async () => {
@@ -46,6 +48,16 @@ export default function UploadPage({ isDarkMode }) {
       setIsLoadingSettings(false);
     }
   };
+
+  const loadUser = async () => {
+    try {
+      const user = await base44.auth.me();
+      setCurrentUser(user);
+    } catch (e) {}
+  };
+
+  // Block under-13 users without verified parental consent from uploading
+  const isPendingConsent = currentUser?.age_category === 'under_13' && !currentUser?.parental_consent_verified;
 
   const getCurrentLocation = () => {
     setIsGettingLocation(true);
@@ -95,6 +107,10 @@ export default function UploadPage({ isDarkMode }) {
   };
 
   const analyzePhoto = async () => {
+    if (isPendingConsent) {
+      setError("Your account is in pending consent mode. A parent/guardian must verify before you can upload discoveries.");
+      return;
+    }
     if (photoUrls.length === 0) {
       setError("Please upload at least one photo first.");
       return;
@@ -267,6 +283,25 @@ export default function UploadPage({ isDarkMode }) {
 
   // Check if discoveries are disabled
   const isDiscoveryDisabled = appSettings && appSettings.discoveries_enabled === false;
+
+  if (isPendingConsent) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center p-6 ${isDarkMode ? 'bg-transparent' : 'bg-[#F2F2F7]'}`}>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm text-center">
+          <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 ${isDarkMode ? 'bg-slate-800' : 'bg-white'} shadow-sm`}>
+            <AlertCircle className="w-8 h-8 text-amber-400" />
+          </div>
+          <h2 className={`text-2xl font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>Parental Consent Pending</h2>
+          <p className={`text-sm mb-8 leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-[#6C6C70]'}`}>
+            You can't upload discoveries until your parent or guardian verifies consent. You can still browse the app while you wait.
+          </p>
+          <Button asChild className="rounded-xl bg-[#007AFF] hover:bg-[#0066CC] text-white">
+            <Link to={createPageUrl("Dashboard")}><Search className="w-4 h-4 mr-2" />Browse Discoveries</Link>
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
 
   if (!isLoadingSettings && isDiscoveryDisabled) {
     return (
