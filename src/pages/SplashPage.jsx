@@ -2,8 +2,18 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Compass, Camera, Map, Users, ChevronRight, Star, Zap, Globe } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 
 export default function SplashPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    base44.auth.isAuthenticated().then((authed) => {
+      if (authed) navigate(createPageUrl("Upload"), { replace: true });
+    });
+  }, []);
+
   const [isDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("fossilfinder-theme");
