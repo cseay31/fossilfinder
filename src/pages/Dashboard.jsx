@@ -75,7 +75,7 @@ export default function Dashboard({ isDarkMode }) {
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8 pb-safe-bottom overflow-y-auto`}>
+    <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8 pb-safe-bottom`}>
       <PullToRefresh onRefresh={loadDiscoveries} isDarkMode={isDarkMode}>
         <div className="max-w-7xl mx-auto">
         <motion.div
