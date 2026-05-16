@@ -23,12 +23,14 @@ export default function PhotoUpload({ onPhotosChange, photos = [] }) {
     return true;
   };
 
-  const handleFilesSelected = (files) => {
+  const handleFilesSelected = (files, inputEl) => {
     setFileError("");
     const valid = Array.from(files).filter(validateFile);
     if (valid.length > 0) {
       onPhotosChange([...photos, ...valid].slice(0, 5));
     }
+    // Reset so the same files can be re-selected and onChange fires again
+    if (inputEl) inputEl.value = "";
   };
 
   const handleDrop = (e) => {
@@ -53,15 +55,15 @@ export default function PhotoUpload({ onPhotosChange, photos = [] }) {
         type="file"
         accept=".jpg,.jpeg,.png"
         capture="environment"
-        onChange={(e) => e.target.files && handleFilesSelected(e.target.files)}
+        onChange={(e) => e.target.files && handleFilesSelected(e.target.files, e.target)}
         className="hidden"
       />
       <input
         ref={uploadInputRef}
         type="file"
-        accept=".jpg,.jpeg,.png"
+        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
         multiple
-        onChange={(e) => e.target.files && handleFilesSelected(e.target.files)}
+        onChange={(e) => e.target.files && handleFilesSelected(e.target.files, e.target)}
         className="hidden"
       />
 
