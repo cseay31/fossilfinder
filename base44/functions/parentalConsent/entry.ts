@@ -35,11 +35,7 @@ Deno.serve(async (req) => {
     const consentUrl = `${origin}/ParentalConsent?consent_token=${consentToken}&user_email=${encodeURIComponent(user.email)}`;
     const childName = user.display_name || user.full_name || 'your child';
 
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: parent_email,
-      from_name: 'FossilFinder Team',
-      subject: 'Action Required: Parental Consent for FossilFinder',
-      body: `<!DOCTYPE html>
+    const emailHtml = `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background-color:#f5f0e8;font-family:Georgia,serif;">
@@ -100,8 +96,27 @@ Deno.serve(async (req) => {
     </div>
   </div>
 </body>
-</html>`,
+</html>`;
+
+    const resendRes = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'FossilFinder <onboarding@resend.dev>',
+        to: parent_email,
+        subject: 'Action Required: Parental Consent for FossilFinder',
+        html: emailHtml,
+      }),
     });
+
+    if (!resendRes.ok) {
+      const errText = await resendRes.text();
+      console.error('Resend error:', errText);
+      return Response.json({ error: 'Failed to send email. Please try again.' }, { status: 500 });
+    }
 
     return Response.json({ success: true, message: 'Consent email sent.' });
   }
