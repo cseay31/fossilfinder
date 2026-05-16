@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Camera, MapPin, Loader2, CheckCircle, AlertCircle, Search, Users, Navigation, XCircle } from "lucide-react";
+import { Camera, MapPin, Loader2, CheckCircle, AlertCircle, Search, Users, Navigation, XCircle, Images } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import PhotoUpload from "../components/upload/PhotoUpload";
 import AnalysisProgress from "../components/upload/AnalysisProgress";
@@ -15,8 +15,9 @@ import { trackAction } from "../components/tracking/ActivityTracker";
 
 export default function UploadPage({ isDarkMode }) {
   const [currentStep, setCurrentStep] = useState("upload");
-  const [photo, setPhoto] = useState(null);
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [photos, setPhotos] = useState([]);
+  const [photoUrls, setPhotoUrls] = useState([]);
+  const [uploadingCount, setUploadingCount] = useState(0);
   const [location, setLocation] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -24,11 +25,10 @@ export default function UploadPage({ isDarkMode }) {
   const [analysisResults, setAnalysisResults] = useState(null);
   const [error, setError] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [appSettings, setAppSettings] = useState(null);
-  const [isUploadDisabled, setIsUploadDisabled] = useState(false);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+  const uploadedUrlsRef = React.useRef({});
 
   useEffect(() => {
     loadSettings();
@@ -67,40 +67,36 @@ export default function UploadPage({ isDarkMode }) {
     }
   };
 
-  const handlePhotoCapture = async (file) => {
+  const handlePhotosChange = async (newPhotos) => {
     setError("");
-    
-    if (!file) {
-      setPhoto(null);
-      setPhotoUrl("");
+    setPhotos(newPhotos);
+
+    // Upload any new photos that haven't been uploaded yet
+    const newlyAdded = newPhotos.filter(p => !uploadedUrlsRef.current[p.name + p.size]);
+    if (newlyAdded.length === 0) {
+      // Sync URLs to match current photos array
+      setPhotoUrls(newPhotos.map(p => uploadedUrlsRef.current[p.name + p.size]).filter(Boolean));
       return;
     }
 
-    setPhoto(file);
-    setIsUploadingPhoto(true);
-
-    try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      
-      if (!file_url) {
-        throw new Error("Failed to get file URL");
+    setUploadingCount(prev => prev + newlyAdded.length);
+    await Promise.all(newlyAdded.map(async (file) => {
+      try {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        uploadedUrlsRef.current[file.name + file.size] = file_url;
+      } catch (err) {
+        console.error("Upload error:", err);
+        setError("Failed to upload one or more photos. Please try again.");
       }
+    }));
+    setUploadingCount(prev => prev - newlyAdded.length);
 
-      setPhotoUrl(file_url);
-      setIsUploadingPhoto(false);
-
-    } catch (error) {
-      console.error("Upload error:", error);
-      setError("Failed to upload photo. Please try again.");
-      setPhoto(null);
-      setPhotoUrl("");
-      setIsUploadingPhoto(false);
-    }
+    setPhotoUrls(newPhotos.map(p => uploadedUrlsRef.current[p.name + p.size]).filter(Boolean));
   };
 
   const analyzePhoto = async () => {
-    if (!photoUrl) {
-      setError("Please upload a photo first.");
+    if (photoUrls.length === 0) {
+      setError("Please upload at least one photo first.");
       return;
     }
 
@@ -125,7 +121,7 @@ export default function UploadPage({ isDarkMode }) {
                   } catch (e) {}
 
                   const discoveryData = {
-                    photo_url: photoUrl,
+                   photo_url: photoUrls[0],
                     location: location || "Unknown location",
                     latitude: latitude,
                     longitude: longitude,
@@ -168,7 +164,7 @@ export default function UploadPage({ isDarkMode }) {
 
       const aiResponse = await base44.integrations.Core.InvokeLLM({
         prompt: analysisPrompt,
-        file_urls: [photoUrl],
+        file_urls: photoUrls,
         response_json_schema: {
           type: "object",
           properties: {
@@ -259,8 +255,10 @@ export default function UploadPage({ isDarkMode }) {
 
   const startNewAnalysis = () => {
     setCurrentStep("upload");
-    setPhoto(null);
-    setPhotoUrl("");
+    setPhotos([]);
+    setPhotoUrls([]);
+    uploadedUrlsRef.current = {};
+    setUploadingCount(0);
     setLocation("");
     setAdditionalNotes("");
     setAnalysisResults(null);
@@ -340,18 +338,18 @@ export default function UploadPage({ isDarkMode }) {
               {/* Photo Section */}
               <div className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-slate-900/60' : 'bg-white'} shadow-sm`}>
                 <div className={`px-5 pt-5 pb-3 flex items-center gap-2 ${isDarkMode ? 'border-white/5' : 'border-stone-100'} border-b`}>
-                  <Camera className={`w-5 h-5 ${isDarkMode ? 'text-cyan-400' : 'text-[#007AFF]'}`} />
-                  <span className={`font-semibold text-[17px] ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>Photo</span>
-                  {isUploadingPhoto && <Loader2 className="w-4 h-4 animate-spin text-[#007AFF] ml-auto" />}
-                </div>
-                <div className="px-5 py-4">
-                  <PhotoUpload onPhotoCapture={handlePhotoCapture} photo={photo} isProcessing={isUploadingPhoto} />
-                </div>
+                   <Camera className={`w-5 h-5 ${isDarkMode ? 'text-cyan-400' : 'text-[#007AFF]'}`} />
+                   <span className={`font-semibold text-[17px] ${isDarkMode ? 'text-white' : 'text-[#1C1C1E]'}`}>Photos</span>
+                   {uploadingCount > 0 && <><Loader2 className="w-4 h-4 animate-spin text-[#007AFF] ml-auto" /><span className="text-xs text-slate-400">Uploading…</span></>}
+                 </div>
+                 <div className="px-5 py-4">
+                   <PhotoUpload onPhotosChange={handlePhotosChange} photos={photos} />
+                 </div>
               </div>
 
               {/* Details Section — appears after photo is ready */}
               <AnimatePresence>
-                {photo && photoUrl && !isUploadingPhoto && (
+                {photos.length > 0 && photoUrls.length === photos.length && uploadingCount === 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -416,7 +414,7 @@ export default function UploadPage({ isDarkMode }) {
                     {/* CTA */}
                     <Button
                       onClick={analyzePhoto}
-                      disabled={isAnalyzing || (appSettings?.require_location !== false && (!latitude || !longitude))}
+                      disabled={isAnalyzing || uploadingCount > 0 || (appSettings?.require_location !== false && (!latitude || !longitude))}
                       className={`w-full h-14 rounded-2xl text-[17px] font-semibold transition-all duration-200 disabled:opacity-40 ${
                         isDarkMode
                           ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950'
