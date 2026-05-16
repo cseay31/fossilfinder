@@ -291,6 +291,23 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
+  // Hard gate: under-13 users MUST submit a parent email before accessing any part of the app.
+  // parental_consent_token is only set after the consent email is successfully sent.
+  if (
+    !isLoadingUser &&
+    currentUser?.age_category === 'under_13' &&
+    !currentUser?.parental_consent_token &&
+    !currentUser?.parental_consent_verified
+  ) {
+    return (
+      <ParentalConsentPrompt
+        isOpen={true}
+        onComplete={handleParentalConsentComplete}
+        isDarkMode={isDarkMode}
+      />
+    );
+  }
+
   // Check if user is banned
   if (!isLoadingUser && currentUser?.is_banned) {
     return (
