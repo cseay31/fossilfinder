@@ -7,10 +7,14 @@ import { createPageUrl } from "@/utils";
 
 export default function SplashPage() {
   const navigate = useNavigate();
+  const [isAuthed, setIsAuthed] = useState(false);
 
   useEffect(() => {
     base44.auth.isAuthenticated().then((authed) => {
-      if (authed) navigate(createPageUrl("Upload"), { replace: true });
+      if (authed) {
+        setIsAuthed(true);
+        navigate(createPageUrl("Upload"), { replace: true });
+      }
     });
   }, []);
 
@@ -31,7 +35,11 @@ export default function SplashPage() {
   ];
 
   const handleSignIn = () => {
-    base44.auth.redirectToLogin("/Upload");
+    if (isAuthed) {
+      navigate(createPageUrl("Upload"), { replace: true });
+    } else {
+      base44.auth.redirectToLogin("/Upload");
+    }
   };
 
   return (
