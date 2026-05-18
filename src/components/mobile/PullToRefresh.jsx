@@ -55,7 +55,7 @@ export default function PullToRefresh({ onRefresh, children, isDarkMode }) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="relative h-full overflow-y-auto"
+      className="relative"
       style={{ overscrollBehaviorY: 'none' }}
     >
       <AnimatePresence>
