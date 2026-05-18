@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Calendar, MapPin, TrendingUp } from "lucide-react";
+import { Search, Calendar, MapPin, TrendingUp, MessageCircle } from "lucide-react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import DiscoveryCard from "../components/dashboard/DiscoveryCard";
@@ -118,10 +118,21 @@ export default function Dashboard({ isDarkMode }) {
             className={`${isDarkMode ? 'bg-slate-900/60 border-white/10' : 'bg-white/80 border-0'} backdrop-blur-xl shadow-lg`}
           >
             <CardHeader>
-              <CardTitle className={`text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'} flex items-center gap-3`}>
-                <Search className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
-                Your Discoveries
-              </CardTitle>
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <CardTitle className={`text-xl ${isDarkMode ? 'text-white' : 'text-stone-800'} flex items-center gap-3`}>
+                  <Search className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-amber-600'}`} />
+                  Your Discoveries
+                </CardTitle>
+                <a
+                  href={base44.agents.getWhatsAppConnectURL('discovery_documenter')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-medium shadow-sm transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Chat on WhatsApp
+                </a>
+              </div>
             </CardHeader>
             <CardContent>
               <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
