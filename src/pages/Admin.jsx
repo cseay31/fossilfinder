@@ -9,7 +9,7 @@ import {
   Shield, Users, Search, TrendingUp, AlertTriangle, MessageSquare, 
   Gavel, Megaphone, SlidersHorizontal, LayoutDashboard, Settings, 
   Award, FileText, Trophy, Eye, Clock, CheckCircle, Star, Activity,
-  Loader2, RefreshCw, Filter, ChevronRight, Zap, Globe, Heart, Flag
+  Loader2, RefreshCw, Filter, ChevronRight, Zap, Globe, Heart, Flag, Bot
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format, subDays, isAfter } from "date-fns";
@@ -26,6 +26,7 @@ import ContentReports from "../components/admin/ContentReports";
 import AuditLogViewer from "../components/admin/AuditLogViewer";
 import PopupMessageManager from "../components/admin/PopupMessageManager";
 import ShellLoader from "../components/admin/ShellLoader";
+import AdminAssistantChat from "../components/admin/AdminAssistantChat";
 import { calculatePoints, checkBadgeEligibility } from "../components/gamification/BadgeSystem";
 
 export default function AdminPage({ isDarkMode }) {
@@ -322,6 +323,9 @@ export default function AdminPage({ isDarkMode }) {
             <TabsTrigger value="audit-logs" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-600 data-[state=active]:to-purple-600">
               <FileText className="w-4 h-4 mr-2" /> Audit Logs
             </TabsTrigger>
+            <TabsTrigger value="assistant" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-purple-600">
+              <Bot className="w-4 h-4 mr-2" /> AI Assistant
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -603,6 +607,7 @@ export default function AdminPage({ isDarkMode }) {
           <TabsContent value="live-activity"><LiveUserActivity isDarkMode={isDarkMode} /></TabsContent>
           <TabsContent value="reports"><ContentReports /></TabsContent>
           <TabsContent value="audit-logs"><AuditLogViewer isDarkMode={isDarkMode} /></TabsContent>
+          <TabsContent value="assistant"><AdminAssistantChat isDarkMode={isDarkMode} currentUser={currentUser} /></TabsContent>
           
           {/* Full System Discoveries Tab */}
           <TabsContent value="full-system" className="space-y-6">
