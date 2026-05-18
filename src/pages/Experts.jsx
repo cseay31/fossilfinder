@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Users, Mail, MapPin, GraduationCap, Search, BrainCircuit, FileText, Calendar, Loader2, Sparkles, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Users, Mail, MapPin, GraduationCap, Search, BrainCircuit, FileText, Calendar, Loader2, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function ExpertsPage({ isDarkMode }) {
   const [filteredExperts, setFilteredExperts] = useState([]);
@@ -23,39 +23,6 @@ export default function ExpertsPage({ isDarkMode }) {
   const [region, setRegion] = useState("");
   const [timePeriod, setTimePeriod] = useState("");
   const [additionalCriteria, setAdditionalCriteria] = useState("");
-
-  // Easter egg state
-  const [showPasswordBox, setShowPasswordBox] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showSecret, setShowSecret] = useState(false);
-
-  const EASTER_EGG_HASH = "6f3e0c43f657c1b9b663e3c4c8ad4a9b";
-
-  const simpleHash = (str) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
-    }
-    return Math.abs(hash).toString(16).padStart(32, '0').slice(0, 32);
-  };
-
-  const handlePasswordSubmit = () => {
-    if (simpleHash(password.toLowerCase()) === EASTER_EGG_HASH) {
-      setShowSecret(true);
-      setShowPasswordBox(false);
-      setPassword("");
-    } else {
-      setPassword("");
-    }
-  };
-
-  const handlePasswordKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handlePasswordSubmit();
-    }
-  };
 
   useEffect(() => {
     loadInitialData();
@@ -227,82 +194,6 @@ Focus on finding experts who are actively publishing and well-regarded in their 
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-transparent' : 'bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100'} p-4 md:p-8`}>
-      {/* Password Box Modal */}
-      <AnimatePresence>
-        {showPasswordBox && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-            onClick={(e) => e.target === e.currentTarget && setShowPasswordBox(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-slate-800">Enter Password</h3>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setShowPasswordBox(false)}
-                >
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-              
-              <div className="space-y-4">
-                <Input
-                  type="password"
-                  maxLength={6}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyPress={handlePasswordKeyPress}
-                  placeholder="6 characters"
-                  className="text-center text-2xl tracking-widest"
-                  autoFocus
-                />
-                <Button 
-                  onClick={handlePasswordSubmit}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                >
-                  Submit
-                </Button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Secret Display */}
-      <AnimatePresence>
-        {showSecret && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50"
-            onClick={() => setShowSecret(false)}
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1, rotate: [0, 360] }}
-              exit={{ scale: 0 }}
-              transition={{ type: "spring", duration: 0.8 }}
-              className="text-center"
-            >
-              <div className="text-[20rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 leading-none">
-                67
-              </div>
-              <p className="text-white text-2xl mt-8">Click anywhere to close</p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -585,9 +476,6 @@ Focus on finding experts who are actively publishing and well-regarded in their 
           </div>
         )}
 
-        {/* Copyright Info Button - Easter Egg */}
-        <div className="text-center py-8">
-        </div>
       </div>
     </div>
   );
