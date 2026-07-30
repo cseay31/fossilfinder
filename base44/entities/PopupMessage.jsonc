@@ -1,0 +1,52 @@
+{
+  "name": "PopupMessage",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the popup message"
+    },
+    "message": {
+      "type": "string",
+      "description": "Body content of the popup message"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "success",
+        "announcement"
+      ],
+      "default": "info",
+      "description": "Visual style of the message"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the popup is currently active"
+    },
+    "show_once_per_session": {
+      "type": "boolean",
+      "default": true,
+      "description": "Only show once per browser session"
+    },
+    "button_text": {
+      "type": "string",
+      "default": "Got it!",
+      "description": "Text for the dismiss button"
+    }
+  },
+  "required": [
+    "title",
+    "message"
+  ],
+  "rls": {
+    "read": true,
+    "write": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

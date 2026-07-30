@@ -1,0 +1,47 @@
+{
+  "name": "AdminMessage",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "The message content to display"
+    },
+    "from_name": {
+      "type": "string",
+      "description": "Name of the admin who posted the message (e.g., 'Admin seayc31')"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the message should be displayed"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "info",
+        "success",
+        "warning",
+        "announcement"
+      ],
+      "default": "info",
+      "description": "Visual style of the message"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional expiration date for the message"
+    }
+  },
+  "required": [
+    "message",
+    "from_name"
+  ],
+  "rls": {
+    "read": true,
+    "write": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

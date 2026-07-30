@@ -1,0 +1,50 @@
+{
+  "name": "UserModeration",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user being moderated"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "verbal_warning",
+        "formal_warning",
+        "ban",
+        "unban"
+      ],
+      "description": "Type of moderation action"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for the moderation action"
+    },
+    "moderator_email": {
+      "type": "string",
+      "description": "Email of the admin who took the action"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes from the moderator"
+    }
+  },
+  "required": [
+    "user_email",
+    "action_type",
+    "reason",
+    "moderator_email"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "write": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
