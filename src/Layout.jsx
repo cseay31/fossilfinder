@@ -671,6 +671,17 @@ export default function Layout({ children, currentPageName }) {
                   </Link>
                 </SidebarMenuButton>
 
+                {/* Return to Splash Page */}
+                <SidebarMenuButton
+                  asChild
+                  className={`${isDarkMode ? 'hover:bg-white/10 text-slate-300 hover:text-cyan-300' : 'hover:bg-amber-50 text-stone-700 hover:text-amber-800'} transition-all duration-200 rounded-xl font-medium`}
+                >
+                  <Link to="/" className="flex items-center gap-3 px-3 py-3">
+                    <Compass className="w-5 h-5" />
+                    <span>Return to Splash Page</span>
+                  </Link>
+                </SidebarMenuButton>
+
                 {/* Logout Button */}
                 <Button
                   onClick={() => base44.auth.logout()}
