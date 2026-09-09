@@ -9,7 +9,7 @@ import InitialLoadingScreen from "./components/layout/InitialLoadingScreen";
 import DisplayNamePrompt from "./components/layout/DisplayNamePrompt";
 import BottomTabBar from "./components/mobile/BottomTabBar";
 import SecurityMonitor from "./components/security/SecurityMonitor";
-import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp, LogOut } from "lucide-react";
+import { Camera, Search, FileText, Users, Compass, Shield, MessageSquare, MessageCircle, Map, Ban, ScanLine, Target, Moon, Sun, Trophy, Wrench, TrendingUp, LogOut, Github, Heart } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -615,6 +615,21 @@ export default function Layout({ children, currentPageName }) {
 
                 {/* Copyright */}
                 <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-stone-400'} text-center font-bold`}>© Copyright 2026, All rights reserved</p>
+
+                {/* Open Source Badge */}
+                <a
+                  href="https://github.com/cseay31/fossilfinder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-all duration-200 ${
+                    isDarkMode
+                      ? 'bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10'
+                      : 'bg-stone-50 hover:bg-amber-50 text-stone-600 hover:text-amber-800 border border-stone-200'
+                  }`}
+                >
+                  <Github className="w-4 h-4" />
+                  <span>Open Source on GitHub</span>
+                </a>
 
                 {/* Legal Links */}
                 <div className="space-y-2">

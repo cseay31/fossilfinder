@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Trophy, Settings, Bell, Heart, Users, MapPin, Tag, AlertTriangle } from "lucide-react";
+import { User, Trophy, Settings, Bell, Heart, Users, MapPin, Tag, AlertTriangle, Github } from "lucide-react";
 import BadgeDisplay, { BADGES } from "../components/gamification/BadgeSystem";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -387,6 +387,28 @@ export default function ProfilePage({ isDarkMode }) {
                 <CardTitle className={isDarkMode ? 'text-white' : 'text-stone-800'}>Account Settings</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
+                <div>
+                  <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>About FossilFinder</h3>
+                  <div className={`rounded-xl p-4 border ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-amber-50 border-amber-100'}`}>
+                    <p className={`text-sm mb-3 ${isDarkMode ? 'text-slate-300' : 'text-stone-700'}`}>
+                      FossilFinder is free forever and open source. Browse the code, suggest features, or contribute on GitHub.
+                    </p>
+                    <a
+                      href="https://github.com/cseay31/fossilfinder"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                        isDarkMode
+                          ? 'bg-white/10 hover:bg-white/20 text-white border border-white/10'
+                          : 'bg-stone-800 hover:bg-stone-900 text-white'
+                      }`}
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>View on GitHub</span>
+                    </a>
+                  </div>
+                </div>
+
                 <div>
                   <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-stone-800'}`}>Danger Zone</h3>
                   <Alert className="border-red-200 bg-red-50 mb-4">
