@@ -10,10 +10,14 @@ export default function SplashPage() {
   const [isAuthed, setIsAuthed] = useState(false);
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const stay = urlParams.get("stay") === "1";
     base44.auth.isAuthenticated().then((authed) => {
       if (authed) {
         setIsAuthed(true);
-        navigate(createPageUrl("Upload"), { replace: true });
+        if (!stay) {
+          navigate(createPageUrl("Upload"), { replace: true });
+        }
       }
     });
   }, []);
