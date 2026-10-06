@@ -34,6 +34,9 @@
     "judge_name"
   ],
   "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
     "read": {
       "$or": [
         {
@@ -46,7 +49,12 @@
         }
       ]
     },
-    "write": {
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
       "user_condition": {
         "role": "admin"
       }
