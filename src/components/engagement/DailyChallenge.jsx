@@ -112,7 +112,6 @@ export default function DailyChallenge({ isDarkMode }) {
       const newCompleted = [...completedToday, challenge.id];
       
       await base44.auth.updateMe({
-        points: (currentUser.points || 0) + challenge.points,
         completed_challenges: newCompleted,
         last_challenge_date: today
       });

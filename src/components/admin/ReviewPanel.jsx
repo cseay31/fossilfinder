@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Discovery } from "@/entities/Discovery";
-import { SendEmail } from "@/integrations/Core";
+import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -103,54 +103,16 @@ export default function ReviewPanel({ discovery, onClose, onUpdate }) {
     setMessage('');
 
     try {
-      const subject = `Expert Review Required: ${escapeHTML(discovery.classification)}`;
-      
-      const body = `
-<p>Dear Archaeological Expert,</p>
-
-<p>A discovery has been flagged for expert review through our FossilFinder platform.</p>
-
-<h3>Discovery Details:</h3>
-<ul>
-  <li><strong>Classification:</strong> ${escapeHTML(discovery.classification)}</li>
-  <li><strong>AI Confidence:</strong> ${escapeHTML(String(discovery.confidence_score))}%</li>
-  <li><strong>Time Period:</strong> ${escapeHTML(discovery.time_period)}</li>
-  <li><strong>Location:</strong> ${escapeHTML(discovery.location)}</li>
-  <li><strong>Significance:</strong> ${escapeHTML(discovery.significance_level)}</li>
-  <li><strong>Submitted by:</strong> ${escapeHTML(discovery.created_by)}</li>
-</ul>
-
-<h3>AI Analysis:</h3>
-<p>${escapeHTML(discovery.description)?.replace(/\n/g, '<br>')}</p>
-
-${expertNotes ? `<h3>Admin Notes:</h3><p>${escapeHTML(expertNotes)?.replace(/\n/g, '<br>')}</p>` : ''}
-
-<h3>AI Recommendations:</h3>
-<p>${escapeHTML(discovery.recommendations || "No specific recommendations provided.")?.replace(/\n/g, '<br>')}</p>
-
-<p>Please review this discovery and provide your expert verification.</p>
-
-<p>Discovery image: <a href="${escapeHTML(discovery.photo_url)}">View Full Resolution</a></p>
-
-<p>Best regards,<br>FossilFinder Admin Team</p>
-      `;
-
       if (!expertEmail || !expertEmail.includes('@')) {
         setMessage('Please enter a valid expert email address.');
         setIsSending(false);
         return;
       }
 
-      await SendEmail({
-        to: expertEmail,
-        subject,
-        body,
-        from_name: "FossilFinder Admin"
-      });
-
-      // Update status to sent_to_expert
-      await Discovery.update(discovery.id, {
-        analysis_status: "sent_to_expert"
+      await base44.functions.invoke('notifyExpert', {
+        discovery_id: discovery.id,
+        expert_email: expertEmail,
+        expert_notes: expertNotes
       });
 
       setMessage('Discovery sent to expert successfully!');

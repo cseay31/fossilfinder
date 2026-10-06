@@ -6,7 +6,7 @@
 // UserModeration records — an admin-only entity that users cannot forge
 // via updateMe. The client-writable User fields (is_banned, is_over_13,
 // age_category, parental_consent_verified) are never trusted for security
-// decisions.
+// decisions. If a UserModeration lookup fails, the check fails closed.
 export async function checkContentEligibility(base44) {
   const user = await base44.auth.me();
   if (!user) {
@@ -26,7 +26,7 @@ export async function checkContentEligibility(base44) {
       isBanned = true;
     }
   } catch {
-    isBanned = !!user.is_banned;
+    return { allowed: false, error: 'Unable to verify account status', status: 500 };
   }
 
   if (isBanned) {
@@ -47,7 +47,7 @@ export async function checkContentEligibility(base44) {
       serverAgeCategory = records[0].notes;
     }
   } catch {
-    // UserModeration check failed — fall back below.
+    return { allowed: false, error: 'Unable to verify age', status: 500 };
   }
 
   // Backward compatibility: if no server-side age record exists, fall back
@@ -75,7 +75,7 @@ export async function checkContentEligibility(base44) {
       const records = consentRecords?.items || consentRecords || [];
       hasConsent = records.length > 0;
     } catch {
-      hasConsent = !!user.parental_consent_verified;
+      return { allowed: false, error: 'Unable to verify parental consent', status: 500 };
     }
 
     if (!hasConsent) {

@@ -49,14 +49,9 @@ export const updateUserStats = async (action, details = {}) => {
     // Count total likes received
     const totalLikes = userDiscoveries.reduce((sum, d) => sum + (d.likes || 0), 0);
     
-    // Update user
-    await base44.auth.updateMe({
-      points: (user.points || 0) + pointsToAward + badgePoints,
-      discovery_count: userDiscoveries.length,
-      badges: [...new Set([...(user.badges || []), ...newBadges])], // Remove duplicates
-      follower_count: (user.followers || []).length,
-      following_count: (user.following || []).length
-    });
+    // Stats are awarded server-side in backend functions (createDiscovery,
+    // createDiscoveryComment). Client-side updateMe writes are display-only
+    // to prevent forgery of points/badges/follower counts.
     
     return {
       pointsAwarded: pointsToAward + badgePoints,

@@ -143,39 +143,8 @@ export default function UploadPage({ isDarkMode }) {
       const updatedDiscovery = result.discovery;
       const aiResponse = updatedDiscovery;
 
-      // Update user stats and award points/badges
-      try {
-        const user = await base44.auth.me();
-
-        // Calculate points for this discovery
-        let pointsToAward = 20; // Base points for discovery
-        if (aiResponse.significance_level === 'high') pointsToAward += 20;
-        if (aiResponse.significance_level === 'exceptional') pointsToAward += 50;
-
-        // Check for new badges
-        const { checkBadgeEligibility, BADGES } = await import("../components/gamification/BadgeSystem");
-        const [allDiscoveries, allComments] = await Promise.all([
-          base44.entities.Discovery.list(),
-          base44.entities.DiscoveryComment.list()
-        ]);
-        const userDiscoveries = allDiscoveries.filter(d => d.created_by === user.email);
-        const newBadges = checkBadgeEligibility(user, userDiscoveries, allComments);
-
-        // Calculate badge points
-        let badgePoints = 0;
-        newBadges.forEach(badgeId => {
-          badgePoints += BADGES[badgeId]?.points || 0;
-        });
-
-        // Update user with new stats
-        await base44.auth.updateMe({
-          points: (user.points || 0) + pointsToAward + badgePoints,
-          discovery_count: userDiscoveries.length,
-          badges: [...new Set([...(user.badges || []), ...newBadges])] // Prevent duplicates
-        });
-      } catch (updateError) {
-        console.error("Failed to update user stats:", updateError);
-      }
+      // Points and discovery_count are now awarded server-side by the
+      // createDiscovery backend function — no client-side updateMe write.
 
       setAnalysisResults(updatedDiscovery);
       setCurrentStep("results");

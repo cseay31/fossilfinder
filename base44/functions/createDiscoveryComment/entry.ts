@@ -82,6 +82,15 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
     comment_count: (discovery.comment_count || 0) + 1
   });
 
+  // Award points for commenting (server-side, not client-writable).
+  try {
+    await base44.asServiceRole.entities.User.update(user.id, {
+      points: (user.points || 0) + 5
+    });
+  } catch (statsError) {
+    console.error('Failed to award comment points:', statsError);
+  }
+
   // Send notification email to the discovery owner (inline, not via a
   // separate public endpoint). Skip if the commenter is the owner.
   if (ownerEmail && ownerEmail !== user.email) {

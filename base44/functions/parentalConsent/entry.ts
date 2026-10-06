@@ -35,8 +35,32 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Restrict to accounts that actually need parental consent.
-    if (user.age_category !== 'under_13') {
+    // Derive under-13 status from UserModeration 'age_verified' records
+    // (admin-only entity), not from the client-writable user.age_category.
+    let serverAgeCategory = null;
+    try {
+      const ageRecords = await base44.asServiceRole.entities.UserModeration.filter({
+        user_email: user.email,
+        action_type: 'age_verified'
+      }, { sort: '-created_date', limit: 1 });
+      const records = ageRecords?.items || ageRecords || [];
+      if (records.length > 0) {
+        serverAgeCategory = records[0].notes;
+      }
+    } catch {
+      return Response.json({ error: 'Unable to verify age. Please try again.' }, { status: 500 });
+    }
+
+    // Backward compatibility: fall back to birthday_verified + age_category
+    // for users who verified before UserModeration tracking was added.
+    if (!serverAgeCategory) {
+      if (!user.birthday_verified || user.age_category !== 'under_13') {
+        return Response.json({ error: 'Parental consent is only available for accounts flagged as under 13.' }, { status: 403 });
+      }
+      serverAgeCategory = user.age_category;
+    }
+
+    if (serverAgeCategory !== 'under_13') {
       return Response.json({ error: 'Parental consent is only available for accounts flagged as under 13.' }, { status: 403 });
     }
     if (user.parental_consent_verified) {
@@ -85,7 +109,7 @@ Deno.serve(async (req) => {
     });
 
     const consentUrl = `${APP_BASE_URL}/ParentalConsent?consent_token=${consentToken}&user_email=${encodeURIComponent(user.email)}`;
-    const childName = escapeHtml(user.display_name || user.full_name || 'your child');
+    const childName = escapeHtml(user.full_name || 'your child');
     const childEmail = escapeHtml(user.email);
 
     const emailHtml = `<!DOCTYPE html>

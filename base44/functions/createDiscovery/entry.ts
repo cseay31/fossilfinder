@@ -120,5 +120,20 @@ Deno.serve(async (req) => {
     longitude: discovery.longitude
   });
 
+  // Award points server-side (not client-writable via updateMe).
+  const basePoints = 20;
+  let bonusPoints = 0;
+  if (aiResponse.significance_level === 'high') bonusPoints += 20;
+  if (aiResponse.significance_level === 'exceptional') bonusPoints += 50;
+  const pointsToAward = basePoints + bonusPoints;
+  try {
+    await base44.asServiceRole.entities.User.update(user.id, {
+      points: (user.points || 0) + pointsToAward,
+      discovery_count: (user.discovery_count || 0) + 1
+    });
+  } catch (statsError) {
+    console.error('Failed to award points:', statsError);
+  }
+
   return Response.json({ success: true, discovery: updatedDiscovery });
 });
