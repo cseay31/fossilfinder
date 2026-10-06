@@ -3,15 +3,7 @@ import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
-  const body = await req.json();
-
-  // Verify the request came from a platform workflow, not a direct HTTP call.
-  const expectedSecret = Deno.env.get('WORKFLOW_TRIGGER_SECRET');
-  if (!expectedSecret || body.trigger_secret !== expectedSecret) {
-    return Response.json({ error: 'Unauthorized' }, { status: 403 });
-  }
-
-  const { data } = body;
+  const { data } = await req.json();
 
   if (!data?.id) {
     return Response.json({ message: 'Missing comment ID, skipping.' });

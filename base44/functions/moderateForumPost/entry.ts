@@ -3,13 +3,6 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
   const body = await req.json();
-
-  // Verify the request came from a platform workflow, not a direct HTTP call.
-  const expectedSecret = Deno.env.get('WORKFLOW_TRIGGER_SECRET');
-  if (!expectedSecret || body.trigger_secret !== expectedSecret) {
-    return Response.json({ error: 'Unauthorized' }, { status: 403 });
-  }
-
   const { data } = body;
 
   // This function is invoked by a workflow on ForumPost create. Verify the
