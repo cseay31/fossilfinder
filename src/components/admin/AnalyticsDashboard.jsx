@@ -1,8 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { 
   TrendingUp, 
   Users, 
@@ -11,10 +9,9 @@ import {
   CheckCircle,
   AlertTriangle,
   Calendar,
-  Activity,
-  X
+  Activity
 } from "lucide-react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { format, subDays, startOfDay, endOfDay, isWithinInterval } from "date-fns";
 import {
   BarChart,
@@ -33,26 +30,6 @@ import {
 } from 'recharts';
 
 export default function AnalyticsDashboard({ discoveries }) {
-  const [showPasswordBox, setShowPasswordBox] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showSecret, setShowSecret] = useState(false);
-
-  const handlePasswordSubmit = () => {
-    if (password.toLowerCase() === "connor") {
-      setShowSecret(true);
-      setShowPasswordBox(false);
-      setPassword("");
-    } else {
-      setPassword("");
-    }
-  };
-
-  const handlePasswordKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handlePasswordSubmit();
-    }
-  };
-
   // Calculate analytics data
   const analytics = useMemo(() => {
     const uniqueUsers = new Set(discoveries.map(d => d.created_by)).size;
@@ -160,82 +137,6 @@ export default function AnalyticsDashboard({ discoveries }) {
 
   return (
     <div className="space-y-6">
-      {/* Password Box Modal */}
-      <AnimatePresence>
-        {showPasswordBox && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-            onClick={(e) => e.target === e.currentTarget && setShowPasswordBox(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-slate-800">Enter Password</h3>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setShowPasswordBox(false)}
-                >
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-              
-              <div className="space-y-4">
-                <Input
-                  type="password"
-                  maxLength={6}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyPress={handlePasswordKeyPress}
-                  placeholder="6 characters"
-                  className="text-center text-2xl tracking-widest"
-                  autoFocus
-                />
-                <Button 
-                  onClick={handlePasswordSubmit}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                >
-                  Submit
-                </Button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Secret Display */}
-      <AnimatePresence>
-        {showSecret && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50"
-            onClick={() => setShowSecret(false)}
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1, rotate: [0, 360] }}
-              exit={{ scale: 0 }}
-              transition={{ type: "spring", duration: 0.8 }}
-              className="text-center"
-            >
-              <div className="text-[20rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 leading-none">
-                67
-              </div>
-              <p className="text-white text-2xl mt-8">Click anywhere to close</p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <motion.div
@@ -243,8 +144,7 @@ export default function AnalyticsDashboard({ discoveries }) {
           animate={{ opacity: 1, y: 0 }}
         >
           <Card 
-            className="bg-white/80 backdrop-blur-sm shadow-lg border-0 cursor-pointer hover:shadow-xl transition-shadow"
-            onClick={() => setShowPasswordBox(true)}
+            className="bg-white/80 backdrop-blur-sm shadow-lg border-0"
           >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
