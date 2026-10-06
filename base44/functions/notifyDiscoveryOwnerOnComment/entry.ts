@@ -26,6 +26,13 @@ Deno.serve(async (req) => {
     return Response.json({ message: 'Notification already sent for this comment, skipping.' });
   }
 
+  // Verify the comment was created within the last 10 minutes to prevent
+  // anonymous callers from using old comment IDs.
+  const commentAge = Date.now() - new Date(comment.created_date).getTime();
+  if (commentAge > 10 * 60 * 1000) {
+    return Response.json({ message: 'Comment is not recent, skipping.' });
+  }
+
   // Fetch the parent discovery.
   const discoveries = await base44.asServiceRole.entities.Discovery.filter({ id: comment.discovery_id }, { limit: 1 });
   const discovery = discoveries?.items?.[0] || discoveries?.[0];
@@ -40,6 +47,10 @@ Deno.serve(async (req) => {
 
   // Don't notify if the comment author IS the discovery owner.
   if (comment.created_by && comment.created_by === ownerEmail) {
+    // Still mark as sent so the workflow doesn't retry.
+    await base44.asServiceRole.entities.DiscoveryComment.update(comment.id, {
+      notification_sent: true
+    });
     return Response.json({ message: 'Owner commented on their own discovery, skipping.' });
   }
 
@@ -79,5 +90,6 @@ Deno.serve(async (req) => {
     notification_sent: true
   });
 
-  return Response.json({ message: `Notification sent to ${ownerEmail}` });
+  // Do NOT echo the owner's email in the response.
+  return Response.json({ message: 'Notification sent.' });
 });

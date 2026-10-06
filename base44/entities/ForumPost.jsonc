@@ -65,6 +65,11 @@
     "author_name": {
       "type": "string",
       "description": "Display name of the author"
+    },
+    "moderated": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the auto-moderation workflow has already processed this post (dedup guard)"
     }
   },
   "required": [

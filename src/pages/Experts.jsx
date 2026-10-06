@@ -449,7 +449,7 @@ Focus on finding experts who are actively publishing and well-regarded in their 
                             variant="outline"
                             size="sm"
                             className={`border-stone-200 hover:bg-amber-50 hover:border-amber-200 ${expert.email ? 'flex-1' : 'w-full'}`}
-                            onClick={() => window.open(expert.source_url, '_blank')}
+                            onClick={() => /^https?:\/\//i.test(expert.source_url) && window.open(expert.source_url, '_blank')}
                           >
                             <Users className="w-4 h-4 mr-2" />
                             View Profile

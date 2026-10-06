@@ -27,6 +27,13 @@ Deno.serve(async (req) => {
     return Response.json({ message: 'Confirmation email already sent for this record, skipping.' });
   }
 
+  // Verify the record was created within the last 10 minutes to prevent
+  // anonymous callers from using old message IDs.
+  const recordAge = Date.now() - new Date(record.created_date).getTime();
+  if (recordAge > 10 * 60 * 1000) {
+    return Response.json({ message: 'Record is not recent, skipping.' });
+  }
+
   // Escape all interpolated fields to prevent HTML injection.
   const safeName = escapeHtml(record.name || '');
   const safeSubject = escapeHtml(record.subject || '(no subject)');
@@ -65,5 +72,6 @@ Deno.serve(async (req) => {
     confirmation_email_sent: true
   });
 
-  return Response.json({ message: `Confirmation email sent to ${record.email}` });
+  // Do NOT echo the submitter's email in the response.
+  return Response.json({ message: 'Confirmation email sent.' });
 });

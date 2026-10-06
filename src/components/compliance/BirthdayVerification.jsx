@@ -45,26 +45,16 @@ export default function BirthdayVerification({ isOpen, onComplete, isDarkMode, i
     setError('');
 
     try {
-      // Calculate age
-      const birthDate = new Date(yearNum, monthNum - 1, dayNum);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
+      // Verify birthday server-side — age computation and flag updates
+      // happen in the backend function so they can't be bypassed via updateMe.
+      const res = await base44.functions.invoke('verifyBirthday', { month, day, year });
+      const result = res?.data || {};
+      if (result.error) {
+        setError(result.error);
+        return;
       }
 
-      const isOver13 = age >= 13;
-
-      // Update user with age verification (birthday is NOT stored)
-      await base44.auth.updateMe({
-        is_over_13: isOver13,
-        birthday_verified: true,
-        needs_birthday_check: false
-      });
-
-      onComplete(isOver13);
+      onComplete(result.is_over_13);
     } catch (err) {
       console.error("Failed to verify birthday:", err);
       setError('Failed to verify birthday. Please try again.');
