@@ -1,5 +1,4 @@
 {
-  "name": "Auto-Moderate Forum Posts",
   "definition": {
     "document": {
       "dsl": "1.0.0",
@@ -13,7 +12,9 @@
           "call": "invoke_backend_function",
           "with": {
             "function_name": "moderateForumPost",
-            "args": {}
+            "args": {
+              "trigger_secret": "ff_wf_trigger_92f4a7b3c1e8d5f6"
+            }
           },
           "then": "end"
         }
@@ -31,6 +32,7 @@
     }
   },
   "description": "",
+  "name": "Auto-Moderate Forum Posts",
   "x-base44-migrated-from-automation": {
     "legacy_payload_function": "moderateForumPost"
   }
