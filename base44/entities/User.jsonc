@@ -155,7 +155,12 @@
     },
     "parental_consent_token": {
       "type": "string",
-      "description": "Unique token for parent consent verification link"
+      "description": "SHA-256 hash of the consent token (plaintext is never stored)"
+    },
+    "parental_consent_token_expires": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the consent token expires"
     },
     "age_category": {
       "type": "string",

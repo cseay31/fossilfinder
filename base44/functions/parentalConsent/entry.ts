@@ -1,9 +1,27 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 // App base URL is derived server-side — never trust a client-supplied origin
 // for the consent link, which would let callers redirect parents to an
 // arbitrary phishing site.
 const APP_BASE_URL = 'https://fos.base44.app';
+
+// Consent tokens expire after 7 days.
+const TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+// Rate limit: max 3 consent emails per hour per user.
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+
+// Hash a consent token with SHA-256 so the plaintext is never stored on the
+// child's user record (the child can read their own record but cannot recover
+// the plaintext token from the hash).
+async function hashToken(token: string): Promise<string> {
+  const data = new TextEncoder().encode(token);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
@@ -17,6 +35,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Restrict to accounts that actually need parental consent.
+    if (user.age_category !== 'under_13') {
+      return Response.json({ error: 'Parental consent is only available for accounts flagged as under 13.' }, { status: 403 });
+    }
+    if (user.parental_consent_verified) {
+      return Response.json({ error: 'Parental consent has already been verified.' }, { status: 400 });
+    }
+
     const { parent_email } = body;
     if (!parent_email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(parent_email)) {
       return Response.json({ error: 'Invalid parent email.' }, { status: 400 });
@@ -25,19 +51,42 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Parent email cannot be the same as the child account email.' }, { status: 400 });
     }
 
-    // Generate a cryptographically secure, one-use consent token.
-    const consentToken = crypto.randomUUID();
+    // Per-user rate limiting via RateLimitLog.
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
+    const recent = await base44.asServiceRole.entities.RateLimitLog.filter({
+      user_email: user.email,
+      action_type: 'parental_consent',
+      window_start: { $gte: windowStart },
+    });
+    if (recent && recent.length >= RATE_LIMIT_MAX) {
+      return Response.json({ error: 'Too many consent email requests. Please wait and try again later.' }, { status: 429 });
+    }
+    await base44.asServiceRole.entities.RateLimitLog.create({
+      user_email: user.email,
+      action_type: 'parental_consent',
+      window_start: new Date().toISOString(),
+      count: 1,
+      blocked: false,
+      description: 'Parental consent email sent',
+    });
 
-    // Persist token + hashed parent email on the child's user record (service role so it works)
+    // Generate a cryptographically secure, one-use consent token. Store only
+    // the hash on the user record; the plaintext goes only in the email link.
+    const consentToken = crypto.randomUUID();
+    const tokenHash = await hashToken(consentToken);
+    const expiresAt = new Date(Date.now() + TOKEN_TTL_MS).toISOString();
+
     const parentEmailHash = btoa(parent_email.toLowerCase());
     await base44.asServiceRole.entities.User.update(user.id, {
       parent_email_hash: parentEmailHash,
-      parental_consent_token: consentToken,
+      parental_consent_token: tokenHash,
+      parental_consent_token_expires: expiresAt,
       parental_consent_verified: false,
     });
 
     const consentUrl = `${APP_BASE_URL}/ParentalConsent?consent_token=${consentToken}&user_email=${encodeURIComponent(user.email)}`;
-    const childName = user.display_name || user.full_name || 'your child';
+    const childName = escapeHtml(user.display_name || user.full_name || 'your child');
+    const childEmail = escapeHtml(user.email);
 
     const emailHtml = `<!DOCTYPE html>
 <html>
@@ -55,7 +104,7 @@ Deno.serve(async (req) => {
 
       <div style="background:#f5f0e8;border-radius:6px;padding:16px 20px;margin:0 0 24px;">
         <table style="width:100%;font-size:14px;border-collapse:collapse;">
-          <tr><td style="padding:6px 0;color:#78716c;width:140px;">Child's Account</td><td style="padding:6px 0;font-weight:bold;">${user.email}</td></tr>
+          <tr><td style="padding:6px 0;color:#78716c;width:140px;">Child's Account</td><td style="padding:6px 0;font-weight:bold;">${childEmail}</td></tr>
           <tr><td style="padding:6px 0;color:#78716c;">Display Name</td><td style="padding:6px 0;font-weight:bold;">${childName}</td></tr>
         </table>
       </div>
@@ -138,7 +187,14 @@ Deno.serve(async (req) => {
     }
     const child = users[0];
 
-    if (child.parental_consent_token !== consent_token) {
+    // Compare the hash of the submitted token to the stored hash.
+    const submittedHash = await hashToken(consent_token);
+    if (!child.parental_consent_token || child.parental_consent_token !== submittedHash) {
+      return Response.json({ status: 'invalid' });
+    }
+
+    // Check expiry.
+    if (child.parental_consent_token_expires && new Date(child.parental_consent_token_expires) < new Date()) {
       return Response.json({ status: 'invalid' });
     }
 
@@ -168,22 +224,35 @@ Deno.serve(async (req) => {
     }
     const child = users[0];
 
-    if (child.parental_consent_token !== consent_token) {
+    // Compare the hash of the submitted token to the stored hash.
+    const submittedHash = await hashToken(consent_token);
+    if (!child.parental_consent_token || child.parental_consent_token !== submittedHash) {
       return Response.json({ error: 'Invalid token.' }, { status: 403 });
     }
 
+    // Check expiry.
+    if (child.parental_consent_token_expires && new Date(child.parental_consent_token_expires) < new Date()) {
+      return Response.json({ error: 'This consent link has expired.' }, { status: 403 });
+    }
+
     if (action === 'approve') {
+      // Invalidate the token (one-time use) and mark consent verified.
       await base44.asServiceRole.entities.User.update(child.id, {
         parental_consent_verified: true,
         parental_consent_date: new Date().toISOString(),
+        parental_consent_token: null,
+        parental_consent_token_expires: null,
       });
       return Response.json({ success: true, status: 'consent_given' });
     } else {
+      // Invalidate the token (one-time use) and restrict the account.
       await base44.asServiceRole.entities.User.update(child.id, {
         parental_consent_verified: false,
         parental_consent_date: new Date().toISOString(),
         is_banned: true,
         ban_reason: 'Parental consent denied',
+        parental_consent_token: null,
+        parental_consent_token_expires: null,
       });
       return Response.json({ success: true, status: 'consent_denied' });
     }

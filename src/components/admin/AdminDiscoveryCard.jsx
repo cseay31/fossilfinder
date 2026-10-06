@@ -144,7 +144,11 @@ export default function AdminDiscoveryCard({ discovery, index, onUpdate, onRevie
             <Button
               variant="outline"
               size="sm"
-              onClick={() => window.open(discovery.photo_url, '_blank')}
+              onClick={() => {
+                if (discovery.photo_url && /^https:\/\//.test(discovery.photo_url)) {
+                  window.open(discovery.photo_url, '_blank');
+                }
+              }}
               className="border-slate-200 hover:bg-slate-50"
             >
               <ExternalLink className="w-4 h-4" />

@@ -130,7 +130,7 @@ ${expertNotes ? `<h3>Admin Notes:</h3><p>${escapeHTML(expertNotes)?.replace(/\n/
 
 <p>Please review this discovery and provide your expert verification.</p>
 
-<p>Discovery image: <a href="${discovery.photo_url}">View Full Resolution</a></p>
+<p>Discovery image: <a href="${escapeHTML(discovery.photo_url)}">View Full Resolution</a></p>
 
 <p>Best regards,<br>FossilFinder Admin Team</p>
       `;
@@ -234,7 +234,11 @@ ${expertNotes ? `<h3>Admin Notes:</h3><p>${escapeHTML(expertNotes)?.replace(/\n/
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => window.open(discovery.photo_url, '_blank')}
+                      onClick={() => {
+                        if (discovery.photo_url && /^https:\/\//.test(discovery.photo_url)) {
+                          window.open(discovery.photo_url, '_blank');
+                        }
+                      }}
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
                       View Full Image

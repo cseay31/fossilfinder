@@ -1,5 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+// Shared secret that only the workflow passes — prevents anonymous direct
+// HTTP invocation from forging UserModeration records. The workflow definition
+// is server-side (base44/workflows/) so this secret is not exposed to clients.
+const TRIGGER_SECRET = 'ff_auto_mod_trigger_7c3e9a1f5b2d8e4a';
+
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
 
@@ -9,6 +14,11 @@ Deno.serve(async (req) => {
   // forge moderation history against arbitrary users.
   const body = await req.json();
   const { data } = body;
+
+  // Verify the invocation carries the workflow trigger secret.
+  if (body.trigger_secret !== TRIGGER_SECRET) {
+    return Response.json({ error: 'Unauthorized' }, { status: 403 });
+  }
 
   if (!data?.content || !data?.created_by) {
     return Response.json({ message: 'Missing content or author, skipping.' });
