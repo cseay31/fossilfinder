@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
@@ -8,8 +9,26 @@ Deno.serve(async (req) => {
     return Response.json({ message: 'Missing discovery_id or content, skipping.' });
   }
 
+  // This function is invoked by an entity-trigger workflow on DiscoveryComment
+  // create, so there is no user session. Instead of auth, verify the payload
+  // corresponds to a real DiscoveryComment record and use the stored values
+  // (not client-supplied) — this prevents anonymous direct invocation from
+  // forging phishing emails with arbitrary content/author_name.
+  let comment = null;
+  if (data.id) {
+    try {
+      const found = await base44.asServiceRole.entities.DiscoveryComment.filter({ id: data.id });
+      comment = found?.[0];
+    } catch {
+      return Response.json({ message: 'Invalid comment reference, skipping.' });
+    }
+  }
+  if (!comment) {
+    return Response.json({ message: 'Comment record not found, skipping.' });
+  }
+
   // Fetch the parent discovery
-  const discoveries = await base44.asServiceRole.entities.Discovery.filter({ id: data.discovery_id });
+  const discoveries = await base44.asServiceRole.entities.Discovery.filter({ id: comment.discovery_id || data.discovery_id });
   if (!discoveries || discoveries.length === 0) {
     return Response.json({ message: 'Discovery not found, skipping.' });
   }
@@ -22,16 +41,18 @@ Deno.serve(async (req) => {
   }
 
   // Don't notify if the comment author IS the discovery owner
-  if (data.created_by === ownerEmail) {
+  if (comment.created_by && comment.created_by === ownerEmail) {
     return Response.json({ message: 'Owner commented on their own discovery, skipping.' });
   }
 
-  const commenterName = data.author_name || data.created_by || 'Someone';
-  const discoveryName = discovery.common_name || discovery.classification || 'your discovery';
+  // Use stored, escaped values — never raw client input in the HTML body.
+  const commenterName = escapeHtml(comment.author_name || comment.created_by || 'Someone');
+  const discoveryName = escapeHtml(discovery.common_name || discovery.classification || 'your discovery');
+  const commentContent = escapeHtml(comment.content || '');
 
   await base44.asServiceRole.integrations.Core.SendEmail({
     to: ownerEmail,
-    subject: `New comment on ${discoveryName} — FossilFinder`,
+    subject: `New comment on ${discovery.common_name || discovery.classification || 'your discovery'} — FossilFinder`,
     body: `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
@@ -44,7 +65,7 @@ Deno.serve(async (req) => {
     <div style="padding:36px 40px;color:#1c1917;">
       <p style="font-size:16px;margin:0 0 16px;">Hi there,</p>
       <p style="font-size:15px;line-height:1.7;margin:0 0 24px;"><strong>${commenterName}</strong> just commented on your discovery <strong>"${discoveryName}"</strong>:</p>
-      <div style="background:#f5f0e8;border-left:4px solid #92400e;padding:16px 20px;border-radius:4px;font-size:15px;line-height:1.7;color:#1c1917;font-style:italic;">"${data.content}"</div>
+      <div style="background:#f5f0e8;border-left:4px solid #92400e;padding:16px 20px;border-radius:4px;font-size:15px;line-height:1.7;color:#1c1917;font-style:italic;">"${commentContent}"</div>
       <p style="font-size:15px;line-height:1.7;margin:24px 0 0;">Log in to FossilFinder to view and reply to the comment.</p>
       <hr style="border:none;border-top:2px solid #d6cfc4;margin:28px 0;">
       <p style="font-size:14px;color:#78716c;font-style:italic;margin:0 0 4px;">Help the world, free forever.</p>

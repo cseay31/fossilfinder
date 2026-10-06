@@ -3,13 +3,24 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
 
-  // This is called by an automation (entity trigger), validate via service role
-  // but still verify the request comes with a valid payload
+  // This is called by an automation (entity trigger). Validate that the
+  // payload corresponds to a real ForumPost before doing any LLM work or
+  // writing a UserModeration record, so anonymous direct invocation cannot
+  // forge moderation history against arbitrary users.
   const body = await req.json();
-  const { event, data } = body;
+  const { data } = body;
 
   if (!data?.content || !data?.created_by) {
     return Response.json({ message: 'Missing content or author, skipping.' });
+  }
+
+  // Confirm a ForumPost exists matching this author + content.
+  const posts = await base44.asServiceRole.entities.ForumPost.filter(
+    { created_by: data.created_by, content: data.content },
+    { sort: '-created_date', limit: 1 }
+  );
+  if (!posts?.items?.[0]) {
+    return Response.json({ message: 'No matching forum post found, skipping.' });
   }
 
   // Use LLM to detect flagged language

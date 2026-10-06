@@ -1,5 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+// App base URL is derived server-side — never trust a client-supplied origin
+// for the consent link, which would let callers redirect parents to an
+// arbitrary phishing site.
+const APP_BASE_URL = 'https://fos.base44.app';
+
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
   const body = await req.json();
@@ -20,8 +25,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Parent email cannot be the same as the child account email.' }, { status: 400 });
     }
 
-    // Generate token
-    const consentToken = `consent_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+    // Generate a cryptographically secure, one-use consent token.
+    const consentToken = crypto.randomUUID();
 
     // Persist token + hashed parent email on the child's user record (service role so it works)
     const parentEmailHash = btoa(parent_email.toLowerCase());
@@ -31,8 +36,7 @@ Deno.serve(async (req) => {
       parental_consent_verified: false,
     });
 
-    const origin = body.origin || '';
-    const consentUrl = `${origin}/ParentalConsent?consent_token=${consentToken}&user_email=${encodeURIComponent(user.email)}`;
+    const consentUrl = `${APP_BASE_URL}/ParentalConsent?consent_token=${consentToken}&user_email=${encodeURIComponent(user.email)}`;
     const childName = user.display_name || user.full_name || 'your child';
 
     const emailHtml = `<!DOCTYPE html>
