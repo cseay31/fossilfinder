@@ -3,46 +3,47 @@ import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
-
-  const { data } = await req.json();
-
-  if (!data?.id) {
-    return Response.json({ message: 'Missing message ID, skipping.' });
+  const user = await base44.auth.me();
+  if (!user) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Look up the ContactMessage record by ID.
-  let record = null;
-  try {
-    const found = await base44.asServiceRole.entities.ContactMessage.filter({ id: data.id }, { limit: 1 });
-    record = found?.items?.[0] || found?.[0];
-  } catch {
-    return Response.json({ message: 'Invalid message reference, skipping.' });
-  }
-  if (!record) {
-    return Response.json({ message: 'Contact message record not found, skipping.' });
+  const { name, email, subject, message } = await req.json();
+
+  if (!name?.trim() || !email?.trim() || !subject?.trim() || !message?.trim()) {
+    return Response.json({ error: 'All fields are required' }, { status: 400 });
   }
 
-  // One-send-per-record guard: skip if the confirmation email was already sent.
-  if (record.confirmation_email_sent) {
-    return Response.json({ message: 'Confirmation email already sent for this record, skipping.' });
+  // Email validation
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return Response.json({ error: 'Invalid email address' }, { status: 400 });
   }
 
-  // Verify the record was created within the last 10 minutes to prevent
-  // anonymous callers from using old message IDs.
-  const recordAge = Date.now() - new Date(record.created_date).getTime();
-  if (recordAge > 10 * 60 * 1000) {
-    return Response.json({ message: 'Record is not recent, skipping.' });
+  // Cap message length to prevent abuse.
+  if (message.length > 5000) {
+    return Response.json({ error: 'Message is too long' }, { status: 400 });
   }
 
-  // Escape all interpolated fields to prevent HTML injection.
+  // Create the contact message record.
+  const record = await base44.entities.ContactMessage.create({
+    name: name.trim(),
+    email: email.trim(),
+    subject: subject.trim(),
+    message: message.trim(),
+    status: 'new'
+  });
+
+  // Send confirmation email in the same server-side flow that creates the
+  // record — no public re-send endpoint.
   const safeName = escapeHtml(record.name || '');
   const safeSubject = escapeHtml(record.subject || '(no subject)');
-  const safeMessage = escapeHtml((record.message || '').replace(/\n/g, '<br>'));
+  const safeMessage = escapeHtml((record.message || '').slice(0, 2000).replace(/\n/g, '<br>'));
 
-  await base44.asServiceRole.integrations.Core.SendEmail({
-    to: record.email,
-    subject: `We received your message — FossilFinder`,
-    body: `<!DOCTYPE html>
+  try {
+    await base44.asServiceRole.integrations.Core.SendEmail({
+      to: record.email,
+      subject: `We received your message — FossilFinder`,
+      body: `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background-color:#f5f0e8;font-family:Georgia,serif;">
@@ -65,13 +66,16 @@ Deno.serve(async (req) => {
   </div>
 </body>
 </html>`,
-  });
+    });
 
-  // Mark as sent to prevent re-sending.
-  await base44.asServiceRole.entities.ContactMessage.update(record.id, {
-    confirmation_email_sent: true
-  });
+    // Mark as sent to prevent re-sending.
+    await base44.asServiceRole.entities.ContactMessage.update(record.id, {
+      confirmation_email_sent: true
+    });
+  } catch (err) {
+    console.error('Failed to send confirmation email:', err);
+    // Don't fail the request — the message was still saved.
+  }
 
-  // Do NOT echo the submitter's email in the response.
-  return Response.json({ message: 'Confirmation email sent.' });
+  return Response.json({ success: true });
 });

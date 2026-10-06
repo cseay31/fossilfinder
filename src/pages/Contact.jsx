@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ContactMessage } from "@/entities/ContactMessage";
+import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,13 +39,12 @@ export default function ContactPage({ isDarkMode }) {
     setStatusMessage("");
 
     try {
-      // Save to database - admins will see it in their dashboard
-      await ContactMessage.create({
+      // Creates the record and sends a confirmation email server-side.
+      await base44.functions.invoke("createContactMessage", {
         name,
         email,
         subject,
-        message,
-        status: "new"
+        message
       });
 
       setStatusType("success");

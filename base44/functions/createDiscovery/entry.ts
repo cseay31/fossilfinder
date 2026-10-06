@@ -11,6 +11,19 @@ Deno.serve(async (req) => {
   }
   const { user } = eligibility;
 
+  // Enforce per-day upload limit from AppSettings.
+  const appSettings = await base44.asServiceRole.entities.AppSettings.list();
+  const maxPerDay = appSettings?.[0]?.max_uploads_per_day ?? 10;
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayCount = await base44.asServiceRole.entities.Discovery.count({
+    created_by_id: user.id,
+    created_date: { $gte: todayStart.toISOString() }
+  });
+  if (todayCount >= maxPerDay) {
+    return Response.json({ error: 'Daily upload limit reached. Please try again tomorrow.' }, { status: 429 });
+  }
+
   const { photo_urls, location, latitude, longitude, additional_notes } = await req.json();
 
   if (!photo_urls?.length) {
@@ -20,14 +33,21 @@ Deno.serve(async (req) => {
   const ownerName = user.full_name || 'Explorer';
   const photo_url = photo_urls[0];
 
+  // Under-13 discoveries are private by default and strip precise location
+  // data to protect minors' physical safety (COPPA).
+  const isUnder13 = user.age_category === 'under_13' || user.is_over_13 === false;
+  const visibility = isUnder13 ? 'private' : 'public';
+  const safeLatitude = isUnder13 ? null : latitude;
+  const safeLongitude = isUnder13 ? null : longitude;
+
   // Create discovery with analyzing status.
   const discovery = await base44.entities.Discovery.create({
     photo_url,
-    location: location || 'Unknown location',
-    latitude,
-    longitude,
+    location: isUnder13 ? 'Location hidden for privacy' : (location || 'Unknown location'),
+    latitude: safeLatitude,
+    longitude: safeLongitude,
     analysis_status: 'analyzing',
-    visibility: 'public',
+    visibility,
     owner_name: ownerName,
     likes: 0,
     liked_by: [],

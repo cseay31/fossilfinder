@@ -51,6 +51,18 @@ Return your assessment.`,
   });
 
   if (!moderationResult.is_appropriate) {
+    // Track the rejected post in UserModeration for record-keeping.
+    try {
+      await base44.asServiceRole.entities.UserModeration.create({
+        user_email: user.email,
+        action_type: 'verbal_warning',
+        reason: `Forum post rejected by AI moderation: "${title.trim().slice(0, 60)}..."`,
+        moderator_email: 'system@fossilfinder.app',
+        notes: `AI Moderation — Details: ${moderationResult.reason}`
+      });
+    } catch {
+      // Non-critical — don't block the rejection.
+    }
     return Response.json({ error: `Post rejected: ${moderationResult.reason}` }, { status: 422 });
   }
 
