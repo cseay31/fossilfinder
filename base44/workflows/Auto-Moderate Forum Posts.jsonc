@@ -1,15 +1,5 @@
 {
-  "trigger": {
-    "condition": null,
-    "config": {
-      "trigger_type": "entity",
-      "events": [
-        "create"
-      ],
-      "entity_name": "ForumPost"
-    }
-  },
-  "description": "",
+  "name": "Auto-Moderate Forum Posts",
   "definition": {
     "document": {
       "dsl": "1.0.0",
@@ -23,16 +13,24 @@
           "call": "invoke_backend_function",
           "with": {
             "function_name": "moderateForumPost",
-            "args": {
-              "trigger_secret": "ff_auto_mod_trigger_7c3e9a1f5b2d8e4a"
-            }
+            "args": {}
           },
           "then": "end"
         }
       }
     ]
   },
-  "name": "Auto-Moderate Forum Posts",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "create"
+      ],
+      "entity_name": "ForumPost"
+    }
+  },
+  "description": "",
   "x-base44-migrated-from-automation": {
     "legacy_payload_function": "moderateForumPost"
   }

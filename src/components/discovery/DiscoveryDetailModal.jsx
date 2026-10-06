@@ -73,47 +73,16 @@ export default function DiscoveryDetailModal({ discovery, onClose, currentUser, 
     
     setIsSubmitting(true);
     try {
-      // AI moderation check - only block inappropriate content
-      const moderation = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a content moderator. Check if this comment contains any inappropriate content that should be blocked. ONLY block comments that contain:
-- Hate speech, slurs, or discrimination
-- Explicit sexual content
-- Graphic violence
-- Harassment or personal attacks
-- Spam or advertisements
-
-Do NOT block comments just because they are off-topic, casual, or unrelated to archaeology. Users are free to discuss whatever they want as long as it's not harmful.
-
-Comment: "${newComment}"
-
-Return is_appropriate=true unless the comment contains genuinely harmful/inappropriate content.`,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            is_appropriate: { type: "boolean" },
-            reason: { type: "string" }
-          }
-        }
+      const res = await base44.functions.invoke('createDiscoveryComment', {
+        discovery_id: discovery.id,
+        content: newComment.trim()
       });
-
-      if (!moderation.is_appropriate) {
-        alert(`Comment not allowed: ${moderation.reason}`);
-        setIsSubmitting(false);
+      const result = res?.data || {};
+      if (result.error) {
+        alert(result.error);
         return;
       }
-
-      const comment = await base44.entities.DiscoveryComment.create({
-        discovery_id: discovery.id,
-        content: newComment.trim(),
-        author_name: currentUser?.display_name || currentUser?.full_name || 'Anonymous',
-        likes: 0,
-        liked_by: []
-      });
-
-      // Update comment count
-      await base44.entities.Discovery.update(discovery.id, {
-        comment_count: (localDiscovery.comment_count || 0) + 1
-      });
+      const comment = result.comment;
 
       // Award points for commenting
       const commentPoints = calculatePoints('comment');

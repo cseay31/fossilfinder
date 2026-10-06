@@ -25,6 +25,11 @@
         "type": "string"
       },
       "description": "Emails of users who liked"
+    },
+    "notification_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the owner notification email has been sent (one-send guard)"
     }
   },
   "required": [

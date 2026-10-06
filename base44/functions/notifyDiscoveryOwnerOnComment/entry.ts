@@ -5,42 +5,40 @@ Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
   const { data } = await req.json();
 
-  if (!data?.discovery_id || !data?.content) {
-    return Response.json({ message: 'Missing discovery_id or content, skipping.' });
+  if (!data?.id) {
+    return Response.json({ message: 'Missing comment ID, skipping.' });
   }
 
-  // This function is invoked by an entity-trigger workflow on DiscoveryComment
-  // create, so there is no user session. Instead of auth, verify the payload
-  // corresponds to a real DiscoveryComment record and use the stored values
-  // (not client-supplied) — this prevents anonymous direct invocation from
-  // forging phishing emails with arbitrary content/author_name.
+  // Look up the DiscoveryComment record by ID.
   let comment = null;
-  if (data.id) {
-    try {
-      const found = await base44.asServiceRole.entities.DiscoveryComment.filter({ id: data.id });
-      comment = found?.[0];
-    } catch {
-      return Response.json({ message: 'Invalid comment reference, skipping.' });
-    }
+  try {
+    const found = await base44.asServiceRole.entities.DiscoveryComment.filter({ id: data.id }, { limit: 1 });
+    comment = found?.items?.[0] || found?.[0];
+  } catch {
+    return Response.json({ message: 'Invalid comment reference, skipping.' });
   }
   if (!comment) {
     return Response.json({ message: 'Comment record not found, skipping.' });
   }
 
-  // Fetch the parent discovery
-  const discoveries = await base44.asServiceRole.entities.Discovery.filter({ id: comment.discovery_id || data.discovery_id });
-  if (!discoveries || discoveries.length === 0) {
+  // One-send-per-comment guard: skip if the notification was already sent.
+  if (comment.notification_sent) {
+    return Response.json({ message: 'Notification already sent for this comment, skipping.' });
+  }
+
+  // Fetch the parent discovery.
+  const discoveries = await base44.asServiceRole.entities.Discovery.filter({ id: comment.discovery_id }, { limit: 1 });
+  const discovery = discoveries?.items?.[0] || discoveries?.[0];
+  if (!discovery) {
     return Response.json({ message: 'Discovery not found, skipping.' });
   }
 
-  const discovery = discoveries[0];
   const ownerEmail = discovery.created_by;
-
   if (!ownerEmail) {
     return Response.json({ message: 'Discovery has no owner email, skipping.' });
   }
 
-  // Don't notify if the comment author IS the discovery owner
+  // Don't notify if the comment author IS the discovery owner.
   if (comment.created_by && comment.created_by === ownerEmail) {
     return Response.json({ message: 'Owner commented on their own discovery, skipping.' });
   }
@@ -59,7 +57,7 @@ Deno.serve(async (req) => {
 <body style="margin:0;padding:0;background-color:#f5f0e8;font-family:Georgia,serif;">
   <div style="max-width:620px;margin:32px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
     <div style="background:linear-gradient(135deg,#92400e,#44403c);padding:36px 40px;text-align:center;">
-      <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:1px;">🦕 FossilFinder</h1>
+      <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:1px;">FossilFinder</h1>
       <p style="margin:8px 0 0;color:#fde68a;font-size:14px;">New Comment on Your Discovery</p>
     </div>
     <div style="padding:36px 40px;color:#1c1917;">
@@ -71,12 +69,14 @@ Deno.serve(async (req) => {
       <p style="font-size:14px;color:#78716c;font-style:italic;margin:0 0 4px;">Help the world, free forever.</p>
       <p style="font-size:15px;margin:0;">— The FossilFinder Team</p>
     </div>
-    <div style="background:#f5f0e8;padding:20px 40px;text-align:center;border-top:1px solid #e7ddd0;">
-      <p style="font-size:12px;color:#a8a29e;margin:0;">If you'd like to unsubscribe and stop receiving these emails, <a href="#" style="color:#92400e;">click here</a>.</p>
-    </div>
   </div>
 </body>
 </html>`
+  });
+
+  // Mark as sent to prevent re-sending.
+  await base44.asServiceRole.entities.DiscoveryComment.update(comment.id, {
+    notification_sent: true
   });
 
   return Response.json({ message: `Notification sent to ${ownerEmail}` });

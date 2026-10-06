@@ -6,30 +6,29 @@ Deno.serve(async (req) => {
 
   const { data } = await req.json();
 
-  if (!data?.email || !data?.name) {
-    return Response.json({ message: 'Missing email or name, skipping.' });
+  if (!data?.id) {
+    return Response.json({ message: 'Missing message ID, skipping.' });
   }
 
-  // This function is invoked by an entity-trigger workflow on ContactMessage
-  // create, so there is no user session. Instead of auth, verify the payload
-  // corresponds to a real ContactMessage record and use the stored values
-  // (not client-supplied) with HTML escaping — this prevents direct invocation
-  // from sending spoofed HTML emails to arbitrary recipients.
+  // Look up the ContactMessage record by ID.
   let record = null;
-  if (data.id) {
-    try {
-      const found = await base44.asServiceRole.entities.ContactMessage.filter({ id: data.id });
-      record = found?.[0];
-    } catch {
-      return Response.json({ message: 'Invalid message reference, skipping.' });
-    }
+  try {
+    const found = await base44.asServiceRole.entities.ContactMessage.filter({ id: data.id }, { limit: 1 });
+    record = found?.items?.[0] || found?.[0];
+  } catch {
+    return Response.json({ message: 'Invalid message reference, skipping.' });
   }
   if (!record) {
     return Response.json({ message: 'Contact message record not found, skipping.' });
   }
 
+  // One-send-per-record guard: skip if the confirmation email was already sent.
+  if (record.confirmation_email_sent) {
+    return Response.json({ message: 'Confirmation email already sent for this record, skipping.' });
+  }
+
   // Escape all interpolated fields to prevent HTML injection.
-  const safeName = escapeHtml(record.name || data.name);
+  const safeName = escapeHtml(record.name || '');
   const safeSubject = escapeHtml(record.subject || '(no subject)');
   const safeMessage = escapeHtml((record.message || '').replace(/\n/g, '<br>'));
 
@@ -42,7 +41,7 @@ Deno.serve(async (req) => {
 <body style="margin:0;padding:0;background-color:#f5f0e8;font-family:Georgia,serif;">
   <div style="max-width:620px;margin:32px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
     <div style="background:linear-gradient(135deg,#92400e,#44403c);padding:36px 40px;text-align:center;">
-      <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:1px;">🦕 FossilFinder</h1>
+      <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:1px;">FossilFinder</h1>
       <p style="margin:8px 0 0;color:#fde68a;font-size:14px;">Message Received</p>
     </div>
     <div style="padding:36px 40px;color:#1c1917;">
@@ -56,13 +55,15 @@ Deno.serve(async (req) => {
       <p style="font-size:14px;color:#78716c;font-style:italic;margin:0 0 4px;">Help the world, free forever.</p>
       <p style="font-size:15px;margin:0;">— The FossilFinder Team</p>
     </div>
-    <div style="background:#f5f0e8;padding:20px 40px;text-align:center;border-top:1px solid #e7ddd0;">
-      <p style="font-size:12px;color:#a8a29e;margin:0;">If you'd like to unsubscribe and stop receiving these emails, <a href="#" style="color:#92400e;">click here</a>.</p>
-    </div>
   </div>
 </body>
 </html>`,
   });
 
-  return Response.json({ message: `Confirmation email sent to ${record.email || data.email}` });
+  // Mark as sent to prevent re-sending.
+  await base44.asServiceRole.entities.ContactMessage.update(record.id, {
+    confirmation_email_sent: true
+  });
+
+  return Response.json({ message: `Confirmation email sent to ${record.email}` });
 });

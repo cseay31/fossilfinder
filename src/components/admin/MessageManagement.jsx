@@ -97,43 +97,15 @@ export default function MessageManagement() {
     setStatusMessage("");
 
     try {
-      const currentUser = await base44.auth.me();
-
-      // Send email response - only works for registered users
-      await base44.integrations.Core.SendEmail({
-        to: selectedMessage.email,
-        subject: `Re: ${selectedMessage.subject}`,
-        body: `
-<h2>Response from FossilFinder Admin</h2>
-
-<p>Hello ${selectedMessage.name},</p>
-
-<p>Thank you for contacting us. Here's our response to your message:</p>
-
-<hr />
-
-<p>${responseText.replace(/\n/g, '<br>')}</p>
-
-<hr />
-
-<h3>Your Original Message:</h3>
-<p><strong>Subject:</strong> ${selectedMessage.subject}</p>
-<p>${selectedMessage.message.replace(/\n/g, '<br>')}</p>
-
-<hr />
-
-<p>Best regards,<br>FossilFinder Team</p>
-        `,
-        from_name: "FossilFinder Admin"
+      const res = await base44.functions.invoke('sendContactReply', {
+        message_id: selectedMessage.id,
+        response_text: responseText
       });
-
-      // Update message status
-      await base44.entities.ContactMessage.update(selectedMessage.id, {
-        status: "replied",
-        admin_response: responseText,
-        responded_by: currentUser.email,
-        responded_at: new Date().toISOString()
-      });
+      const result = res?.data || {};
+      if (result.error) {
+        setStatusMessage(result.error);
+        return;
+      }
 
       setStatusMessage("Response sent successfully!");
       setResponseText("");

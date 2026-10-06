@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
@@ -28,6 +29,12 @@ Deno.serve(async (req) => {
   }
 
   for (const user of newExternalUsers) {
+    // Escape all user-controlled fields before interpolating into email HTML.
+    const safeName = escapeHtml(user.full_name || '(not set)');
+    const safeEmail = escapeHtml(user.email);
+    const safeRole = escapeHtml(user.role || 'user');
+    const safeDate = escapeHtml(new Date(user.created_date).toLocaleString('en-US', { timeZone: 'America/Chicago' }) + ' (CST)');
+
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: adminEmail,
       subject: `New external user signed up — FossilFinder`,
@@ -37,17 +44,17 @@ Deno.serve(async (req) => {
 <body style="margin:0;padding:0;background-color:#f5f0e8;font-family:Georgia,serif;">
   <div style="max-width:620px;margin:32px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
     <div style="background:linear-gradient(135deg,#1e3a5f,#1c1917);padding:36px 40px;text-align:center;">
-      <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:1px;">🦕 FossilFinder</h1>
+      <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:1px;">FossilFinder</h1>
       <p style="margin:8px 0 0;color:#93c5fd;font-size:14px;">Admin Alert — New External Signup</p>
     </div>
     <div style="padding:36px 40px;color:#1c1917;">
       <p style="font-size:15px;line-height:1.7;margin:0 0 24px;">A new user <strong>outside of the ensworth.com domain</strong> has just signed up on FossilFinder.</p>
       <div style="background:#f5f0e8;border-radius:6px;padding:20px 24px;margin-bottom:24px;">
         <table style="width:100%;font-size:14px;border-collapse:collapse;">
-          <tr><td style="padding:6px 0;color:#78716c;width:100px;">Name</td><td style="padding:6px 0;font-weight:bold;">${user.full_name || '(not set)'}</td></tr>
-          <tr><td style="padding:6px 0;color:#78716c;">Email</td><td style="padding:6px 0;font-weight:bold;">${user.email}</td></tr>
-          <tr><td style="padding:6px 0;color:#78716c;">Role</td><td style="padding:6px 0;font-weight:bold;">${user.role || 'user'}</td></tr>
-          <tr><td style="padding:6px 0;color:#78716c;">Signed up</td><td style="padding:6px 0;font-weight:bold;">${new Date(user.created_date).toLocaleString('en-US', { timeZone: 'America/Chicago' })} (CST)</td></tr>
+          <tr><td style="padding:6px 0;color:#78716c;width:100px;">Name</td><td style="padding:6px 0;font-weight:bold;">${safeName}</td></tr>
+          <tr><td style="padding:6px 0;color:#78716c;">Email</td><td style="padding:6px 0;font-weight:bold;">${safeEmail}</td></tr>
+          <tr><td style="padding:6px 0;color:#78716c;">Role</td><td style="padding:6px 0;font-weight:bold;">${safeRole}</td></tr>
+          <tr><td style="padding:6px 0;color:#78716c;">Signed up</td><td style="padding:6px 0;font-weight:bold;">${safeDate}</td></tr>
         </table>
       </div>
       <p style="font-size:15px;margin:0;">You can manage this user from the <strong>Admin Panel</strong>.</p>

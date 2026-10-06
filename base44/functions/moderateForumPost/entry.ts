@@ -1,44 +1,49 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
-
-// Shared secret that only the workflow passes — prevents anonymous direct
-// HTTP invocation from forging UserModeration records. The workflow definition
-// is server-side (base44/workflows/) so this secret is not exposed to clients.
-const TRIGGER_SECRET = 'ff_auto_mod_trigger_7c3e9a1f5b2d8e4a';
+import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
-
-  // This is called by an automation (entity trigger). Validate that the
-  // payload corresponds to a real ForumPost before doing any LLM work or
-  // writing a UserModeration record, so anonymous direct invocation cannot
-  // forge moderation history against arbitrary users.
   const body = await req.json();
   const { data } = body;
 
-  // Verify the invocation carries the workflow trigger secret.
-  if (body.trigger_secret !== TRIGGER_SECRET) {
-    return Response.json({ error: 'Unauthorized' }, { status: 403 });
+  // This function is invoked by a workflow on ForumPost create. Verify the
+  // payload references a real, recently-created ForumPost by ID — never accept
+  // caller-supplied author identity.
+  if (!data?.id) {
+    return Response.json({ message: 'No post ID provided, skipping.' });
   }
 
-  if (!data?.content || !data?.created_by) {
-    return Response.json({ message: 'Missing content or author, skipping.' });
+  let post = null;
+  try {
+    const found = await base44.asServiceRole.entities.ForumPost.filter({ id: data.id }, { limit: 1 });
+    post = found?.items?.[0] || found?.[0];
+  } catch {
+    return Response.json({ message: 'Invalid post reference, skipping.' });
   }
 
-  // Confirm a ForumPost exists matching this author + content.
-  const posts = await base44.asServiceRole.entities.ForumPost.filter(
-    { created_by: data.created_by, content: data.content },
-    { sort: '-created_date', limit: 1 }
-  );
-  if (!posts?.items?.[0]) {
+  if (!post) {
     return Response.json({ message: 'No matching forum post found, skipping.' });
   }
 
-  // Use LLM to detect flagged language
+  // Verify the post was created within the last 5 minutes (workflow trigger
+  // window) to prevent replay attacks with old post IDs.
+  const postAge = Date.now() - new Date(post.created_date).getTime();
+  if (postAge > 5 * 60 * 1000) {
+    return Response.json({ message: 'Post is not recent, skipping moderation.' });
+  }
+
+  // Use the stored author identity — never caller-supplied values.
+  const authorEmail = post.created_by;
+  if (!authorEmail) {
+    return Response.json({ message: 'Post has no author email, skipping.' });
+  }
+
+  // Use LLM to detect flagged language.
   const result = await base44.asServiceRole.integrations.Core.InvokeLLM({
     prompt: `You are a content moderator. Analyze the following forum post for flagged language including: hate speech, harassment, explicit sexual content, threats, slurs, or severe profanity.
 
-Forum Post Title: ${data.title || '(no title)'}
-Forum Post Content: ${data.content}
+Forum Post Title: ${post.title || '(no title)'}
+Forum Post Content: ${post.content}
 
 Respond with a JSON object only.`,
     response_json_schema: {
@@ -55,17 +60,17 @@ Respond with a JSON object only.`,
     return Response.json({ message: 'Post is clean, no action taken.' });
   }
 
-  // Create a UserModeration record
+  // Create a UserModeration record using the stored author email.
   await base44.asServiceRole.entities.UserModeration.create({
-    user_email: data.created_by,
+    user_email: authorEmail,
     action_type: 'verbal_warning',
-    reason: `Flagged language detected in forum post: "${data.title || data.content.slice(0, 60)}..."`,
+    reason: `Flagged language detected in forum post: "${post.title || (post.content || '').slice(0, 60)}..."`,
     moderator_email: 'system@fossilfinder.app',
     notes: `AI Moderation — Severity: ${result.severity}. Details: ${result.reason}`
   });
 
   return Response.json({
-    message: `Moderation action created for ${data.created_by}`,
+    message: `Moderation action created for ${authorEmail}`,
     severity: result.severity,
     reason: result.reason
   });

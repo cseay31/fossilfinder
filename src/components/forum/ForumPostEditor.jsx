@@ -31,60 +31,16 @@ export default function ForumPostEditor({ currentUser, onSave, onClose }) {
     setError("");
 
     try {
-      // AI moderation check
-      const moderationResult = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a content moderator for an archaeology community forum. Review this post for inappropriate content.
-
-Title: ${title.trim()}
-Content: ${content.trim()}
-
-Check for:
-- Spam or promotional content
-- Offensive language, hate speech, or personal attacks
-- Misinformation or harmful content
-- Content completely unrelated to archaeology/paleontology/fossils
-- Vandalism, gibberish, or low-effort posts
-- Harassment or bullying
-
-Be reasonable - allow genuine questions, discussions, and sharing even if imperfect.
-
-Return your assessment.`,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            is_appropriate: { type: "boolean" },
-            reason: { type: "string" }
-          }
-        }
-      });
-
-      if (!moderationResult.is_appropriate) {
-        setError(`Post rejected: ${moderationResult.reason}`);
-        setIsSaving(false);
-        return;
-      }
-
-      const tagArray = tags.split(",").map(t => t.trim()).filter(t => t);
-      
-      const postData = {
+      await base44.functions.invoke('createForumPost', {
         title: title.trim(),
         category,
-        tags: tagArray,
-        content: content.trim(),
-        author_name: currentUser?.full_name || currentUser?.email?.split('@')[0] || 'Anonymous',
-        views: 0,
-        likes: 0,
-        liked_by: [],
-        reply_count: 0,
-        is_pinned: false,
-        is_locked: false
-      };
-
-      await base44.entities.ForumPost.create(postData);
+        tags,
+        content: content.trim()
+      });
       onSave();
     } catch (error) {
       console.error("Failed to create post:", error);
-      setError(`Failed to create post: ${error.message || error}`);
+      setError(error?.data?.error || error?.message || 'Failed to create post');
     } finally {
       setIsSaving(false);
     }

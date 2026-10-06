@@ -64,60 +64,19 @@ export default function WikiArticleEditor({ article, onSave, onClose, isDarkMode
     setError("");
 
     try {
-      // AI moderation check
-      const moderationResult = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a content moderator for an archaeology education wiki. Review this article for inappropriate content.
-
-Title: ${title.trim()}
-Content: ${content.trim()}
-
-Check for:
-- Spam or promotional content
-- Offensive language or hate speech
-- Misinformation or harmful content
-- Content unrelated to archaeology/paleontology/education
-- Vandalism or gibberish
-
-Return your assessment.`,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            is_appropriate: { type: "boolean" },
-            reason: { type: "string" }
-          }
-        }
-      });
-
-      if (!moderationResult.is_appropriate) {
-        setError(`Content rejected: ${moderationResult.reason}`);
-        setIsSaving(false);
-        return;
-      }
-
-      const tagArray = tags.split(",").map(t => t.trim()).filter(t => t);
-      
-      const articleData = {
+      await base44.functions.invoke('createWikiArticle', {
+        article_id: article?.id,
         title: title.trim(),
         slug: slug.trim(),
         category,
-        tags: tagArray,
-        content: content.trim(),
-        last_edited_by: currentUser?.email || "anonymous",
-        version: article ? (article.version || 1) + 1 : 1
-      };
-
-      if (article) {
-        // Update existing article
-        await base44.entities.WikiArticle.update(article.id, articleData);
-      } else {
-        // Create new article
-        await base44.entities.WikiArticle.create(articleData);
-      }
+        tags,
+        content: content.trim()
+      });
 
       onSave();
     } catch (error) {
       console.error("Failed to save article:", error);
-      setError(`Failed to save article: ${error.message || error}`);
+      setError(error?.data?.error || error?.message || 'Failed to save article');
     } finally {
       setIsSaving(false);
     }

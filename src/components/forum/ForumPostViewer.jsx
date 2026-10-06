@@ -88,47 +88,9 @@ export default function ForumPostViewer({ post, currentUser, onClose }) {
     setError("");
 
     try {
-      // AI moderation check
-      const moderationResult = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a content moderator for an archaeology community forum. Review this reply for inappropriate content.
-
-Reply content: ${newReply.trim()}
-
-Check for:
-- Spam or promotional content
-- Offensive language, hate speech, or personal attacks
-- Completely off-topic or nonsensical content
-- Harassment or bullying
-
-Be reasonable - allow genuine responses even if brief.
-
-Return your assessment.`,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            is_appropriate: { type: "boolean" },
-            reason: { type: "string" }
-          }
-        }
-      });
-
-      if (!moderationResult.is_appropriate) {
-        setError(`Reply rejected: ${moderationResult.reason}`);
-        setIsSubmitting(false);
-        return;
-      }
-
-      await base44.entities.ForumReply.create({
+      await base44.functions.invoke('createForumReply', {
         post_id: post.id,
-        content: newReply.trim(),
-        author_name: currentUser?.full_name || currentUser?.email?.split('@')[0] || 'Anonymous',
-        likes: 0,
-        liked_by: []
-      });
-
-      // Update reply count
-      await base44.entities.ForumPost.update(post.id, {
-        reply_count: (localPost.reply_count || 0) + 1
+        content: newReply.trim()
       });
 
       setLocalPost(prev => ({ ...prev, reply_count: (prev.reply_count || 0) + 1 }));
