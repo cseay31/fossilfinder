@@ -243,6 +243,18 @@ Deno.serve(async (req) => {
         parental_consent_token: null,
         parental_consent_token_expires: null,
       });
+
+      // Record consent in UserModeration (admin-only entity) so
+      // checkContentEligibility can verify consent without trusting
+      // client-writable User fields.
+      await base44.asServiceRole.entities.UserModeration.create({
+        user_email: child.email,
+        action_type: 'parental_consent_approved',
+        reason: 'Parental consent approved by guardian',
+        moderator_email: 'system@fossilfinder.app',
+        notes: `Consent date: ${new Date().toISOString()}`
+      });
+
       return Response.json({ success: true, status: 'consent_given' });
     } else {
       // Invalidate the token (one-time use) and restrict the account.
@@ -254,6 +266,17 @@ Deno.serve(async (req) => {
         parental_consent_token: null,
         parental_consent_token_expires: null,
       });
+
+      // Record the ban in UserModeration (admin-only entity) so
+      // checkContentEligibility detects it without trusting user.is_banned.
+      await base44.asServiceRole.entities.UserModeration.create({
+        user_email: child.email,
+        action_type: 'ban',
+        reason: 'Parental consent denied by guardian',
+        moderator_email: 'system@fossilfinder.app',
+        notes: 'Account banned because parental consent was denied'
+      });
+
       return Response.json({ success: true, status: 'consent_denied' });
     }
   }

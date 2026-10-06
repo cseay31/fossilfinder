@@ -42,5 +42,16 @@ Deno.serve(async (req) => {
     age_category: ageCategory
   });
 
+  // Also record the age verification in UserModeration (admin-only entity,
+  // cannot be forged via updateMe) so checkContentEligibility can verify
+  // age without trusting client-writable User fields.
+  await base44.asServiceRole.entities.UserModeration.create({
+    user_email: user.email,
+    action_type: 'age_verified',
+    reason: 'Birthday verification completed',
+    moderator_email: 'system@fossilfinder.app',
+    notes: ageCategory
+  });
+
   return Response.json({ is_over_13: isOver13, age_category: ageCategory });
 });

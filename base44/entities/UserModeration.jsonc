@@ -12,7 +12,9 @@
         "verbal_warning",
         "formal_warning",
         "ban",
-        "unban"
+        "unban",
+        "age_verified",
+        "parental_consent_approved"
       ],
       "description": "Type of moderation action"
     },

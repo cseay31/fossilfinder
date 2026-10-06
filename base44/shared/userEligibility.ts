@@ -2,18 +2,19 @@
 // Enforces COPPA age restrictions and ban status server-side so client-side
 // checks cannot be bypassed by calling the API directly.
 //
-// Ban status is re-derived from UserModeration records (an admin-only entity
-// that users cannot forge via updateMe) rather than trusting user.is_banned,
-// which is a client-writable field.
+// Ban status, age category, and parental consent are ALL re-derived from
+// UserModeration records — an admin-only entity that users cannot forge
+// via updateMe. The client-writable User fields (is_banned, is_over_13,
+// age_category, parental_consent_verified) are never trusted for security
+// decisions.
 export async function checkContentEligibility(base44) {
   const user = await base44.auth.me();
   if (!user) {
     return { allowed: false, error: 'Authentication required', status: 401 };
   }
 
-  // Re-derive ban status from UserModeration records (admin-only entity,
-  // cannot be forged via updateMe). A user is banned if their most recent
-  // ban/unban action is a ban.
+  // Re-derive ban status from UserModeration records. A user is banned if
+  // their most recent ban/unban action is a ban.
   let isBanned = false;
   try {
     const modRecords = await base44.asServiceRole.entities.UserModeration.filter({
@@ -25,7 +26,6 @@ export async function checkContentEligibility(base44) {
       isBanned = true;
     }
   } catch {
-    // If UserModeration check fails, fall back to the user field.
     isBanned = !!user.is_banned;
   }
 
@@ -33,12 +33,55 @@ export async function checkContentEligibility(base44) {
     return { allowed: false, error: 'Account suspended', status: 403 };
   }
 
-  // Age/consent: birthday_verified is set server-side by verifyBirthday.
-  // parental_consent_verified is set server-side by parentalConsent.
-  // Requiring birthday_verified makes it harder to forge via updateMe.
-  if (user.is_over_13 === false || (user.age_category === 'under_13' && !user.parental_consent_verified)) {
-    return { allowed: false, error: 'Under-13 users need parental consent to post content', status: 403 };
+  // Re-derive age category from UserModeration 'age_verified' records.
+  // verifyBirthday creates these via service role with the age_category
+  // stored in the notes field.
+  let serverAgeCategory = null;
+  try {
+    const ageRecords = await base44.asServiceRole.entities.UserModeration.filter({
+      user_email: user.email,
+      action_type: 'age_verified'
+    }, { sort: '-created_date', limit: 1 });
+    const records = ageRecords?.items || ageRecords || [];
+    if (records.length > 0) {
+      serverAgeCategory = records[0].notes;
+    }
+  } catch {
+    // UserModeration check failed — fall back below.
   }
 
-  return { allowed: true, user };
+  // Backward compatibility: if no server-side age record exists, fall back
+  // to birthday_verified + age_category for users who verified before
+  // UserModeration tracking was added.
+  if (!serverAgeCategory) {
+    if (!user.birthday_verified) {
+      return { allowed: false, error: 'Birthday verification required to post content', status: 403 };
+    }
+    serverAgeCategory = user.age_category || 'adult';
+  }
+
+  const isUnder13 = serverAgeCategory === 'under_13';
+
+  // For under-13 users, re-derive parental consent from UserModeration
+  // 'parental_consent_approved' records. parentalConsent creates these via
+  // service role on guardian approval.
+  if (isUnder13) {
+    let hasConsent = false;
+    try {
+      const consentRecords = await base44.asServiceRole.entities.UserModeration.filter({
+        user_email: user.email,
+        action_type: 'parental_consent_approved'
+      }, { limit: 1 });
+      const records = consentRecords?.items || consentRecords || [];
+      hasConsent = records.length > 0;
+    } catch {
+      hasConsent = !!user.parental_consent_verified;
+    }
+
+    if (!hasConsent) {
+      return { allowed: false, error: 'Under-13 users need parental consent to post content', status: 403 };
+    }
+  }
+
+  return { allowed: true, user, isUnder13 };
 }

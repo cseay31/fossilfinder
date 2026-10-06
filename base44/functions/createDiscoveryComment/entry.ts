@@ -51,6 +51,24 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
     return Response.json({ error: `Comment not allowed: ${moderationResult.reason}` }, { status: 422 });
   }
 
+  // Fetch the discovery and verify the caller is authorized to view it
+  // before allowing a comment. Service-role reads bypass RLS, so we
+  // manually check visibility (owner, public, shared_with, or admin).
+  const discoveries = await base44.asServiceRole.entities.Discovery.filter({ id: discovery_id }, { limit: 1 });
+  const discovery = discoveries?.items?.[0] || discoveries?.[0];
+  if (!discovery) {
+    return Response.json({ error: 'Discovery not found' }, { status: 404 });
+  }
+
+  const ownerEmail = discovery.created_by;
+  const canView = ownerEmail === user.email ||
+                  discovery.visibility === 'public' ||
+                  (discovery.shared_with || []).includes(user.email) ||
+                  user.role === 'admin';
+  if (!canView) {
+    return Response.json({ error: 'Discovery not found' }, { status: 404 });
+  }
+
   const comment = await base44.entities.DiscoveryComment.create({
     discovery_id: discovery_id,
     content: content.trim(),
@@ -60,17 +78,12 @@ Return is_appropriate=true unless the comment contains genuinely harmful/inappro
   });
 
   // Update comment count on the discovery.
-  const discoveries = await base44.asServiceRole.entities.Discovery.filter({ id: discovery_id }, { limit: 1 });
-  const discovery = discoveries?.items?.[0] || discoveries?.[0];
-  if (discovery) {
-    await base44.asServiceRole.entities.Discovery.update(discovery_id, {
-      comment_count: (discovery.comment_count || 0) + 1
-    });
-  }
+  await base44.asServiceRole.entities.Discovery.update(discovery_id, {
+    comment_count: (discovery.comment_count || 0) + 1
+  });
 
   // Send notification email to the discovery owner (inline, not via a
   // separate public endpoint). Skip if the commenter is the owner.
-  const ownerEmail = discovery?.created_by;
   if (ownerEmail && ownerEmail !== user.email) {
     const commenterName = escapeHtml(comment.author_name || user.full_name || 'Someone');
     const discoveryName = escapeHtml(discovery?.common_name || discovery?.classification || 'your discovery');

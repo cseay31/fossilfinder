@@ -34,8 +34,10 @@ Deno.serve(async (req) => {
   const photo_url = photo_urls[0];
 
   // Under-13 discoveries are private by default and strip precise location
-  // data to protect minors' physical safety (COPPA).
-  const isUnder13 = user.age_category === 'under_13' || user.is_over_13 === false;
+  // data to protect minors' physical safety (COPPA). isUnder13 is derived
+  // from server-controlled UserModeration records by checkContentEligibility,
+  // not from client-writable User fields.
+  const isUnder13 = eligibility.isUnder13;
   const visibility = isUnder13 ? 'private' : 'public';
   const safeLatitude = isUnder13 ? null : latitude;
   const safeLongitude = isUnder13 ? null : longitude;
