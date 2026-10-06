@@ -169,24 +169,16 @@ Quality over quantity - only mark genuine points of interest. If the rock appear
 
   const saveAsDiscovery = async () => {
     if (results.length === 0) return;
-    
+
     setIsSaving(true);
     try {
       for (const result of results) {
-        await base44.entities.Discovery.create({
-          photo_url: result.file_url,
+        await base44.functions.invoke('createDiscovery', {
+          photo_urls: [result.file_url],
           location: location,
           latitude: latitude,
           longitude: longitude,
-          analysis_status: "completed",
-          classification: `Multi-Scan: ${result.points_of_interest?.length || 0} points of interest`,
-          description: result.overall_assessment,
-          significance_level: result.fossil_likelihood === 'highly_likely' ? 'high' : 
-                             result.fossil_likelihood === 'likely' ? 'medium' : 'low',
-          confidence_score: result.fossil_likelihood === 'highly_likely' ? 85 : 
-                           result.fossil_likelihood === 'likely' ? 65 : 
-                           result.fossil_likelihood === 'possible' ? 45 : 25,
-          scan_results: JSON.stringify(result.points_of_interest || [])
+          additional_notes: `Multi-Scan result. Overall assessment: ${result.overall_assessment || ''}. Points of interest: ${result.points_of_interest?.length || 0}.`
         });
       }
       setSaved(true);
