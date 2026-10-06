@@ -8,8 +8,7 @@ export default function InitialLoadingScreen({ isDarkMode }) {
     "Loading AI model",
     "Loading discoveries",
     "Loading posts",
-    "Loading locations",
-    "Built by seayc31"
+    "Loading locations"
   ];
 
   useEffect(() => {

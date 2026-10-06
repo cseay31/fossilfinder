@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
@@ -18,7 +19,7 @@ Deno.serve(async (req) => {
 
   let sent = 0;
   for (const user of unwelcomed) {
-    const userName = user.display_name || user.full_name || 'Explorer';
+    const userName = escapeHtml(user.display_name || user.full_name || 'Explorer');
 
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: user.email,

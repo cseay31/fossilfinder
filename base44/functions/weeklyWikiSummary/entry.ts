@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { escapeHtml } from '../../shared/escapeHtml.ts';
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
@@ -24,7 +25,7 @@ Deno.serve(async (req) => {
 
   // Build article list HTML
   const articleListHtml = newArticles.map(a =>
-    `<li style="margin-bottom:8px;"><strong>${a.title}</strong>${a.category ? ` <em>(${a.category})</em>` : ''}</li>`
+    `<li style="margin-bottom:8px;"><strong>${escapeHtml(a.title)}</strong>${a.category ? ` <em>(${escapeHtml(a.category)})</em>` : ''}</li>`
   ).join('');
 
   const articleListText = newArticles.map(a =>
@@ -45,7 +46,7 @@ Deno.serve(async (req) => {
       <p style="margin:8px 0 0;color:#fde68a;font-size:14px;">📰 Weekly Wiki Digest</p>
     </div>
     <div style="padding:36px 40px;color:#1c1917;">
-      <p style="font-size:16px;margin:0 0 16px;">Hi <strong>${user.full_name || 'Explorer'}</strong>,</p>
+      <p style="font-size:16px;margin:0 0 16px;">Hi <strong>${escapeHtml(user.full_name || 'Explorer')}</strong>,</p>
       <p style="font-size:15px;line-height:1.7;margin:0 0 24px;">Here's your weekly FossilFinder Wiki digest — <strong>${newArticles.length} new article${newArticles.length > 1 ? 's' : ''}</strong> added this week:</p>
       <hr style="border:none;border-top:2px solid #d6cfc4;margin:0 0 20px;">
       <ul style="padding-left:20px;margin:0 0 24px;font-size:15px;line-height:2;">${articleListHtml}</ul>

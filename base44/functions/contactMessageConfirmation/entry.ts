@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
   const safeMessage = escapeHtml((record.message || '').replace(/\n/g, '<br>'));
 
   await base44.asServiceRole.integrations.Core.SendEmail({
-    to: record.email || data.email,
+    to: record.email,
     subject: `We received your message — FossilFinder`,
     body: `<!DOCTYPE html>
 <html>
